@@ -13,7 +13,7 @@
 ## milestones
 
 * [x] tiled maps
-* [x]characters
+* [x] characters
 * window collision
 * enemies
 * enemy collision
