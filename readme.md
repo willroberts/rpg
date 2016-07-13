@@ -13,15 +13,22 @@
 ## milestones
 
 * [x] tiled maps
-* characters
+* [x]characters
+* window collision
+* enemies
+* enemy collision
+* walls
+* wall collision
 * combat (start with unarmed)
 * experience and leveling
 * items and loot
 * high scores
 
-## bugs
+## bugs and to do
 
 * why does engo add some number to the tile id for maps? selecting grey stone gives green stone, etc.
+* add logging on everything to make sure i can describe what it's doing
+* figure out why i can still go out of bounds
 
 ## art assets
 
