@@ -12,12 +12,16 @@
 
 ## milestones
 
-* tiled maps
+* [x] tiled maps
 * characters
 * combat (start with unarmed)
 * experience and leveling
 * items and loot
 * high scores
+
+## bugs
+
+* why does engo add some number to the tile id for maps? selecting grey stone gives green stone, etc.
 
 ## art assets
 
