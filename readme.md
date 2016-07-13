@@ -26,9 +26,10 @@
 
 ## bugs and to do
 
+* figure out why i can still go out of bounds
+* look into KeyPressed() bug (extra KeyPressed() event on KeyReleased() event)
 * why does engo add some number to the tile id for maps? selecting grey stone gives green stone, etc.
 * add logging on everything to make sure i can describe what it's doing
-* figure out why i can still go out of bounds
 
 ## art assets
 
