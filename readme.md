@@ -8,7 +8,6 @@
 * game logic written in go
 * EngoEngine/engo as the engine
 * Tiled for level management
-* you play as a misunderstood skeleton in a dungeon fending off "intruders" (heroes)
 
 ## milestones
 
@@ -27,7 +26,9 @@
 ## bugs and to do
 
 * figure out why i can still go out of bounds
-* look into KeyPressed() bug (extra KeyPressed() event on KeyReleased() event)
+* look into Key.JustPressed() bug
+  * https://github.com/EngoEngine/engo/issues/279
+  * https://github.com/glfw/glfw/issues/747
 * why does engo add some number to the tile id for maps? selecting grey stone gives green stone, etc.
 * add logging on everything to make sure i can describe what it's doing
 
