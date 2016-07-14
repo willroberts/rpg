@@ -13,19 +13,22 @@
 
 * [x] tiled maps
 * [x] characters
-* window collision
-* enemies
-* enemy collision
+* [x] window collision
 * walls
 * wall collision
+* enemies
+* enemy collision
 * combat (start with unarmed)
-* experience and leveling
-* items and loot
+* experience
+* leveling
+* inventory
+* items
+* loot
+* scores
 * high scores
 
 ## bugs and to do
 
-* retain character centeredness after hitting a window border
 * look into Key.JustPressed() bug
   * https://github.com/EngoEngine/engo/issues/279
   * https://github.com/glfw/glfw/issues/747

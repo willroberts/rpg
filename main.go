@@ -88,15 +88,19 @@ func (c *ControlSystem) Update(dt float32) {
 		var widthLimit float32 = levelWidth - e.SpaceComponent.Width
 
 		if e.SpaceComponent.Position.Y < 0 {
-			e.SpaceComponent.Position.Y = 0
+			// Dirty hack: retain the character's Y offset
+			e.SpaceComponent.Position.Y = 4
 		} else if e.SpaceComponent.Position.Y > heightLimit {
-			e.SpaceComponent.Position.Y = heightLimit
+			// Dirty hack: retain the character's Y offset
+			e.SpaceComponent.Position.Y = heightLimit + 4
 		}
 
 		if e.SpaceComponent.Position.X < 0 {
-			e.SpaceComponent.Position.X = 0
+			// Dirty hack: retain the character's X offset
+			e.SpaceComponent.Position.X = 6
 		} else if e.SpaceComponent.Position.X > widthLimit {
-			e.SpaceComponent.Position.X = widthLimit
+			// Dirty hack: retain the character's X offset
+			e.SpaceComponent.Position.X = widthLimit + 6
 		}
 	}
 }
