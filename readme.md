@@ -4,8 +4,8 @@ A 2D game written in Go, with the engo engine.
 
 ## Design
 
-Recreation of Castle of the Winds, an orthogonal, tile-based RPG in which
-the world advances when the player moves. There are no animations, and
+Recreation of Castle of the Winds: an orthogonal, tile-based RPG in which
+the game advances when the player moves. There are no animations, and
 there is no audio.
 
 ## Milestones
