@@ -2,6 +2,7 @@ package main
 
 import (
 	"image/color"
+	"log"
 
 	"engo.io/ecs"
 	"engo.io/engo"
@@ -52,18 +53,22 @@ func (c *ControlSystem) Update(dt float32) {
 }
 
 func (game *GameWorld) Preload() {
-	if err := engo.Files.Load("maps/stone.tmx"); err != nil {
+	log.Println("preloading resources")
+	log.Println("loading maps")
+	if err := engo.Files.Load("maps/stone_tall.tmx"); err != nil {
 		panic(err)
 	}
+	log.Println("loading sprites")
 	if err := engo.Files.Load("spritesheets/characters-32x32.png"); err != nil {
 		panic(err)
 	}
 }
 
 func (game *GameWorld) Setup(w *ecs.World) {
+	log.Println("setting up game world")
 	common.SetBackground(color.Black)
 	w.AddSystem(&common.RenderSystem{})
-	resource, err := engo.Files.Resource("maps/stone.tmx")
+	resource, err := engo.Files.Resource("maps/stone_tall.tmx")
 	if err != nil {
 		panic(err)
 	}
@@ -71,6 +76,7 @@ func (game *GameWorld) Setup(w *ecs.World) {
 	levelData := tmxResource.Level
 	tileComponents := make([]*Tile, 0)
 
+	log.Println("processing tile layers")
 	for _, tileLayer := range levelData.TileLayers {
 		for _, tileElement := range tileLayer.Tiles {
 			if tileElement.Image != nil {
@@ -89,6 +95,7 @@ func (game *GameWorld) Setup(w *ecs.World) {
 		}
 	}
 
+	log.Println("processing image layers")
 	for _, imageLayer := range levelData.ImageLayers {
 		for _, imageElement := range imageLayer.Images {
 			if imageElement.Image != nil {
@@ -107,6 +114,7 @@ func (game *GameWorld) Setup(w *ecs.World) {
 		}
 	}
 
+	log.Println("creating character")
 	character := Character{BasicEntity: ecs.NewBasic()}
 	spriteSheet := common.NewSpritesheetFromFile("spritesheets/characters-32x32.png", 32, 32)
 	skeletonTexture := spriteSheet.Cell(7)
@@ -121,6 +129,7 @@ func (game *GameWorld) Setup(w *ecs.World) {
 		Height:   80,
 	}
 
+	log.Println("configuring systems")
 	for _, system := range w.Systems() {
 		switch sys := system.(type) {
 		case *common.RenderSystem:
@@ -131,23 +140,19 @@ func (game *GameWorld) Setup(w *ecs.World) {
 			}
 		}
 	}
-
 	w.AddSystem(&ControlSystem{&character})
 	w.AddSystem(&common.EntityScroller{
 		SpaceComponent: &character.SpaceComponent,
-		TrackingBounds: levelData.Bounds()},
-	)
+		TrackingBounds: levelData.Bounds(),
+	})
+
+	log.Println("binding controls")
 	engo.Input.RegisterButton("moveup", engo.ArrowUp)
 	engo.Input.RegisterButton("movedown", engo.ArrowDown)
 	engo.Input.RegisterButton("moveleft", engo.ArrowLeft)
 	engo.Input.RegisterButton("moveright", engo.ArrowRight)
-
-	/*
-		for _, objectLayer := range levelData.ObjectLayers {
-			for _, object := range objectLayer.Objects {}
-			for _, polylineObject := range objectLayer.PolyObjects {}
-		}
-	*/
+	log.Println("controls bound")
+	log.Println("use the arrow keys to move")
 }
 
 func (game *GameWorld) Type() string {
@@ -155,10 +160,12 @@ func (game *GameWorld) Type() string {
 }
 
 func main() {
+	log.Println("configuring game")
 	opts := engo.RunOptions{
 		Title:  "RPG",
 		Width:  960,
 		Height: 720,
 	}
+	log.Println("starting game")
 	engo.Run(opts, &GameWorld{})
 }
