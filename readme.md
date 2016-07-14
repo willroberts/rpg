@@ -29,6 +29,9 @@ the boundary of the map.
 	- [ ] Combat Calculation
 	- [ ] Combat Log
 	- [ ] Enemy Death
+	- [ ] A.I.
+		- [ ] Vision Radius
+		- [ ] Enemy Movement
 
 The player should be able to encounter and 'fight' enemies by moving in
 their direction. When the collision is detected, movement will not be
@@ -64,6 +67,10 @@ close-range offense, ranged offense, healing, shielding, cursing, etc.
 	- [ ] Start Menu
 	- [ ] Character Creation
 	- [ ] High Scores
+	- [ ] Fog of War
+	- [ ] Procedural Generation
+	- [ ] Combat Animations
+	- [ ] Sound Effects and Music
 	- [ ] Windows/Mac/Linux Build Targets
 
 Build complex maps/levels with proper collision detection. Create a menu
