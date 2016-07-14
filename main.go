@@ -9,7 +9,7 @@ import (
 	"engo.io/engo/common"
 )
 
-type GameWorld struct{}
+type DefaultScene struct{}
 
 type Tile struct {
 	ecs.BasicEntity
@@ -52,7 +52,7 @@ func (c *ControlSystem) Update(dt float32) {
 	}
 }
 
-func (game *GameWorld) Preload() {
+func (scene *DefaultScene) Preload() {
 	log.Println("preloading resources")
 	log.Println("loading maps")
 	if err := engo.Files.Load("maps/stone_tall.tmx"); err != nil {
@@ -64,8 +64,8 @@ func (game *GameWorld) Preload() {
 	}
 }
 
-func (game *GameWorld) Setup(w *ecs.World) {
-	log.Println("setting up game world")
+func (scene *DefaultScene) Setup(w *ecs.World) {
+	log.Println("setting up scene")
 	common.SetBackground(color.Black)
 	w.AddSystem(&common.RenderSystem{})
 	resource, err := engo.Files.Resource("maps/stone_tall.tmx")
@@ -155,17 +155,17 @@ func (game *GameWorld) Setup(w *ecs.World) {
 	log.Println("use the arrow keys to move")
 }
 
-func (game *GameWorld) Type() string {
-	return "GameWorld"
+func (scene *DefaultScene) Type() string {
+	return "DefaultScene"
 }
 
 func main() {
-	log.Println("configuring game")
+	log.Println("configuring engine")
 	opts := engo.RunOptions{
 		Title:  "RPG",
 		Width:  960,
 		Height: 720,
 	}
 	log.Println("starting game")
-	engo.Run(opts, &GameWorld{})
+	engo.Run(opts, &DefaultScene{})
 }
