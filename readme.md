@@ -26,6 +26,7 @@ the boundary of the map.
 	- [ ] Enemies
 	- [ ] Enemy Collision
 	- [ ] Combat Calculation
+	- [ ] Combat Log
 	- [ ] Enemy Death
 
 The player should be able to encounter and 'fight' enemies by moving in
@@ -41,11 +42,11 @@ would be to implement unarmed combat first.
 		- [ ] Attributes
 		- [ ] Level
 		- [ ] Experience
-    - [ ] Inventory
+		- [ ] Inventory
 		- [ ] Gold
-  - [ ] Item Data Model
-  - [ ] Loot System
-  - [ ] Intelligence, Mana, and Spells
+	- [ ] Item Data Model
+	- [ ] Loot System
+	- [ ] Intelligence, Mana, and Spells
 
 The player should have attributes, a level, experience points, some amount
 of gold, and an inventory system. Characters could be randomly generated
@@ -53,13 +54,13 @@ initially. Items should have attributes as well, and should be equippable.
 Enemies should drop randomized items when killed. Both offensive and
 defensive spells should be added. For example, there should be spells for
 close-range offense, ranged offense, healing, shielding, cursing, etc.
-     
+
 - [ ] IV. Polish
 	- [ ] Walls and Wall Collision
 	- [ ] Start Menu
-  - [ ] Character Creation
+	- [ ] Character Creation
 	- [ ] High Scores
-  - [ ] Windows/Mac/Linux Build Targets
+	- [ ] Windows/Mac/Linux Build Targets
 
 Build complex maps/levels with proper collision detection. Create a menu
 system with a start menu, a high scores screen, and a character creation
@@ -72,10 +73,10 @@ mouse unless something changes along the way.
 * `engo.Input.Button("foo").JustPressed()` fires twice
 	* Once when pressing the button, and once when releasing it
 	* Appears to be a bug with Ubuntu 16.04 and GLFW 3.1.2
-  * https://github.com/EngoEngine/engo/issues/279
-  * https://github.com/glfw/glfw/issues/747
+	* https://github.com/EngoEngine/engo/issues/279
+	* https://github.com/glfw/glfw/issues/747
 * The tiles selected in Tiled do not appear in-game
-  * Higher-indexed tiles cause an `index out of range` error
+	* Higher-indexed tiles cause an `index out of range` error
 
 ## Assets
 
