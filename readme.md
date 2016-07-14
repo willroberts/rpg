@@ -25,13 +25,7 @@
 
 ## bugs and to do
 
-* figure out why i can still go out of bounds
-  * the TrackingBounds parameter on the camera only guides the camera
-  * it does not perform collision detection
-  * the correct way to do this is with out of bounds checking
-  * this happens inside the ControlSystem
-  * need to rewrite code to have ControlSystem.entities
-    * instead of ControlSystem.entity (just the character)
+* retain character centeredness after hitting a window border
 * look into Key.JustPressed() bug
   * https://github.com/EngoEngine/engo/issues/279
   * https://github.com/glfw/glfw/issues/747

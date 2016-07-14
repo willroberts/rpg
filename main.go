@@ -9,6 +9,11 @@ import (
 	"engo.io/engo/common"
 )
 
+var (
+	levelWidth  float32
+	levelHeight float32
+)
+
 type DefaultScene struct{}
 
 type Tile struct {
@@ -21,62 +26,112 @@ type Character struct {
 	ecs.BasicEntity
 	common.RenderComponent
 	common.SpaceComponent
+	ControlComponent
+}
+
+type ControlComponent struct {
+	SchemeVert  string
+	SchemeHoriz string
 }
 
 type ControlSystem struct {
-	entity *Character
+	//entity *Character // FIXME
+	entities []controlEntity
 }
 
-func (c *ControlSystem) Add(char *Character) {
-	c.entity = char
+type controlEntity struct {
+	*ecs.BasicEntity
+	*ControlComponent
+	*common.SpaceComponent
+}
+
+func (c *ControlSystem) Add(basic *ecs.BasicEntity, control *ControlComponent, space *common.SpaceComponent) {
+	c.entities = append(c.entities, controlEntity{basic, control, space})
 }
 
 func (c *ControlSystem) Remove(basic ecs.BasicEntity) {
-	if c.entity != nil && basic.ID() == c.entity.ID() {
-		c.entity = nil
+	del := -1
+	// Determine if the requested entity is in our entities slice.
+	for index, e := range c.entities {
+		if e.BasicEntity.ID() == basic.ID() {
+			del = index
+			break
+		}
+	}
+	// If we found the entity, delete it.
+	if del >= 0 {
+		c.entities = append(c.entities[:del], c.entities[del+1:]...)
 	}
 }
 
 func (c *ControlSystem) Update(dt float32) {
-	if engo.Input.Button("moveup").JustPressed() {
-		c.entity.SpaceComponent.Position.Y -= 80
-	}
-	if engo.Input.Button("movedown").JustPressed() {
-		c.entity.SpaceComponent.Position.Y += 80
-	}
-	if engo.Input.Button("moveleft").JustPressed() {
-		c.entity.SpaceComponent.Position.X -= 80
-	}
-	if engo.Input.Button("moveright").JustPressed() {
-		c.entity.SpaceComponent.Position.X += 80
+	for _, e := range c.entities {
+		// Move the character.
+		// This currently works because the character is the only entity.
+		// As soon as we add another entity, the movement needs to be changed
+		// to a speed model (based on dt) instead of a fixed rate model.
+		if engo.Input.Button("moveup").JustPressed() {
+			e.SpaceComponent.Position.Y -= 80
+		}
+		if engo.Input.Button("movedown").JustPressed() {
+			e.SpaceComponent.Position.Y += 80
+		}
+		if engo.Input.Button("moveleft").JustPressed() {
+			e.SpaceComponent.Position.X -= 80
+		}
+		if engo.Input.Button("moveright").JustPressed() {
+			e.SpaceComponent.Position.X += 80
+		}
+
+		// Detect when the player attempts to move outside the game window.
+		var heightLimit float32 = levelHeight - e.SpaceComponent.Height
+		var widthLimit float32 = levelWidth - e.SpaceComponent.Width
+
+		if e.SpaceComponent.Position.Y < 0 {
+			e.SpaceComponent.Position.Y = 0
+		} else if e.SpaceComponent.Position.Y > heightLimit {
+			e.SpaceComponent.Position.Y = heightLimit
+		}
+
+		if e.SpaceComponent.Position.X < 0 {
+			e.SpaceComponent.Position.X = 0
+		} else if e.SpaceComponent.Position.X > widthLimit {
+			e.SpaceComponent.Position.X = widthLimit
+		}
 	}
 }
 
 func (scene *DefaultScene) Preload() {
-	log.Println("preloading resources")
-	log.Println("loading maps")
+	log.Println("[assets] preloading resources")
+	log.Println("[assets] loading maps")
 	if err := engo.Files.Load("maps/stone_tall.tmx"); err != nil {
 		panic(err)
 	}
-	log.Println("loading sprites")
+	log.Println("[assets] loading sprites")
 	if err := engo.Files.Load("spritesheets/characters-32x32.png"); err != nil {
 		panic(err)
 	}
 }
 
 func (scene *DefaultScene) Setup(w *ecs.World) {
-	log.Println("setting up scene")
+	log.Println("[setup] setting up scene")
+
 	common.SetBackground(color.Black)
+
 	w.AddSystem(&common.RenderSystem{})
+	w.AddSystem(&ControlSystem{})
+
 	resource, err := engo.Files.Resource("maps/stone_tall.tmx")
 	if err != nil {
 		panic(err)
 	}
 	tmxResource := resource.(common.TMXResource)
 	levelData := tmxResource.Level
-	tileComponents := make([]*Tile, 0)
+	levelWidth = levelData.Bounds().Max.X
+	levelHeight = levelData.Bounds().Max.Y
 
-	log.Println("processing tile layers")
+	log.Println("[setup] processing tile layers")
+	tileComponents := make([]*Tile, 0)
 	for _, tileLayer := range levelData.TileLayers {
 		for _, tileElement := range tileLayer.Tiles {
 			if tileElement.Image != nil {
@@ -95,7 +150,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 		}
 	}
 
-	log.Println("processing image layers")
+	log.Println("[setup] processing image layers")
 	for _, imageLayer := range levelData.ImageLayers {
 		for _, imageElement := range imageLayer.Images {
 			if imageElement.Image != nil {
@@ -114,8 +169,14 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 		}
 	}
 
-	log.Println("creating character")
-	character := Character{BasicEntity: ecs.NewBasic()}
+	log.Println("[setup] creating character")
+	character := Character{
+		BasicEntity: ecs.NewBasic(),
+		ControlComponent: ControlComponent{
+			SchemeHoriz: "horizontal",
+			SchemeVert:  "vertical",
+		},
+	}
 	spriteSheet := common.NewSpritesheetFromFile("spritesheets/characters-32x32.png", 32, 32)
 	skeletonTexture := spriteSheet.Cell(7)
 	character.RenderComponent = common.RenderComponent{
@@ -129,7 +190,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 		Height:   80,
 	}
 
-	log.Println("configuring systems")
+	log.Println("[setup] configuring systems")
 	for _, system := range w.Systems() {
 		switch sys := system.(type) {
 		case *common.RenderSystem:
@@ -138,21 +199,23 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 			for _, v := range tileComponents {
 				sys.Add(&v.BasicEntity, &v.RenderComponent, &v.SpaceComponent)
 			}
+		case *ControlSystem:
+			sys.Add(&character.BasicEntity, &character.ControlComponent,
+				&character.SpaceComponent)
 		}
 	}
-	w.AddSystem(&ControlSystem{&character})
 	w.AddSystem(&common.EntityScroller{
 		SpaceComponent: &character.SpaceComponent,
 		TrackingBounds: levelData.Bounds(),
 	})
 
-	log.Println("binding controls")
+	log.Println("[input] binding controls")
 	engo.Input.RegisterButton("moveup", engo.ArrowUp)
 	engo.Input.RegisterButton("movedown", engo.ArrowDown)
 	engo.Input.RegisterButton("moveleft", engo.ArrowLeft)
 	engo.Input.RegisterButton("moveright", engo.ArrowRight)
-	log.Println("controls bound")
-	log.Println("use the arrow keys to move")
+	log.Println("[input] controls bound")
+	log.Println("[input] use the arrow keys to move")
 }
 
 func (scene *DefaultScene) Type() string {
@@ -160,12 +223,12 @@ func (scene *DefaultScene) Type() string {
 }
 
 func main() {
-	log.Println("configuring engine")
+	log.Println("[engine] configuring engine")
 	opts := engo.RunOptions{
 		Title:  "RPG",
 		Width:  960,
 		Height: 720,
 	}
-	log.Println("starting game")
+	log.Println("[engine] starting game")
 	engo.Run(opts, &DefaultScene{})
 }
