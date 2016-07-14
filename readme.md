@@ -4,9 +4,9 @@ A 2D game written in Go, with the engo engine.
 
 ## Design
 
-Recreation of Castle of the Winds: an orthogonal, tile-based RPG in which
-the game advances when the player moves. There are no animations, and
-there is no audio.
+Recreation of Castle of the Winds (1993): an orthogonal, tile-based RPG in
+which the game advances when the player moves. There are no animations,
+and there is no audio.
 
 ## Milestones
 
@@ -17,10 +17,10 @@ there is no audio.
 	- [x] Window Bounds Checking
 
 The player should be able to control a character with the arrow keys, and
-move them around within a graphical tiled map. The camera should follow
-the player during movement, allowing exploration of the map when the map
-is larger than the game window. The player should not be able to move
-outside the boundary of the map.
+move around within a graphical tiled map. The camera should follow the
+player during movement, allowing exploration of the map when the map is
+larger than the game window. The player should not be able to move outside
+the boundary of the map.
 
 - [ ] II. Combat
 	- [ ] Enemies
