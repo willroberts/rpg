@@ -10,11 +10,11 @@ there is no audio.
 
 ## Milestones
 
-* Minimum Interactive Content [x]
-	* Tiled Maps [x]
-	* Controllable Player [x]
-	* Player-Centric Camera [x]
-	* Window Bounds Checking [x]
+[x] Minimum Interactive Content
+	[x] Tiled Maps
+	[x] Controllable Player
+	[x] Player-Centric Camera
+	[x] Window Bounds Checking
 
 At this stage, the player should be able to control a character with the
 arrow keys, and move them around within a graphical tiled map. The camera
