@@ -26,11 +26,17 @@
 ## bugs and to do
 
 * figure out why i can still go out of bounds
+  * the TrackingBounds parameter on the camera only guides the camera
+  * it does not perform collision detection
 * look into Key.JustPressed() bug
   * https://github.com/EngoEngine/engo/issues/279
   * https://github.com/glfw/glfw/issues/747
-* why does engo add some number to the tile id for maps? selecting grey stone gives green stone, etc.
-* add logging on everything to make sure i can describe what it's doing
+  * ignore for now
+* why does engo add some number to the tile id for maps?
+  * selecting grey stone gives green stone, etc.
+  * punt on this for now
+* add more logging
+* add more documentation
 
 ## art assets
 
