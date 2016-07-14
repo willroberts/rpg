@@ -12,13 +12,17 @@
 ## milestones
 
 * [x] tiled maps
-* [x] characters
 * [x] window collision
 * walls
 * wall collision
+* characters
+* attributes
+* skills
 * enemies
 * enemy collision
 * combat (start with unarmed)
+* menus
+* start menu
 * experience
 * leveling
 * inventory
