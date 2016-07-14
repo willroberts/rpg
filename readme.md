@@ -25,6 +25,7 @@ the boundary of the map.
 - [ ] II. Combat
 	- [ ] Enemies
 	- [ ] Enemy Collision
+	- [ ] Hit Points
 	- [ ] Combat Calculation
 	- [ ] Combat Log
 	- [ ] Enemy Death
@@ -40,6 +41,9 @@ would be to implement unarmed combat first.
 - [ ] III. Depth
 	- [ ] Character Data Model
 		- [ ] Attributes
+			- [ ] Strength: Attack Damage
+			- [ ] Dexterity: Hit and Dodge Chances
+			- [ ] Endurance: Hit Points and Defense
 		- [ ] Level
 		- [ ] Experience
 		- [ ] Inventory
