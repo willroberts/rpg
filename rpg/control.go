@@ -2,8 +2,12 @@ package rpg
 
 import (
 	"engo.io/ecs"
-	"engo.io/engo"
 	"engo.io/engo/common"
+)
+
+var (
+	heightLimit float32
+	widthLimit  float32
 )
 
 type ControlComponent struct {
@@ -45,40 +49,8 @@ func (c *ControlSystem) Remove(basic ecs.BasicEntity) {
 
 func (c *ControlSystem) Update(dt float32) {
 	for _, e := range c.entities {
-		// Move the character.
-		// Technically moves any entities we add to the ControlSystem with Add().
-		if engo.Input.Button("moveup").JustPressed() {
-			e.SpaceComponent.Position.Y -= 80
-		}
-		if engo.Input.Button("movedown").JustPressed() {
-			e.SpaceComponent.Position.Y += 80
-		}
-		if engo.Input.Button("moveleft").JustPressed() {
-			e.SpaceComponent.Position.X -= 80
-		}
-		if engo.Input.Button("moveright").JustPressed() {
-			e.SpaceComponent.Position.X += 80
-		}
-
-		// Detect when the player attempts to move outside the game window.
-		var heightLimit float32 = levelHeight - e.SpaceComponent.Height
-		var widthLimit float32 = levelWidth - e.SpaceComponent.Width
-
-		// FIXME: Move dirty hacks into character.go to use constants there.
-		if e.SpaceComponent.Position.Y < 0 {
-			// Dirty hack: retain the character's Y offset
-			e.SpaceComponent.Position.Y = 4
-		} else if e.SpaceComponent.Position.Y > heightLimit {
-			// Dirty hack: retain the character's Y offset
-			e.SpaceComponent.Position.Y = heightLimit + 4
-		}
-
-		if e.SpaceComponent.Position.X < 0 {
-			// Dirty hack: retain the character's X offset
-			e.SpaceComponent.Position.X = 6
-		} else if e.SpaceComponent.Position.X > widthLimit {
-			// Dirty hack: retain the character's X offset
-			e.SpaceComponent.Position.X = widthLimit + 6
-		}
+		heightLimit = levelHeight - e.SpaceComponent.Height
+		widthLimit = levelWidth - e.SpaceComponent.Width
+		moveCharacter(e)
 	}
 }

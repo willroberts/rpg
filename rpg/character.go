@@ -75,3 +75,31 @@ func NewCharacter(spriteIndex int) Character {
 
 	return c
 }
+
+func moveCharacter(e controlEntity) {
+	// Have the arrow keys move the character one tile at a time.
+	if engo.Input.Button("moveleft").JustPressed() {
+		e.SpaceComponent.Position.X -= characterSizeX
+	}
+	if engo.Input.Button("moveright").JustPressed() {
+		e.SpaceComponent.Position.X += characterSizeX
+	}
+	if engo.Input.Button("moveup").JustPressed() {
+		e.SpaceComponent.Position.Y -= characterSizeY
+	}
+	if engo.Input.Button("movedown").JustPressed() {
+		e.SpaceComponent.Position.Y += characterSizeY
+	}
+
+	// Prevent the character from leaving the map.
+	if e.SpaceComponent.Position.X < 0 {
+		e.SpaceComponent.Position.X = characterOffsetX
+	} else if e.SpaceComponent.Position.X > widthLimit {
+		e.SpaceComponent.Position.X = widthLimit + characterOffsetX
+	}
+	if e.SpaceComponent.Position.Y < 0 {
+		e.SpaceComponent.Position.Y = characterOffsetY
+	} else if e.SpaceComponent.Position.Y > heightLimit {
+		e.SpaceComponent.Position.Y = heightLimit + characterOffsetY
+	}
+}
