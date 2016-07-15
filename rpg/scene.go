@@ -38,10 +38,11 @@ func (scene *DefaultScene) Preload() {
 
 func (scene *DefaultScene) Setup(w *ecs.World) {
 	log.Println("[setup] setting up scene")
-
 	common.SetBackground(color.Black)
 
+	w.AddSystem(&common.CollisionSystem{})
 	w.AddSystem(&common.RenderSystem{})
+	w.AddSystem(&CombatSystem{})
 	w.AddSystem(&ControlSystem{})
 
 	resource, err := engo.Files.Resource("maps/stone.tmx")
@@ -103,6 +104,14 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	log.Println("[setup] configuring systems")
 	for _, system := range w.Systems() {
 		switch sys := system.(type) {
+		case *common.CollisionSystem:
+			log.Println("[setup] configuring collision system")
+			sys.Add(&character.BasicEntity, &character.CollisionComponent,
+				&character.SpaceComponent)
+			for _, e := range enemies {
+				sys.Add(&e.BasicEntity, &e.CollisionComponent, &e.SpaceComponent)
+			}
+
 		case *common.RenderSystem:
 			log.Println("[setup] configuring render system")
 			sys.Add(&character.BasicEntity, &character.RenderComponent,
@@ -113,6 +122,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 			for _, v := range tileComponents {
 				sys.Add(&v.BasicEntity, &v.RenderComponent, &v.SpaceComponent)
 			}
+
 		case *ControlSystem:
 			log.Println("[setup] configuring control system")
 			sys.Add(&character.BasicEntity, &character.ControlComponent,

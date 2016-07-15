@@ -39,6 +39,7 @@ var (
 
 type Character struct {
 	ecs.BasicEntity
+	common.CollisionComponent
 	common.RenderComponent
 	common.SpaceComponent
 	ControlComponent
@@ -53,7 +54,13 @@ func NewCharacter(spriteIndex int) Character {
 		},
 	}
 
-	// Add graphics
+	// Configure collision.
+	c.CollisionComponent = common.CollisionComponent{
+		Solid: true,
+		Main:  true,
+	}
+
+	// Add graphics.
 	characterTexture := characterSpritesheet.Cell(spriteIndex)
 	c.RenderComponent = common.RenderComponent{
 		Drawable: characterTexture,

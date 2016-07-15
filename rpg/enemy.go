@@ -8,6 +8,7 @@ import (
 
 type Enemy struct {
 	ecs.BasicEntity
+	common.CollisionComponent
 	common.RenderComponent
 	common.SpaceComponent
 }
@@ -15,7 +16,12 @@ type Enemy struct {
 func NewEnemy(spriteIndex int, startingX, startingY float32) Enemy {
 	e := Enemy{BasicEntity: ecs.NewBasic()}
 
-	// Add graphics
+	// Configure collision.
+	e.CollisionComponent = common.CollisionComponent{
+		Solid: true,
+	}
+
+	// Add graphics.
 	enemyTexture := characterSpritesheet.Cell(spriteIndex)
 	e.RenderComponent = common.RenderComponent{
 		Drawable: enemyTexture,

@@ -23,8 +23,8 @@ larger than the game window. The player should not be able to move outside
 the boundary of the map.
 
 - [ ] II. Combat
-	- [ ] Enemies
-	- [ ] Enemy Collision
+	- [x] Enemies
+	- [x] Enemy Collision
 	- [ ] Hit Points
 	- [ ] Combat Calculation
 	- [ ] Combat Log
