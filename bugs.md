@@ -2,6 +2,7 @@
 
 * On collision, the player is moved to the tile under the enemy
 	* No movement should occur, just like running into a wall
+  * Use an cancelMovement() func and an engo.Message?
 
 * `engo.Input.Button("foo").JustPressed()` fires twice
 	* Once when pressing the button, and once when releasing it

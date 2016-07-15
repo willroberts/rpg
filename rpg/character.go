@@ -35,6 +35,7 @@ const (
 
 var (
 	characterSpritesheet *common.Spritesheet
+	characterEntityID    uint64
 )
 
 type Character struct {
@@ -43,6 +44,8 @@ type Character struct {
 	common.RenderComponent
 	common.SpaceComponent
 	ControlComponent
+
+	HitPoints int
 }
 
 func NewCharacter(spriteIndex int) Character {
@@ -52,7 +55,9 @@ func NewCharacter(spriteIndex int) Character {
 			SchemeHoriz: "horizontal",
 			SchemeVert:  "vertical",
 		},
+		HitPoints: 10,
 	}
+	characterEntityID = c.BasicEntity.ID()
 
 	// Configure collision.
 	c.CollisionComponent = common.CollisionComponent{

@@ -25,13 +25,11 @@ the boundary of the map.
 - [ ] II. Combat
 	- [x] Enemies
 	- [x] Enemy Collision
-	- [ ] Hit Points
+	- [x] Hit Points
 	- [ ] Combat Calculation
 	- [ ] Combat Log
 	- [ ] Enemy Death
-	- [ ] A.I.
-		- [ ] Vision Radius
-		- [ ] Enemy Movement
+	- [ ] Player Death
 
 The player should be able to encounter and 'fight' enemies by moving in
 their direction. When the collision is detected, movement will not be
@@ -52,8 +50,13 @@ would be to implement unarmed combat first.
 		- [ ] Inventory
 		- [ ] Gold
 	- [ ] Item Data Model
-	- [ ] Loot System
 	- [ ] Intelligence, Mana, and Spells
+	- [ ] A.I.
+		- [ ] Vision Radius
+		- [ ] Enemy Movement
+	- [ ] Randomized Maps
+	- [ ] Randomized Enemies
+	- [ ] Randomized Loot
 
 The player should have attributes, a level, experience points, some amount
 of gold, and an inventory system. Characters could be randomly generated
@@ -68,7 +71,6 @@ close-range offense, ranged offense, healing, shielding, cursing, etc.
 	- [ ] Character Creation
 	- [ ] High Scores
 	- [ ] Fog of War
-	- [ ] Procedural Generation
 	- [ ] Combat Animations
 	- [ ] Sound Effects and Music
 	- [ ] Windows/Mac/Linux Build Targets

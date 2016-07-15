@@ -11,17 +11,48 @@ import (
 type CombatSystem struct{}
 
 // FIXME: Player is moved to the tile under the enemy on attack.
-// FIXME: Cancel movement when collision is detected.
-// FIXME: Or disallow movement by keeping track of map coordinates.
 func (c *CombatSystem) New(*ecs.World) {
-	engo.Mailbox.Listen("CollisionMessage", func(message engo.Message) {
-		_, isCollision := message.(common.CollisionMessage)
+	collisionHandler := func(message engo.Message) {
+		msg, isCollision := message.(common.CollisionMessage)
 		if isCollision {
-			log.Println("collision detected")
+			// Create a combat event.
+			combatMessage := engo.Message(CombatMessage{
+				Initiator: msg.Entity.ID(),
+				Target:    msg.To.ID(),
+			})
+			engo.Mailbox.Dispatch(combatMessage)
+
+			// TODO: Cancel movement.
+			// characterSpace := msg.Entity.SpaceComponent
 		}
-	})
+	}
+	engo.Mailbox.Listen("CollisionMessage", collisionHandler)
+
+	combatHandler := func(message engo.Message) {
+		if message.Type() == "CombatMessage" {
+			msg, _ := message.(CombatMessage)
+			if msg.Initiator == characterEntityID {
+				log.Println("[combat] the character attacked!")
+			}
+			if msg.Target == characterEntityID {
+				log.Println("[combat] the character was hit!")
+				// TODO: Deduct hit points.
+			}
+		}
+	}
+	engo.Mailbox.Listen("CombatMessage", combatHandler)
 }
 
 func (c *CombatSystem) Remove(ecs.BasicEntity) {}
 
-func (c *CombatSystem) Update(float32) {}
+func (c *CombatSystem) Update(float32) {
+}
+
+type CombatMessage struct {
+	Initiator uint64
+	Target    uint64
+}
+
+func (c CombatMessage) Type() string {
+	return "CombatMessage"
+}

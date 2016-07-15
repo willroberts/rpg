@@ -11,10 +11,15 @@ type Enemy struct {
 	common.CollisionComponent
 	common.RenderComponent
 	common.SpaceComponent
+
+	HitPoints int
 }
 
 func NewEnemy(spriteIndex int, startingX, startingY float32) Enemy {
-	e := Enemy{BasicEntity: ecs.NewBasic()}
+	e := Enemy{
+		BasicEntity: ecs.NewBasic(),
+		HitPoints:   5,
+	}
 
 	// Configure collision.
 	e.CollisionComponent = common.CollisionComponent{
