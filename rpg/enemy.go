@@ -1,13 +1,12 @@
-package main
+package rpg
 
 import (
 	"engo.io/ecs"
 	"engo.io/engo/common"
 )
 
-type Character struct {
+type Enemy struct {
 	ecs.BasicEntity
 	common.RenderComponent
 	common.SpaceComponent
-	ControlComponent
 }
