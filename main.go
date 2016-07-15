@@ -108,7 +108,7 @@ func (c *ControlSystem) Update(dt float32) {
 func (scene *DefaultScene) Preload() {
 	log.Println("[assets] preloading resources")
 	log.Println("[assets] loading maps")
-	if err := engo.Files.Load("maps/stone_tall.tmx"); err != nil {
+	if err := engo.Files.Load("maps/stone.tmx"); err != nil {
 		panic(err)
 	}
 	log.Println("[assets] loading sprites")
@@ -125,7 +125,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	w.AddSystem(&common.RenderSystem{})
 	w.AddSystem(&ControlSystem{})
 
-	resource, err := engo.Files.Resource("maps/stone_tall.tmx")
+	resource, err := engo.Files.Resource("maps/stone.tmx")
 	if err != nil {
 		panic(err)
 	}
