@@ -91,6 +91,8 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	}
 
 	log.Println("[setup] creating character")
+	characterSpritesheet = common.NewSpritesheetFromFile(characterSpritesheetPath,
+		characterSpritesheetWidth, characterSpritesheetHeight)
 	character := NewCharacter(spriteWhiteZombie)
 
 	log.Println("[setup] configuring systems")

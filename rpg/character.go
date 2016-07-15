@@ -33,6 +33,10 @@ const (
 	spriteGargoyle
 )
 
+var (
+	characterSpritesheet *common.Spritesheet
+)
+
 type Character struct {
 	ecs.BasicEntity
 	common.RenderComponent
@@ -50,10 +54,7 @@ func NewCharacter(spriteIndex int) Character {
 	}
 
 	// Add graphics
-	// FIXME: Move spritesheet logic to a place where it can be shared by enemies.
-	spritesheet := common.NewSpritesheetFromFile(characterSpritesheetPath,
-		characterSpritesheetWidth, characterSpritesheetHeight)
-	characterTexture := spritesheet.Cell(spriteIndex)
+	characterTexture := characterSpritesheet.Cell(spriteIndex)
 	c.RenderComponent = common.RenderComponent{
 		Drawable: characterTexture,
 		Scale:    engo.Point{2, 2},
