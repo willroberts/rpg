@@ -98,7 +98,8 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 			SchemeVert:  "vertical",
 		},
 	}
-	spriteSheet := common.NewSpritesheetFromFile("spritesheets/characters-32x32.png", 32, 32)
+	spriteSheet := common.NewSpritesheetFromFile(
+		"spritesheets/characters-32x32.png", 32, 32)
 	skeletonTexture := spriteSheet.Cell(7)
 	character.RenderComponent = common.RenderComponent{
 		Drawable: skeletonTexture,

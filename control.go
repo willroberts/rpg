@@ -12,7 +12,6 @@ type ControlComponent struct {
 }
 
 type ControlSystem struct {
-	//entity *Character // FIXME
 	entities []controlEntity
 }
 
@@ -22,12 +21,14 @@ type controlEntity struct {
 	*common.SpaceComponent
 }
 
-func (c *ControlSystem) Add(basic *ecs.BasicEntity, control *ControlComponent, space *common.SpaceComponent) {
+func (c *ControlSystem) Add(basic *ecs.BasicEntity, control *ControlComponent,
+	space *common.SpaceComponent) {
 	c.entities = append(c.entities, controlEntity{basic, control, space})
 }
 
 func (c *ControlSystem) Remove(basic ecs.BasicEntity) {
 	del := -1
+
 	// Determine if the requested entity is in our entities slice.
 	for index, e := range c.entities {
 		if e.BasicEntity.ID() == basic.ID() {
@@ -35,6 +36,7 @@ func (c *ControlSystem) Remove(basic ecs.BasicEntity) {
 			break
 		}
 	}
+
 	// If we found the entity, delete it.
 	if del >= 0 {
 		c.entities = append(c.entities[:del], c.entities[del+1:]...)
