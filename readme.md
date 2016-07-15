@@ -79,16 +79,6 @@ process. Create build targets for Windows, Mac OS X, and Linux. Android
 and iOS could be considered, but the primary input will be keyboard and
 mouse unless something changes along the way.
 
-## Issues
-
-* `engo.Input.Button("foo").JustPressed()` fires twice
-	* Once when pressing the button, and once when releasing it
-	* Appears to be a bug with Ubuntu 16.04 and GLFW 3.1.2
-	* https://github.com/EngoEngine/engo/issues/279
-	* https://github.com/glfw/glfw/issues/747
-* The tiles selected in Tiled do not appear in-game
-	* Higher-indexed tiles cause an `index out of range` error
-
 ## Assets
 
 2D art comes from Jesse Freeman's Tile Crusader spritesheets:
