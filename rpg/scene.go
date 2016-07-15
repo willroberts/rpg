@@ -32,6 +32,8 @@ func (scene *DefaultScene) Preload() {
 	if err := engo.Files.Load("spritesheets/characters-32x32.png"); err != nil {
 		panic(err)
 	}
+	characterSpritesheet = common.NewSpritesheetFromFile(characterSpritesheetPath,
+		characterSpritesheetWidth, characterSpritesheetHeight)
 }
 
 func (scene *DefaultScene) Setup(w *ecs.World) {
@@ -91,20 +93,28 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	}
 
 	log.Println("[setup] creating character")
-	characterSpritesheet = common.NewSpritesheetFromFile(characterSpritesheetPath,
-		characterSpritesheetWidth, characterSpritesheetHeight)
 	character := NewCharacter(spriteWhiteZombie)
+
+	log.Println("[setup] creating enemies")
+	enemies := []Enemy{
+		NewEnemy(spriteSkeleton, 240, 240),
+	}
 
 	log.Println("[setup] configuring systems")
 	for _, system := range w.Systems() {
 		switch sys := system.(type) {
 		case *common.RenderSystem:
+			log.Println("[setup] configuring render system")
 			sys.Add(&character.BasicEntity, &character.RenderComponent,
 				&character.SpaceComponent)
+			for _, e := range enemies {
+				sys.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
+			}
 			for _, v := range tileComponents {
 				sys.Add(&v.BasicEntity, &v.RenderComponent, &v.SpaceComponent)
 			}
 		case *ControlSystem:
+			log.Println("[setup] configuring control system")
 			sys.Add(&character.BasicEntity, &character.ControlComponent,
 				&character.SpaceComponent)
 		}

@@ -13,7 +13,7 @@ const (
 
 	characterSizeX     float32 = 80
 	characterSizeY     float32 = 80
-	characterOffsetX   float32 = 6
+	characterOffsetX   float32 = 8
 	characterOffsetY   float32 = 4
 	characterStartingX float32 = characterSizeX + characterOffsetX
 	characterStartingY float32 = characterSizeY + characterOffsetY
