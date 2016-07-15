@@ -91,7 +91,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	}
 
 	log.Println("[setup] creating character")
-	character := NewCharacter()
+	character := NewCharacter(spriteWhiteZombie)
 
 	log.Println("[setup] configuring systems")
 	for _, system := range w.Systems() {

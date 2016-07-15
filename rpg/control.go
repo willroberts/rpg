@@ -46,9 +46,7 @@ func (c *ControlSystem) Remove(basic ecs.BasicEntity) {
 func (c *ControlSystem) Update(dt float32) {
 	for _, e := range c.entities {
 		// Move the character.
-		// This currently works because the character is the only entity.
-		// As soon as we add another entity, the movement needs to be changed
-		// to a speed model (based on dt) instead of a fixed rate model.
+		// Technically moves any entities we add to the ControlSystem with Add().
 		if engo.Input.Button("moveup").JustPressed() {
 			e.SpaceComponent.Position.Y -= 80
 		}
@@ -66,6 +64,7 @@ func (c *ControlSystem) Update(dt float32) {
 		var heightLimit float32 = levelHeight - e.SpaceComponent.Height
 		var widthLimit float32 = levelWidth - e.SpaceComponent.Width
 
+		// FIXME: Move dirty hacks into character.go to use constants there.
 		if e.SpaceComponent.Position.Y < 0 {
 			// Dirty hack: retain the character's Y offset
 			e.SpaceComponent.Position.Y = 4

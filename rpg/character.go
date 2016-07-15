@@ -7,10 +7,16 @@ import (
 )
 
 const (
-	characterSpritesheetPath string = "spritesheets/characters-32x32.png"
+	characterSpritesheetPath   string = "spritesheets/characters-32x32.png"
+	characterSpritesheetWidth  int    = 32
+	characterSpritesheetHeight int    = 32
 
-	startingX float32 = 86
-	startingY float32 = 84
+	characterSizeX     float32 = 80
+	characterSizeY     float32 = 80
+	characterOffsetX   float32 = 6
+	characterOffsetY   float32 = 4
+	characterStartingX float32 = characterSizeX + characterOffsetX
+	characterStartingY float32 = characterSizeY + characterOffsetY
 )
 
 // Sprite indices in the spritesheet.
@@ -34,8 +40,7 @@ type Character struct {
 	ControlComponent
 }
 
-// FIXME: Make generic for other characters.
-func NewCharacter() Character {
+func NewCharacter(spriteIndex int) Character {
 	c := Character{
 		BasicEntity: ecs.NewBasic(),
 		ControlComponent: ControlComponent{
@@ -46,17 +51,18 @@ func NewCharacter() Character {
 
 	// Add graphics
 	// FIXME: Move spritesheet logic to a place where it can be shared by enemies.
-	spritesheet := common.NewSpritesheetFromFile(characterSpritesheetPath, 32, 32)
-	characterTexture := spritesheet.Cell(spriteWhiteZombie)
+	spritesheet := common.NewSpritesheetFromFile(characterSpritesheetPath,
+		characterSpritesheetWidth, characterSpritesheetHeight)
+	characterTexture := spritesheet.Cell(spriteIndex)
 	c.RenderComponent = common.RenderComponent{
 		Drawable: characterTexture,
 		Scale:    engo.Point{2, 2},
 	}
 	c.RenderComponent.SetZIndex(1)
 	c.SpaceComponent = common.SpaceComponent{
-		Position: engo.Point{startingX, startingY},
-		Width:    80,
-		Height:   80,
+		Position: engo.Point{characterStartingX, characterStartingY},
+		Width:    characterSizeX,
+		Height:   characterSizeY,
 	}
 
 	return c
