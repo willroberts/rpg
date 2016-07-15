@@ -91,26 +91,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	}
 
 	log.Println("[setup] creating character")
-	character := Character{
-		BasicEntity: ecs.NewBasic(),
-		ControlComponent: ControlComponent{
-			SchemeHoriz: "horizontal",
-			SchemeVert:  "vertical",
-		},
-	}
-	spriteSheet := common.NewSpritesheetFromFile(
-		"spritesheets/characters-32x32.png", 32, 32)
-	skeletonTexture := spriteSheet.Cell(7)
-	character.RenderComponent = common.RenderComponent{
-		Drawable: skeletonTexture,
-		Scale:    engo.Point{2, 2},
-	}
-	character.RenderComponent.SetZIndex(1)
-	character.SpaceComponent = common.SpaceComponent{
-		Position: engo.Point{86, 84},
-		Width:    80,
-		Height:   80,
-	}
+	character := NewCharacter()
 
 	log.Println("[setup] configuring systems")
 	for _, system := range w.Systems() {
