@@ -8,13 +8,7 @@
 // player and enemies/NPCs.
 package rpg
 
-import (
-	"log"
-
-	"engo.io/ecs"
-	"engo.io/engo"
-	"engo.io/engo/common"
-)
+import "engo.io/engo/common"
 
 const (
 	// Graphics
