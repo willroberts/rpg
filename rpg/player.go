@@ -26,7 +26,7 @@ type Player struct {
 }
 
 func NewPlayer(x, y, spriteIndex int) *Player {
-	c := &Player{
+	p := &Player{
 		BasicEntity: ecs.NewBasic(),
 		ControlComponent: ControlComponent{
 			SchemeHoriz: "horizontal",
@@ -36,22 +36,22 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 		X:         x,
 		Y:         y,
 	}
-	playerEntityID = c.BasicEntity.ID()
+	playerEntityID = p.BasicEntity.ID()
 
 	// Configure collision.
-	c.CollisionComponent = common.CollisionComponent{
+	p.CollisionComponent = common.CollisionComponent{
 		Solid: true,
 		Main:  true,
 	}
 
 	// Add graphics.
 	playerTexture := characterSpritesheet.Cell(spriteIndex)
-	c.RenderComponent = common.RenderComponent{
+	p.RenderComponent = common.RenderComponent{
 		Drawable: playerTexture,
 		Scale:    engo.Point{2, 2},
 	}
-	c.RenderComponent.SetZIndex(1)
-	c.SpaceComponent = common.SpaceComponent{
+	p.RenderComponent.SetZIndex(1)
+	p.SpaceComponent = common.SpaceComponent{
 		Position: engo.Point{
 			(characterSizeX * float32(x)) + characterOffsetX,
 			(characterSizeY * float32(y)) + characterOffsetY,
@@ -60,7 +60,7 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 		Height: characterSizeY,
 	}
 
-	return c
+	return p
 }
 
 // TODO: Prevent movement when adjacent grid contains an enemy
@@ -111,3 +111,7 @@ func movePlayer(e controlEntity) {
 	e.SpaceComponent.Position.X = (float32(player.X) * characterSizeX) + characterOffsetX
 	e.SpaceComponent.Position.Y = (float32(player.Y) * characterSizeY) + characterOffsetY
 }
+
+// Satisfy the Character interface.
+func (p *Player) GetX() int { return p.X }
+func (p *Player) GetY() int { return p.Y }

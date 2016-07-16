@@ -40,3 +40,10 @@ const (
 var (
 	characterSpritesheet *common.Spritesheet
 )
+
+// To satisfy this interface, use these methods to return c.X and c.Y.
+// Characters can be referenced in the grid.
+type Character interface {
+	GetX() int
+	GetY() int
+}

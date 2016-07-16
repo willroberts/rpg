@@ -48,3 +48,7 @@ func NewEnemy(x, y, spriteIndex int) Enemy {
 
 	return e
 }
+
+// Satisfy the Character interface.
+func (e *Enemy) GetX() int { return e.X }
+func (e *Enemy) GetY() int { return e.Y }
