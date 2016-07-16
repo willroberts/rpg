@@ -24,6 +24,7 @@ type Player struct {
 	X, Y int
 
 	Hostility string
+	HitPoints int
 }
 
 func NewPlayer(x, y, spriteIndex int) *Player {
@@ -130,3 +131,15 @@ func (p *Player) SetX(x int)            { p.X = x }
 func (p *Player) SetY(y int)            { p.Y = y }
 func (p *Player) GetHostility() string  { return p.Hostility }
 func (p *Player) SetHostility(h string) { p.Hostility = h }
+func (p *Player) GetHitPoints() int     { return p.HitPoints }
+
+func (p *Player) ModifyHitPoints(amount int) {
+	p.HitPoints += amount
+	if p.HitPoints <= 0 {
+		p.Destroy()
+	}
+}
+
+func (p *Player) Destroy() {
+	log.Println("You died!")
+}

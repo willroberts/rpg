@@ -51,4 +51,8 @@ type Character interface {
 
 	GetHostility() string
 	SetHostility(string)
+	GetHitPoints() int
+	ModifyHitPoints(int)
+
+	Destroy()
 }

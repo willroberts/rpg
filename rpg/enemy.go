@@ -2,6 +2,8 @@
 package rpg
 
 import (
+	"log"
+
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
@@ -16,6 +18,7 @@ type Enemy struct {
 	X, Y int
 
 	Hostility string
+	HitPoints int
 }
 
 func NewEnemy(x, y, spriteIndex int) *Enemy {
@@ -60,3 +63,15 @@ func (e *Enemy) SetX(x int)            { e.X = x }
 func (e *Enemy) SetY(y int)            { e.Y = y }
 func (e *Enemy) GetHostility() string  { return e.Hostility }
 func (e *Enemy) SetHostility(h string) { e.Hostility = h }
+func (e *Enemy) GetHitPoints() int     { return e.HitPoints }
+
+func (e *Enemy) ModifyHitPoints(amount int) {
+	e.HitPoints += amount
+	if e.HitPoints <= 0 {
+		e.Destroy()
+	}
+}
+
+func (e *Enemy) Destroy() {
+	log.Println("Enemy was killed!")
+}
