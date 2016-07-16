@@ -1,3 +1,4 @@
+// control.go
 package rpg
 
 import (

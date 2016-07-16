@@ -1,3 +1,4 @@
+// input.go
 package rpg
 
 import (

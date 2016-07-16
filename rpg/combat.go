@@ -1,3 +1,4 @@
+// combat.go
 package rpg
 
 import (

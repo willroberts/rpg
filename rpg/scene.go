@@ -1,3 +1,4 @@
+// scene.go
 package rpg
 
 import (

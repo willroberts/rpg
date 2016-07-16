@@ -1,3 +1,4 @@
+// mapping.go
 package rpg
 
 import (

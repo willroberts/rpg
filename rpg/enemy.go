@@ -1,3 +1,4 @@
+// enemy.go
 package rpg
 
 import (
