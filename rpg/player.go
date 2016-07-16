@@ -21,8 +21,7 @@ type Player struct {
 	common.SpaceComponent
 	ControlComponent
 
-	HitPoints int
-	X, Y      int
+	X, Y int
 }
 
 func NewPlayer(x, y, spriteIndex int) *Player {
@@ -32,9 +31,8 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 			SchemeHoriz: "horizontal",
 			SchemeVert:  "vertical",
 		},
-		HitPoints: 10,
-		X:         x,
-		Y:         y,
+		X: x,
+		Y: y,
 	}
 	playerEntityID = p.BasicEntity.ID()
 

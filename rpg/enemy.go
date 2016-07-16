@@ -13,14 +13,12 @@ type Enemy struct {
 	common.RenderComponent
 	common.SpaceComponent
 
-	HitPoints int
-	X, Y      int
+	X, Y int
 }
 
 func NewEnemy(x, y, spriteIndex int) *Enemy {
 	e := &Enemy{
 		BasicEntity: ecs.NewBasic(),
-		HitPoints:   5,
 		X:           x,
 		Y:           y,
 	}
