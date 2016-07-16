@@ -14,6 +14,8 @@ var (
 	levelHeight float32
 )
 
+// Grid is an array of arrays of cells. Cells may hold one entity pointer, and
+// an array of item pointers.
 type Grid struct {
 	Rows []*GridRow
 
@@ -29,6 +31,10 @@ type GridRow struct {
 
 type GridCell struct {
 	X, Y int
+
+	// FIXME: Rename Character to Player generally, but use Character here
+	Character *Character
+	Items     []*Item
 }
 
 func NewGrid(x, y int) *Grid {
