@@ -46,4 +46,6 @@ var (
 type Character interface {
 	GetX() int
 	GetY() int
+	SetX(int)
+	SetY(int)
 }

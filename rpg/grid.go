@@ -1,6 +1,11 @@
 // grid.go
 package rpg
 
+import (
+	"errors"
+	"log"
+)
+
 var (
 	grid *Grid
 )
@@ -23,7 +28,7 @@ type GridRow struct {
 type GridCell struct {
 	X, Y int
 
-	Character *Character
+	Character Character
 	Items     []*Item
 }
 
@@ -45,16 +50,18 @@ func (g *Grid) GetCell(x, y int) *GridCell {
 
 // Add a character to the grid. Raises an error on failure, as this should not
 // happen during gameplay.
-func (g *Grid) AddCharacter(c *Character, atX, atY int) error {
+func (g *Grid) AddCharacter(c Character, atX, atY int) error {
 	targetCell := g.GetCell(atX, atY)
 	if targetCell.Character != nil {
 		return errors.New("cannot add character to occupied grid cell")
 	}
-	targetCell.Entity = c
+	targetCell.Character = c
+	log.Println("[grid] added a character at:", atX, atY)
+	return nil
 }
 
 // Move an existing character to a new location.
-func (g *Grid) MoveCharacter(c *Character, toX, toY int) {
+func (g *Grid) MoveCharacter(c Character, toX, toY int) {
 	// Check to see if anything is already there.
 	targetCell := g.GetCell(toX, toY)
 	if targetCell.Character != nil {
@@ -66,8 +73,13 @@ func (g *Grid) MoveCharacter(c *Character, toX, toY int) {
 
 	// Clear the Character pointer from the original position
 	startingCell := g.GetCell(c.GetX(), c.GetY())
-	startingCell.Entity = nil
+	startingCell.Character = nil
 
 	// Write the Character pointer to the new position
-	targetCell.Entity = c
+	targetCell.Character = c
+	log.Println("[grid] moved a character from %d,%d to %d,%d\n", c.GetX(), c.GetY(), toX, toY)
+
+	// Update the character's coordinates
+	c.SetX(toX)
+	c.SetY(toY)
 }

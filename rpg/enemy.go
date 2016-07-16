@@ -46,9 +46,14 @@ func NewEnemy(x, y, spriteIndex int) Enemy {
 		Height: characterSizeY,
 	}
 
+	// Add to grid.
+	grid.AddCharacter(e, x, y)
+
 	return e
 }
 
 // Satisfy the Character interface.
-func (e *Enemy) GetX() int { return e.X }
-func (e *Enemy) GetY() int { return e.Y }
+func (e Enemy) GetX() int  { return e.X }
+func (e Enemy) GetY() int  { return e.Y }
+func (e Enemy) SetX(x int) { e.X = x }
+func (e Enemy) SetY(y int) { e.Y = y }

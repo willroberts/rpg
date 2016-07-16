@@ -60,6 +60,9 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 		Height: characterSizeY,
 	}
 
+	// Add to grid.
+	grid.AddCharacter(p, x, y)
+
 	return p
 }
 
@@ -113,5 +116,7 @@ func movePlayer(e controlEntity) {
 }
 
 // Satisfy the Character interface.
-func (p *Player) GetX() int { return p.X }
-func (p *Player) GetY() int { return p.Y }
+func (p Player) GetX() int  { return p.X }
+func (p Player) GetY() int  { return p.Y }
+func (p Player) SetX(x int) { p.X = x }
+func (p Player) SetY(y int) { p.Y = y }
