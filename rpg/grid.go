@@ -42,3 +42,32 @@ func NewGrid(x, y int) *Grid {
 func (g *Grid) GetCell(x, y int) *GridCell {
 	return g.Rows[y].Cells[x]
 }
+
+// Add a character to the grid. Raises an error on failure, as this should not
+// happen during gameplay.
+func (g *Grid) AddCharacter(c *Character, atX, atY int) error {
+	targetCell := g.GetCell(atX, atY)
+	if targetCell.Character != nil {
+		return errors.New("cannot add character to occupied grid cell")
+	}
+	targetCell.Entity = c
+}
+
+// Move an existing character to a new location.
+func (g *Grid) MoveCharacter(c *Character, toX, toY int) {
+	// Check to see if anything is already there.
+	targetCell := g.GetCell(toX, toY)
+	if targetCell.Character != nil {
+		log.Println("Something is already there!")
+		// Is it an enemy?
+		// Create a combat event?
+		return
+	}
+
+	// Clear the Character pointer from the original position
+	startingCell := g.GetCell(c.GetX(), c.GetY())
+	startingCell.Entity = nil
+
+	// Write the Character pointer to the new position
+	targetCell.Entity = c
+}
