@@ -29,7 +29,6 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 
 	w.AddSystem(&common.CollisionSystem{})
 	w.AddSystem(&common.RenderSystem{})
-	w.AddSystem(&CombatSystem{})
 	w.AddSystem(&ControlSystem{})
 
 	log.Println("[setup] loading map")
