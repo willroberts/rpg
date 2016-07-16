@@ -9,25 +9,11 @@ import (
 	"engo.io/engo/common"
 )
 
-var (
-	levelWidth  float32
-	levelHeight float32
-)
-
 type DefaultScene struct{}
-
-type Tile struct {
-	ecs.BasicEntity
-	common.RenderComponent
-	common.SpaceComponent
-}
 
 func (scene *DefaultScene) Preload() {
 	log.Println("[assets] preloading resources")
-	log.Println("[assets] loading maps")
-	if err := engo.Files.Load("maps/stone.tmx"); err != nil {
-		panic(err)
-	}
+	PreloadMapAssets("maps/stone.tmx")
 	log.Println("[assets] loading sprites")
 	if err := engo.Files.Load("spritesheets/characters-32x32.png"); err != nil {
 		panic(err)
@@ -45,52 +31,10 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	w.AddSystem(&CombatSystem{})
 	w.AddSystem(&ControlSystem{})
 
-	resource, err := engo.Files.Resource("maps/stone.tmx")
+	log.Println("[setup] loading map")
+	level, tiles, err := LoadMap("maps/stone.tmx")
 	if err != nil {
 		panic(err)
-	}
-	tmxResource := resource.(common.TMXResource)
-	levelData := tmxResource.Level
-	levelWidth = levelData.Bounds().Max.X
-	levelHeight = levelData.Bounds().Max.Y
-
-	log.Println("[setup] processing tile layers")
-	tileComponents := make([]*Tile, 0)
-	for _, tileLayer := range levelData.TileLayers {
-		for _, tileElement := range tileLayer.Tiles {
-			if tileElement.Image != nil {
-				tile := &Tile{BasicEntity: ecs.NewBasic()}
-				tile.RenderComponent = common.RenderComponent{
-					Drawable: tileElement,
-					Scale:    engo.Point{4, 4},
-				}
-				tile.SpaceComponent = common.SpaceComponent{
-					Position: tileElement.Point,
-					Width:    0,
-					Height:   0,
-				}
-				tileComponents = append(tileComponents, tile)
-			}
-		}
-	}
-
-	log.Println("[setup] processing image layers")
-	for _, imageLayer := range levelData.ImageLayers {
-		for _, imageElement := range imageLayer.Images {
-			if imageElement.Image != nil {
-				tile := &Tile{BasicEntity: ecs.NewBasic()}
-				tile.RenderComponent = common.RenderComponent{
-					Drawable: imageElement,
-					Scale:    engo.Point{4, 4},
-				}
-				tile.SpaceComponent = common.SpaceComponent{
-					Position: imageElement.Point,
-					Width:    0,
-					Height:   0,
-				}
-				tileComponents = append(tileComponents, tile)
-			}
-		}
 	}
 
 	log.Println("[setup] creating character")
@@ -114,13 +58,13 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 
 		case *common.RenderSystem:
 			log.Println("[setup] configuring render system")
+			for _, t := range tiles {
+				sys.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
+			}
 			sys.Add(&character.BasicEntity, &character.RenderComponent,
 				&character.SpaceComponent)
 			for _, e := range enemies {
 				sys.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
-			}
-			for _, v := range tileComponents {
-				sys.Add(&v.BasicEntity, &v.RenderComponent, &v.SpaceComponent)
 			}
 
 		case *ControlSystem:
@@ -131,7 +75,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	}
 	w.AddSystem(&common.EntityScroller{
 		SpaceComponent: &character.SpaceComponent,
-		TrackingBounds: levelData.Bounds(),
+		TrackingBounds: level.Bounds(),
 	})
 
 	log.Println("[input] binding controls")
