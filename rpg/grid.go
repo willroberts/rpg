@@ -65,8 +65,11 @@ func (g *Grid) MoveCharacter(c Character, toX, toY int) {
 	targetCell := g.GetCell(toX, toY)
 	if targetCell.Character != nil {
 		log.Println("Something is already there!")
-		// Is it an enemy?
-		// Create a combat event?
+		if targetCell.Character.GetHostility() == "hostile" {
+			log.Println("And it's hostile! Oh no!")
+			// Create a combat event
+			InitiateCombat(c, targetCell.Character)
+		}
 		return
 	}
 
