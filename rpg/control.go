@@ -51,6 +51,6 @@ func (c *ControlSystem) Update(dt float32) {
 	for _, e := range c.entities {
 		heightLimit = levelHeight - e.SpaceComponent.Height
 		widthLimit = levelWidth - e.SpaceComponent.Width
-		moveCharacter(e)
+		movePlayer(e)
 	}
 }

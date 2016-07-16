@@ -23,7 +23,6 @@ func (c *CombatSystem) New(*ecs.World) {
 			engo.Mailbox.Dispatch(combatMessage)
 
 			// TODO: Cancel movement.
-			// characterSpace := msg.Entity.SpaceComponent
 		}
 	}
 	engo.Mailbox.Listen("CollisionMessage", collisionHandler)
@@ -31,11 +30,11 @@ func (c *CombatSystem) New(*ecs.World) {
 	combatHandler := func(message engo.Message) {
 		if message.Type() == "CombatMessage" {
 			msg, _ := message.(CombatMessage)
-			if msg.Initiator == characterEntityID {
-				log.Println("[combat] the character attacked!")
+			if msg.Initiator == playerEntityID {
+				log.Println("You attacked!")
 			}
-			if msg.Target == characterEntityID {
-				log.Println("[combat] the character was hit!")
+			if msg.Target == playerEntityID {
+				log.Println("You were hit!")
 				// TODO: Deduct hit points.
 			}
 		}

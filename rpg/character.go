@@ -8,6 +8,15 @@ import (
 	"engo.io/engo/common"
 )
 
+// Terminology:
+// Character: Anything which can move, interact, attack, etc.
+// Player: The player-controlled character
+// NPC: Non-hostile characters like shopkeepers
+// Enemy: Hostile NPCs
+
+// Variables and constants named "character" should be applicable to both the
+// player and enemies/NPCs.
+
 const (
 	// Graphics
 	characterSpritesheetPath   string = "spritesheets/characters-32x32.png"
@@ -36,12 +45,12 @@ const (
 )
 
 var (
-	character            *Character
-	characterEntityID    uint64
+	player               *Player
+	playerEntityID       uint64
 	characterSpritesheet *common.Spritesheet
 )
 
-type Character struct {
+type Player struct {
 	ecs.BasicEntity
 	common.CollisionComponent
 	common.RenderComponent
@@ -52,8 +61,8 @@ type Character struct {
 	X, Y      int
 }
 
-func NewCharacter(x, y, spriteIndex int) *Character {
-	c := &Character{
+func NewPlayer(x, y, spriteIndex int) *Player {
+	c := &Player{
 		BasicEntity: ecs.NewBasic(),
 		ControlComponent: ControlComponent{
 			SchemeHoriz: "horizontal",
@@ -63,7 +72,7 @@ func NewCharacter(x, y, spriteIndex int) *Character {
 		X:         x,
 		Y:         y,
 	}
-	characterEntityID = c.BasicEntity.ID()
+	playerEntityID = c.BasicEntity.ID()
 
 	// Configure collision.
 	c.CollisionComponent = common.CollisionComponent{
@@ -72,9 +81,9 @@ func NewCharacter(x, y, spriteIndex int) *Character {
 	}
 
 	// Add graphics.
-	characterTexture := characterSpritesheet.Cell(spriteIndex)
+	playerTexture := characterSpritesheet.Cell(spriteIndex)
 	c.RenderComponent = common.RenderComponent{
-		Drawable: characterTexture,
+		Drawable: playerTexture,
 		Scale:    engo.Point{2, 2},
 	}
 	c.RenderComponent.SetZIndex(1)
@@ -91,40 +100,40 @@ func NewCharacter(x, y, spriteIndex int) *Character {
 }
 
 // TODO: Prevent movement when adjacent grid contains an enemy
-func moveCharacter(e controlEntity) {
+func movePlayer(e controlEntity) {
 	// Handle keypresses.
 	var moveDirection string
 	if engo.Input.Button("moveleft").JustPressed() {
 		moveDirection = "left"
-		if character.X == grid.MinX {
+		if player.X == grid.MinX {
 			log.Println("You can't go that way!")
 			return
 		} else {
-			character.X -= 1
+			player.X -= 1
 		}
 	} else if engo.Input.Button("moveright").JustPressed() {
 		moveDirection = "right"
-		if character.X == grid.MaxX {
+		if player.X == grid.MaxX {
 			log.Println("You can't go that way!")
 			return
 		} else {
-			character.X += 1
+			player.X += 1
 		}
 	} else if engo.Input.Button("moveup").JustPressed() {
 		moveDirection = "up"
-		if character.Y == grid.MinY {
+		if player.Y == grid.MinY {
 			log.Println("You can't go that way!")
 			return
 		} else {
-			character.Y -= 1
+			player.Y -= 1
 		}
 	} else if engo.Input.Button("movedown").JustPressed() {
 		moveDirection = "down"
-		if character.Y == grid.MaxY {
+		if player.Y == grid.MaxY {
 			log.Println("You can't go that way!")
 			return
 		} else {
-			character.Y += 1
+			player.Y += 1
 		}
 	}
 
@@ -134,7 +143,7 @@ func moveCharacter(e controlEntity) {
 		return
 	}
 
-	// Update the character's space component for redrawing if necessary.
-	e.SpaceComponent.Position.X = (float32(character.X) * characterSizeX) + characterOffsetX
-	e.SpaceComponent.Position.Y = (float32(character.Y) * characterSizeY) + characterOffsetY
+	// Update the player's space component for redrawing if necessary.
+	e.SpaceComponent.Position.X = (float32(player.X) * characterSizeX) + characterOffsetX
+	e.SpaceComponent.Position.Y = (float32(player.Y) * characterSizeY) + characterOffsetY
 }

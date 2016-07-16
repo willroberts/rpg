@@ -40,8 +40,8 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	log.Println("[setup] processing grid")
 	grid = NewGrid(level.Width(), level.Height())
 
-	log.Println("[setup] creating character")
-	character = NewCharacter(4, 2, spriteWhiteZombie)
+	log.Println("[setup] creating player")
+	player = NewPlayer(4, 2, spriteWhiteZombie)
 
 	log.Println("[setup] creating enemies")
 	enemies := []Enemy{
@@ -53,8 +53,8 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 		switch sys := system.(type) {
 		case *common.CollisionSystem:
 			log.Println("[setup] configuring collision system")
-			sys.Add(&character.BasicEntity, &character.CollisionComponent,
-				&character.SpaceComponent)
+			sys.Add(&player.BasicEntity, &player.CollisionComponent,
+				&player.SpaceComponent)
 			for _, e := range enemies {
 				sys.Add(&e.BasicEntity, &e.CollisionComponent, &e.SpaceComponent)
 			}
@@ -64,20 +64,20 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 			for _, t := range tiles {
 				sys.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
 			}
-			sys.Add(&character.BasicEntity, &character.RenderComponent,
-				&character.SpaceComponent)
+			sys.Add(&player.BasicEntity, &player.RenderComponent,
+				&player.SpaceComponent)
 			for _, e := range enemies {
 				sys.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
 			}
 
 		case *ControlSystem:
 			log.Println("[setup] configuring control system")
-			sys.Add(&character.BasicEntity, &character.ControlComponent,
-				&character.SpaceComponent)
+			sys.Add(&player.BasicEntity, &player.ControlComponent,
+				&player.SpaceComponent)
 		}
 	}
 	w.AddSystem(&common.EntityScroller{
-		SpaceComponent: &character.SpaceComponent,
+		SpaceComponent: &player.SpaceComponent,
 		TrackingBounds: level.Bounds(),
 	})
 

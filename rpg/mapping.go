@@ -33,7 +33,7 @@ type GridCell struct {
 	X, Y int
 
 	// FIXME: Rename Character to Player generally, but use Character here
-	Character *Character
+	Character *Player
 	Items     []*Item
 }
 
