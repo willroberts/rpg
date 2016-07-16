@@ -90,9 +90,7 @@ func NewCharacter(x, y, spriteIndex int) *Character {
 	return c
 }
 
-// TODO: Move in grid units
 // TODO: Prevent movement when adjacent grid contains an enemy
-// TODO: Prevent movement when adjacent grid is out of bounds
 func moveCharacter(e controlEntity) {
 	// Handle keypresses.
 	var moveDirection string
