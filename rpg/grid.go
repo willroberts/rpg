@@ -1,14 +1,6 @@
 // grid.go
 package rpg
 
-import (
-	"log"
-
-	"engo.io/ecs"
-	"engo.io/engo"
-	"engo.io/engo/common"
-)
-
 var (
 	grid *Grid
 )
