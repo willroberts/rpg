@@ -22,6 +22,8 @@ type Player struct {
 	ControlComponent
 
 	X, Y int
+
+	Hostility string
 }
 
 func NewPlayer(x, y, spriteIndex int) *Player {
@@ -31,8 +33,9 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 			SchemeHoriz: "horizontal",
 			SchemeVert:  "vertical",
 		},
-		X: x,
-		Y: y,
+		X:         x,
+		Y:         y,
+		Hostility: "neutral",
 	}
 	playerEntityID = p.BasicEntity.ID()
 
@@ -121,7 +124,9 @@ func movePlayer(e controlEntity) {
 }
 
 // Satisfy the Character interface.
-func (p *Player) GetX() int  { return p.X }
-func (p *Player) GetY() int  { return p.Y }
-func (p *Player) SetX(x int) { p.X = x }
-func (p *Player) SetY(y int) { p.Y = y }
+func (p *Player) GetX() int             { return p.X }
+func (p *Player) GetY() int             { return p.Y }
+func (p *Player) SetX(x int)            { p.X = x }
+func (p *Player) SetY(y int)            { p.Y = y }
+func (p *Player) GetHostility() string  { return p.Hostility }
+func (p *Player) SetHostility(h string) { p.Hostility = h }

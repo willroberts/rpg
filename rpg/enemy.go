@@ -14,6 +14,8 @@ type Enemy struct {
 	common.SpaceComponent
 
 	X, Y int
+
+	Hostility string
 }
 
 func NewEnemy(x, y, spriteIndex int) *Enemy {
@@ -21,6 +23,7 @@ func NewEnemy(x, y, spriteIndex int) *Enemy {
 		BasicEntity: ecs.NewBasic(),
 		X:           x,
 		Y:           y,
+		Hostility:   "hostile",
 	}
 
 	// Configure collision.
@@ -51,7 +54,9 @@ func NewEnemy(x, y, spriteIndex int) *Enemy {
 }
 
 // Satisfy the Character interface.
-func (e *Enemy) GetX() int  { return e.X }
-func (e *Enemy) GetY() int  { return e.Y }
-func (e *Enemy) SetX(x int) { e.X = x }
-func (e *Enemy) SetY(y int) { e.Y = y }
+func (e *Enemy) GetX() int             { return e.X }
+func (e *Enemy) GetY() int             { return e.Y }
+func (e *Enemy) SetX(x int)            { e.X = x }
+func (e *Enemy) SetY(y int)            { e.Y = y }
+func (e *Enemy) GetHostility() string  { return e.Hostility }
+func (e *Enemy) SetHostility(h string) { e.Hostility = h }

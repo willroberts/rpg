@@ -48,4 +48,7 @@ type Character interface {
 	GetY() int
 	SetX(int)
 	SetY(int)
+
+	GetHostility() string
+	SetHostility(string)
 }
