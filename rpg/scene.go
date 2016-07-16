@@ -41,7 +41,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	grid = NewGrid(level.Width(), level.Height())
 
 	log.Println("[setup] creating character")
-	character := NewCharacter(4, 2, spriteWhiteZombie)
+	character = NewCharacter(4, 2, spriteWhiteZombie)
 
 	log.Println("[setup] creating enemies")
 	enemies := []Enemy{

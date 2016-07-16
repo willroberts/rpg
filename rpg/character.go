@@ -1,6 +1,8 @@
 package rpg
 
 import (
+	"log"
+
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
@@ -34,8 +36,9 @@ const (
 )
 
 var (
-	characterSpritesheet *common.Spritesheet
+	character            *Character
 	characterEntityID    uint64
+	characterSpritesheet *common.Spritesheet
 )
 
 type Character struct {
@@ -49,8 +52,8 @@ type Character struct {
 	X, Y      int
 }
 
-func NewCharacter(x, y, spriteIndex int) Character {
-	c := Character{
+func NewCharacter(x, y, spriteIndex int) *Character {
+	c := &Character{
 		BasicEntity: ecs.NewBasic(),
 		ControlComponent: ControlComponent{
 			SchemeHoriz: "horizontal",
@@ -87,30 +90,53 @@ func NewCharacter(x, y, spriteIndex int) Character {
 	return c
 }
 
+// TODO: Move in grid units
+// TODO: Prevent movement when adjacent grid contains an enemy
+// TODO: Prevent movement when adjacent grid is out of bounds
 func moveCharacter(e controlEntity) {
-	// Have the arrow keys move the character one tile at a time.
+	// Handle keypresses.
+	var moveDirection string
 	if engo.Input.Button("moveleft").JustPressed() {
-		e.SpaceComponent.Position.X -= characterSizeX
-	}
-	if engo.Input.Button("moveright").JustPressed() {
-		e.SpaceComponent.Position.X += characterSizeX
-	}
-	if engo.Input.Button("moveup").JustPressed() {
-		e.SpaceComponent.Position.Y -= characterSizeY
-	}
-	if engo.Input.Button("movedown").JustPressed() {
-		e.SpaceComponent.Position.Y += characterSizeY
+		moveDirection = "left"
+		if character.X == grid.MinX {
+			log.Println("You can't go that way!")
+			return
+		} else {
+			character.X -= 1
+		}
+	} else if engo.Input.Button("moveright").JustPressed() {
+		moveDirection = "right"
+		if character.X == grid.MaxX {
+			log.Println("You can't go that way!")
+			return
+		} else {
+			character.X += 1
+		}
+	} else if engo.Input.Button("moveup").JustPressed() {
+		moveDirection = "up"
+		if character.Y == grid.MinY {
+			log.Println("You can't go that way!")
+			return
+		} else {
+			character.Y -= 1
+		}
+	} else if engo.Input.Button("movedown").JustPressed() {
+		moveDirection = "down"
+		if character.Y == grid.MaxY {
+			log.Println("You can't go that way!")
+			return
+		} else {
+			character.Y += 1
+		}
 	}
 
-	// Prevent the character from leaving the map.
-	if e.SpaceComponent.Position.X < 0 {
-		e.SpaceComponent.Position.X = characterOffsetX
-	} else if e.SpaceComponent.Position.X > widthLimit {
-		e.SpaceComponent.Position.X = widthLimit + characterOffsetX
+	// Don't process empty keypresses.
+	// FIXME: Move keypress detection back to the scene, before this is called.
+	if moveDirection == "" {
+		return
 	}
-	if e.SpaceComponent.Position.Y < 0 {
-		e.SpaceComponent.Position.Y = characterOffsetY
-	} else if e.SpaceComponent.Position.Y > heightLimit {
-		e.SpaceComponent.Position.Y = heightLimit + characterOffsetY
-	}
+
+	// Update the character's space component for redrawing if necessary.
+	e.SpaceComponent.Position.X = (float32(character.X) * characterSizeX) + characterOffsetX
+	e.SpaceComponent.Position.Y = (float32(character.Y) * characterSizeY) + characterOffsetY
 }

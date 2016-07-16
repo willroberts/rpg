@@ -40,7 +40,7 @@ func NewGrid(x, y int) *Grid {
 		}
 		rows[i] = &GridRow{Cells: cells}
 	}
-	return &Grid{Rows: rows, MinX: 0, MaxX: x, MinY: 0, MaxY: y}
+	return &Grid{Rows: rows, MinX: 0, MaxX: x - 1, MinY: 0, MaxY: y - 1}
 }
 
 func (g *Grid) GetCell(x, y int) *GridCell {
