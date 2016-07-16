@@ -9,9 +9,43 @@ import (
 )
 
 var (
+	grid        *Grid
 	levelWidth  float32
 	levelHeight float32
 )
+
+type Grid struct {
+	Rows []*GridRow
+
+	MinX int
+	MaxX int
+	MinY int
+	MaxY int
+}
+
+type GridRow struct {
+	Cells []*GridCell
+}
+
+type GridCell struct {
+	X, Y int
+}
+
+func NewGrid(x, y int) *Grid {
+	rows := make([]*GridRow, x)
+	for i := 0; i < x; i++ {
+		cells := make([]*GridCell, y)
+		for j := 0; j < y; j++ {
+			cells[j] = &GridCell{X: j, Y: i}
+		}
+		rows[i] = &GridRow{Cells: cells}
+	}
+	return &Grid{Rows: rows, MinX: 0, MaxX: x, MinY: 0, MaxY: y}
+}
+
+func (g *Grid) GetCell(x, y int) *GridCell {
+	return g.Rows[y].Cells[x]
+}
 
 type Tile struct {
 	ecs.BasicEntity

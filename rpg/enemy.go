@@ -13,12 +13,15 @@ type Enemy struct {
 	common.SpaceComponent
 
 	HitPoints int
+	X, Y      int
 }
 
-func NewEnemy(spriteIndex int, startingX, startingY float32) Enemy {
+func NewEnemy(x, y, spriteIndex int) Enemy {
 	e := Enemy{
 		BasicEntity: ecs.NewBasic(),
 		HitPoints:   5,
+		X:           x,
+		Y:           y,
 	}
 
 	// Configure collision.
@@ -35,8 +38,8 @@ func NewEnemy(spriteIndex int, startingX, startingY float32) Enemy {
 	e.RenderComponent.SetZIndex(1)
 	e.SpaceComponent = common.SpaceComponent{
 		Position: engo.Point{
-			startingX + characterOffsetX,
-			startingY + characterOffsetY,
+			(characterSizeX * float32(x)) + characterOffsetX,
+			(characterSizeY * float32(y)) + characterOffsetY,
 		},
 		Width:  characterSizeX,
 		Height: characterSizeY,

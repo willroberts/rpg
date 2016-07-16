@@ -7,16 +7,16 @@ import (
 )
 
 const (
+	// Graphics
 	characterSpritesheetPath   string = "spritesheets/characters-32x32.png"
 	characterSpritesheetWidth  int    = 32
 	characterSpritesheetHeight int    = 32
 
-	characterSizeX     float32 = 80
-	characterSizeY     float32 = 80
-	characterOffsetX   float32 = 8
-	characterOffsetY   float32 = 4
-	characterStartingX float32 = characterSizeX + characterOffsetX
-	characterStartingY float32 = characterSizeY + characterOffsetY
+	// Graphics coordinates
+	characterSizeX   float32 = 80
+	characterSizeY   float32 = 80
+	characterOffsetX float32 = 8
+	characterOffsetY float32 = 4
 )
 
 // Sprite indices in the spritesheet.
@@ -46,9 +46,10 @@ type Character struct {
 	ControlComponent
 
 	HitPoints int
+	X, Y      int
 }
 
-func NewCharacter(spriteIndex int) Character {
+func NewCharacter(x, y, spriteIndex int) Character {
 	c := Character{
 		BasicEntity: ecs.NewBasic(),
 		ControlComponent: ControlComponent{
@@ -56,6 +57,8 @@ func NewCharacter(spriteIndex int) Character {
 			SchemeVert:  "vertical",
 		},
 		HitPoints: 10,
+		X:         x,
+		Y:         y,
 	}
 	characterEntityID = c.BasicEntity.ID()
 
@@ -73,9 +76,12 @@ func NewCharacter(spriteIndex int) Character {
 	}
 	c.RenderComponent.SetZIndex(1)
 	c.SpaceComponent = common.SpaceComponent{
-		Position: engo.Point{characterStartingX, characterStartingY},
-		Width:    characterSizeX,
-		Height:   characterSizeY,
+		Position: engo.Point{
+			(characterSizeX * float32(x)) + characterOffsetX,
+			(characterSizeY * float32(y)) + characterOffsetY,
+		},
+		Width:  characterSizeX,
+		Height: characterSizeY,
 	}
 
 	return c

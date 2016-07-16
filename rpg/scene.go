@@ -37,12 +37,15 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 		panic(err)
 	}
 
+	log.Println("[setup] processing grid")
+	grid = NewGrid(level.Width(), level.Height())
+
 	log.Println("[setup] creating character")
-	character := NewCharacter(spriteWhiteZombie)
+	character := NewCharacter(4, 2, spriteWhiteZombie)
 
 	log.Println("[setup] creating enemies")
 	enemies := []Enemy{
-		NewEnemy(spriteSkeleton, 240, 240),
+		NewEnemy(5, 6, spriteSkeleton),
 	}
 
 	log.Println("[setup] configuring systems")
