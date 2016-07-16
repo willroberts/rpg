@@ -17,8 +17,8 @@ type Enemy struct {
 	X, Y      int
 }
 
-func NewEnemy(x, y, spriteIndex int) Enemy {
-	e := Enemy{
+func NewEnemy(x, y, spriteIndex int) *Enemy {
+	e := &Enemy{
 		BasicEntity: ecs.NewBasic(),
 		HitPoints:   5,
 		X:           x,
@@ -53,7 +53,7 @@ func NewEnemy(x, y, spriteIndex int) Enemy {
 }
 
 // Satisfy the Character interface.
-func (e Enemy) GetX() int  { return e.X }
-func (e Enemy) GetY() int  { return e.Y }
-func (e Enemy) SetX(x int) { e.X = x }
-func (e Enemy) SetY(y int) { e.Y = y }
+func (e *Enemy) GetX() int  { return e.X }
+func (e *Enemy) GetY() int  { return e.Y }
+func (e *Enemy) SetX(x int) { e.X = x }
+func (e *Enemy) SetY(y int) { e.Y = y }

@@ -56,7 +56,6 @@ func (g *Grid) AddCharacter(c Character, atX, atY int) error {
 		return errors.New("cannot add character to occupied grid cell")
 	}
 	targetCell.Character = c
-	log.Println("[grid] added a character at:", atX, atY)
 	return nil
 }
 
@@ -77,7 +76,6 @@ func (g *Grid) MoveCharacter(c Character, toX, toY int) {
 
 	// Write the Character pointer to the new position
 	targetCell.Character = c
-	log.Println("[grid] moved a character from %d,%d to %d,%d\n", c.GetX(), c.GetY(), toX, toY)
 
 	// Update the character's coordinates
 	c.SetX(toX)

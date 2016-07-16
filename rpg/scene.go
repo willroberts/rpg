@@ -45,7 +45,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	player = NewPlayer(4, 2, spriteWhiteZombie)
 
 	log.Println("[setup] creating enemies")
-	enemies := []Enemy{
+	enemies := []*Enemy{
 		NewEnemy(5, 6, spriteSkeleton),
 	}
 

@@ -72,36 +72,12 @@ func movePlayer(e controlEntity) {
 	var moveDirection string
 	if engo.Input.Button("moveleft").JustPressed() {
 		moveDirection = "left"
-		if player.X == grid.MinX {
-			log.Println("You can't go that way!")
-			return
-		} else {
-			player.X -= 1
-		}
 	} else if engo.Input.Button("moveright").JustPressed() {
 		moveDirection = "right"
-		if player.X == grid.MaxX {
-			log.Println("You can't go that way!")
-			return
-		} else {
-			player.X += 1
-		}
 	} else if engo.Input.Button("moveup").JustPressed() {
 		moveDirection = "up"
-		if player.Y == grid.MinY {
-			log.Println("You can't go that way!")
-			return
-		} else {
-			player.Y -= 1
-		}
 	} else if engo.Input.Button("movedown").JustPressed() {
 		moveDirection = "down"
-		if player.Y == grid.MaxY {
-			log.Println("You can't go that way!")
-			return
-		} else {
-			player.Y += 1
-		}
 	}
 
 	// Don't process empty keypresses.
@@ -110,13 +86,44 @@ func movePlayer(e controlEntity) {
 		return
 	}
 
+	switch moveDirection {
+	case "left":
+		if player.GetX() == grid.MinX {
+			log.Println("You can't go that way!")
+			return
+		} else {
+			grid.MoveCharacter(player, player.GetX()-1, player.GetY())
+		}
+	case "right":
+		if player.GetX() == grid.MaxX {
+			log.Println("You can't go that way!")
+			return
+		} else {
+			grid.MoveCharacter(player, player.GetX()+1, player.GetY())
+		}
+	case "up":
+		if player.GetY() == grid.MinY {
+			log.Println("You can't go that way!")
+			return
+		} else {
+			grid.MoveCharacter(player, player.GetX(), player.GetY()-1)
+		}
+	case "down":
+		if player.GetY() == grid.MaxY {
+			log.Println("You can't go that way!")
+			return
+		} else {
+			grid.MoveCharacter(player, player.GetX(), player.GetY()+1)
+		}
+	}
+
 	// Update the player's space component for redrawing if necessary.
-	e.SpaceComponent.Position.X = (float32(player.X) * characterSizeX) + characterOffsetX
-	e.SpaceComponent.Position.Y = (float32(player.Y) * characterSizeY) + characterOffsetY
+	e.SpaceComponent.Position.X = (float32(player.GetX()) * characterSizeX) + characterOffsetX
+	e.SpaceComponent.Position.Y = (float32(player.GetY()) * characterSizeY) + characterOffsetY
 }
 
 // Satisfy the Character interface.
-func (p Player) GetX() int  { return p.X }
-func (p Player) GetY() int  { return p.Y }
-func (p Player) SetX(x int) { p.X = x }
-func (p Player) SetY(y int) { p.Y = y }
+func (p *Player) GetX() int  { return p.X }
+func (p *Player) GetY() int  { return p.Y }
+func (p *Player) SetX(x int) { p.X = x }
+func (p *Player) SetY(y int) { p.Y = y }
