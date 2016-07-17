@@ -35,7 +35,7 @@ type Player struct {
 	common.SpaceComponent
 	ControlComponent
 
-	Type      string
+	Name      string
 	Hostility string
 	HitPoints int
 
@@ -73,12 +73,8 @@ func (p *Player) GetHitPoints() int { return p.HitPoints }
 // FIXME: See if we can remove this from the Character interface.
 func (p *Player) GetHostility() string { return p.Hostility }
 
-// GetType returns the name of the Player type. It's included here just to
-// satisfy the Character interface. It is also used temporarily to provide a name
-// for the combat log. Eventually we'll want to use the Player's chosen name in
-// the combat log.
-// FIXME: See if we can remove this from the Character interface.
-func (p *Player) GetType() string { return p.Type }
+// GetName returns the name of the Player.
+func (p *Player) GetName() string { return p.Name }
 
 // GetX returns the Player's X coordinate.
 func (p *Player) GetX() int { return p.X }
@@ -104,7 +100,7 @@ func (p *Player) SetX(x int) { p.X = x }
 func (p *Player) SetY(y int) { p.Y = y }
 
 // newPlayer creates and returns a Player.
-func newPlayer(x, y, spriteIndex int) *Player {
+func newPlayer(name string, spriteIndex, x, y int) *Player {
 	p := &Player{
 		BasicEntity: ecs.NewBasic(),
 		ControlComponent: ControlComponent{
@@ -113,7 +109,7 @@ func newPlayer(x, y, spriteIndex int) *Player {
 		},
 		X:         x,
 		Y:         y,
-		Type:      "player",
+		Name:      name,
 		Hostility: "neutral",
 		HitPoints: 10,
 	}

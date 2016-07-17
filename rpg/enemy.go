@@ -42,7 +42,7 @@ type Enemy struct {
 	common.RenderComponent
 	common.SpaceComponent
 
-	Type      string
+	Name      string
 	Hostility string
 	HitPoints int
 
@@ -71,9 +71,9 @@ func (e *Enemy) GetHitPoints() int { return e.HitPoints }
 // Character does not.
 func (e *Enemy) GetHostility() string { return e.Hostility }
 
-// GetType returns the name of this Enemy type, which is used by newEnemy to
+// GetName returns the name of this Enemy type, which is used by newEnemy to
 // retrieve its EnemyAttributes.
-func (e *Enemy) GetType() string { return e.Type }
+func (e *Enemy) GetName() string { return e.Name }
 
 // GetX returns the Enemy's X coordinate.
 func (e *Enemy) GetX() int { return e.X }
@@ -112,12 +112,12 @@ func loadEnemyTypes() error {
 }
 
 // newEnemy creates and returns an Enemy.
-func newEnemy(enemyType string, spriteIndex, x, y int) *Enemy {
+func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 	e := &Enemy{
 		BasicEntity: ecs.NewBasic(),
-		Type:        enemyType,
+		Name:        name,
 		Hostility:   "hostile",
-		HitPoints:   EnemyTypes[enemyType].HitPoints,
+		HitPoints:   EnemyTypes[name].HitPoints,
 		X:           x,
 		Y:           y,
 	}

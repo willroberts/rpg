@@ -82,7 +82,7 @@ type Character interface {
 	SetX(int)
 	SetY(int)
 
-	GetType() string
+	GetName() string
 	GetHostility() string
 	SetHostility(string)
 

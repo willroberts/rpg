@@ -78,19 +78,19 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	log.Println("[setup] processing grid")
 	GameGrid = newGrid(level.Width(), level.Height())
 	log.Println("[setup] creating player")
-	player = newPlayer(1, 1, spriteWhiteZombie)
+	player = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
 	log.Println("[setup] creating enemies")
 	if err = loadEnemyTypes(); err != nil {
 		panic(err)
 	}
 	enemies := []*Enemy{
-		newEnemy("skeleton", spriteSkeleton, 2, 7),
-		newEnemy("skeleton", spriteSkeleton, 8, 6),
-		newEnemy("skeleton", spriteSkeleton, 5, 5),
-		newEnemy("goblin", spriteGoblin, 4, 11),
-		newEnemy("goblin", spriteGoblin, 7, 12),
-		newEnemy("bear", spriteBear, 6, 17),
-		newEnemy("demon", spriteDemon, 10, 22),
+		newEnemy("Skeleton", spriteSkeleton, 2, 7),
+		newEnemy("Skeleton", spriteSkeleton, 8, 6),
+		newEnemy("Skeleton", spriteSkeleton, 5, 5),
+		newEnemy("Goblin", spriteGoblin, 4, 11),
+		newEnemy("Goblin", spriteGoblin, 7, 12),
+		newEnemy("Bear", spriteBear, 6, 17),
+		newEnemy("Demon", spriteDemon, 10, 22),
 	}
 	log.Println("[setup] configuring systems")
 	for _, sys := range w.Systems() {

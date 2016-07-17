@@ -1,17 +1,17 @@
 {
-	"skeleton": {
+	"Skeleton": {
 		"damage": 1,
 		"hitpoints": 2
 	},
-	"goblin": {
+	"Goblin": {
 		"damage": 2,
 		"hitpoints": 2
 	},
-	"bear": {
+	"Bear": {
 		"damage": 4,
 		"hitpoints": 4
 	},
-	"demon": {
+	"Demon": {
 		"damage": 4,
 		"hitpoints": 8
 	}

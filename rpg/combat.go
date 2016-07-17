@@ -25,19 +25,19 @@ import "log"
 // TODO: Move logs to on-screen combat log.
 // TODO: Capitalize the first letter in the logs.
 func initiateCombat(c1, c2 Character) {
-	log.Printf("%s hits %s for %d damage!\n", c1.GetType(), c2.GetType(),
+	log.Printf("%s hits %s for %d damage!\n", c1.GetName(), c2.GetName(),
 		c2.GetDamage())
 	c1.ModifyHitPoints(-c2.GetDamage())
-	log.Printf("%s hits %s for %d damage!\n", c2.GetType(), c1.GetType(),
+	log.Printf("%s hits %s for %d damage!\n", c2.GetName(), c1.GetName(),
 		c1.GetDamage())
 	c2.ModifyHitPoints(-c1.GetDamage())
 	GameHUD.UpdateHealth()
 	if c1.GetHitPoints() <= 0 {
-		log.Printf("%s was destroyed!\n", c1.GetType())
+		log.Printf("%s was destroyed!\n", c1.GetName())
 		c1.Destroy()
 	}
 	if c2.GetHitPoints() <= 0 {
-		log.Printf("%s was destroyed!\n", c2.GetType())
+		log.Printf("%s was destroyed!\n", c2.GetName())
 		c2.Destroy()
 	}
 }
