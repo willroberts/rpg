@@ -120,6 +120,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	if err != nil {
 		panic(err)
 	}
+	newCombatLog()
 	log.Println("[setup] binding controls")
 	bindControls()
 }

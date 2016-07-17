@@ -27,10 +27,39 @@ import (
 	"engo.io/engo/common"
 )
 
+const (
+	CombatLogPosX int = 16  // 16px from the left
+	CombatLogPosY int = 548 // 16px from the bottom
+)
+
 var (
 	GameFont *common.Font
 	GameHUD  *HUD
 )
+
+// CombatLog stores a rolling set of five combat messages to be displayed on the
+// screen.
+type CombatLog struct {
+	Log [5]*CombatMessage
+}
+
+// Update rotates the CombatLog and then updates the last entry.
+// TODO: Redraw this on the screen.
+func (l *CombatLog) Update(m string) {
+	for i := 4; i > 0; i-- {
+		l.Log[i-1] = l.Log[i]
+	}
+	l.Log[4] = newCombatMessage(m, 96)
+}
+
+// CombatMessage is a log of an event from the combat system.
+type CombatMessage struct {
+	ecs.BasicEntity
+	common.RenderComponent
+	common.SpaceComponent
+
+	Text string
+}
 
 // The HUD contains all on-screen text, controls, and buttons.
 type HUD struct {
@@ -54,16 +83,57 @@ func (h *HUD) UpdateHealth() {
 	}
 }
 
+// newCombatLog creates a rotating log window on the screen.
+func newCombatLog() error {
+	if GameFont == nil {
+		GameFont = &common.Font{
+			URL:  "fonts/Roboto-Regular.ttf",
+			BG:   color.Black,
+			FG:   color.White,
+			Size: 32,
+		}
+		if err := GameFont.CreatePreloaded(); err != nil {
+			return err
+		}
+	}
+	l := &CombatLog{}
+	offset := 0
+	for i := 0; i < 5; i++ {
+		l.Log[i] = newCombatMessage(fmt.Sprintf("message %d", i), offset)
+		offset += 32
+	}
+	return nil
+}
+
+func newCombatMessage(msg string, offset int) *CombatMessage {
+	m := &CombatMessage{Text: msg}
+	m.RenderComponent.Drawable = common.Text{Font: GameFont, Text: m.Text}
+	m.SetShader(common.HUDShader)
+	m.SpaceComponent = common.SpaceComponent{Position: engo.Point{
+		float32(CombatLogPosX),
+		float32(CombatLogPosY + offset),
+	}}
+	for _, sys := range GameWorld.Systems() {
+		switch s := sys.(type) {
+		case *common.RenderSystem:
+			s.Add(&m.BasicEntity, &m.RenderComponent, &m.SpaceComponent)
+		}
+	}
+	return m
+}
+
 // newHUD configures and returns a HUD system.
 func newHUD() (*HUD, error) {
-	GameFont = &common.Font{
-		URL:  "fonts/Roboto-Regular.ttf",
-		BG:   color.Black,
-		FG:   color.White,
-		Size: 48,
-	}
-	if err := GameFont.CreatePreloaded(); err != nil {
-		return nil, err
+	if GameFont == nil {
+		GameFont = &common.Font{
+			URL:  "fonts/Roboto-Regular.ttf",
+			BG:   color.Black,
+			FG:   color.White,
+			Size: 32,
+		}
+		if err := GameFont.CreatePreloaded(); err != nil {
+			return nil, err
+		}
 	}
 	h := &HUD{BasicEntity: ecs.NewBasic()}
 	h.RenderComponent.Drawable = common.Text{
