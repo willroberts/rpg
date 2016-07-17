@@ -133,6 +133,7 @@ func (p *Player) SetY(y int)            { p.Y = y }
 func (p *Player) GetHostility() string  { return p.Hostility }
 func (p *Player) SetHostility(h string) { p.Hostility = h }
 func (p *Player) GetHitPoints() int     { return p.HitPoints }
+func (p *Player) GetDamage() int        { return 1 }
 
 func (p *Player) ModifyHitPoints(amount int) {
 	p.HitPoints += amount

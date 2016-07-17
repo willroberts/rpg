@@ -74,6 +74,7 @@ func (e *Enemy) SetY(y int)            { e.Y = y }
 func (e *Enemy) GetHostility() string  { return e.Hostility }
 func (e *Enemy) SetHostility(h string) { e.Hostility = h }
 func (e *Enemy) GetHitPoints() int     { return e.HitPoints }
+func (e *Enemy) GetDamage() int        { return 1 }
 
 func (e *Enemy) ModifyHitPoints(amount int) {
 	e.HitPoints += amount
