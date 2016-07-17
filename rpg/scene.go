@@ -27,7 +27,6 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	log.Println("[setup] setting up scene")
 	common.SetBackground(color.Black)
 
-	w.AddSystem(&common.CollisionSystem{})
 	w.AddSystem(&common.RenderSystem{})
 	w.AddSystem(&ControlSystem{})
 
