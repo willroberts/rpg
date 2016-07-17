@@ -24,8 +24,8 @@ the boundary of the map.
 
 - [ ] II. Combat
 	- [x] Enemies
-	- [ ] Enemy Collision
-	- [ ] Hit Points
+	- [x] Enemy Collision
+	- [x] Hit Points
 	- [ ] Combat Calculation
 	- [ ] Combat Log
 	- [ ] Enemy Death
