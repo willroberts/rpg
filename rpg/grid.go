@@ -33,10 +33,10 @@ type GridCell struct {
 }
 
 func NewGrid(x, y int) *Grid {
-	rows := make([]*GridRow, x)
-	for i := 0; i < x; i++ {
-		cells := make([]*GridCell, y)
-		for j := 0; j < y; j++ {
+	rows := make([]*GridRow, y)
+	for i := 0; i < y; i++ {
+		cells := make([]*GridCell, x)
+		for j := 0; j < x; j++ {
 			cells[j] = &GridCell{X: j, Y: i}
 		}
 		rows[i] = &GridRow{Cells: cells}
