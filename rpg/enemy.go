@@ -12,7 +12,6 @@ import (
 
 type Enemy struct {
 	ecs.BasicEntity
-	common.CollisionComponent
 	common.RenderComponent
 	common.SpaceComponent
 
@@ -38,11 +37,6 @@ func NewEnemy(enemyType string, spriteIndex, x, y int) *Enemy {
 		HitPoints:   EnemyTypes[enemyType].HitPoints,
 		X:           x,
 		Y:           y,
-	}
-
-	// Configure collision.
-	e.CollisionComponent = common.CollisionComponent{
-		Solid: true,
 	}
 
 	// Add graphics.

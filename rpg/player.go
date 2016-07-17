@@ -10,13 +10,11 @@ import (
 )
 
 var (
-	player         *Player
-	playerEntityID uint64
+	player *Player
 )
 
 type Player struct {
 	ecs.BasicEntity
-	common.CollisionComponent
 	common.RenderComponent
 	common.SpaceComponent
 	ControlComponent
@@ -40,13 +38,6 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 		Type:      "player",
 		Hostility: "neutral",
 		HitPoints: 10, // New characters start with 10 HP for now.
-	}
-	playerEntityID = p.BasicEntity.ID()
-
-	// Configure collision.
-	p.CollisionComponent = common.CollisionComponent{
-		Solid: true,
-		Main:  true,
 	}
 
 	// Add graphics.
