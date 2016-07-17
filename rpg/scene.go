@@ -12,6 +12,8 @@ import (
 
 type DefaultScene struct{}
 
+var GameWorld *ecs.World
+
 func (scene *DefaultScene) Preload() {
 	log.Println("[assets] preloading resources")
 	PreloadMapAssets("maps/stone.tmx")
@@ -25,6 +27,7 @@ func (scene *DefaultScene) Preload() {
 
 func (scene *DefaultScene) Setup(w *ecs.World) {
 	log.Println("[setup] setting up scene")
+	GameWorld = w
 	common.SetBackground(color.Black)
 
 	w.AddSystem(&common.RenderSystem{})
