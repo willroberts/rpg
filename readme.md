@@ -29,7 +29,7 @@ the boundary of the map.
 	- [x] Combat Calculation
 	- [x] Enemy Death
 	- [x] Player Death
-	- [ ] HP Display
+	- [x] HP Display
 	- [ ] On-Screen Combat Log
 
 The player should be able to encounter and 'fight' enemies by moving in
