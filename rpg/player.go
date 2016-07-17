@@ -37,6 +37,7 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 		X:         x,
 		Y:         y,
 		Hostility: "neutral",
+		HitPoints: 10, // New characters start with 10 HP for now.
 	}
 	playerEntityID = p.BasicEntity.ID()
 
