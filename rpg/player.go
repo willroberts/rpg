@@ -21,10 +21,11 @@ type Player struct {
 	common.SpaceComponent
 	ControlComponent
 
-	X, Y int
-
+	Type      string
 	Hostility string
 	HitPoints int
+
+	X, Y int
 }
 
 func NewPlayer(x, y, spriteIndex int) *Player {
@@ -36,6 +37,7 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 		},
 		X:         x,
 		Y:         y,
+		Type:      "player",
 		Hostility: "neutral",
 		HitPoints: 10, // New characters start with 10 HP for now.
 	}
@@ -125,11 +127,11 @@ func movePlayer(e controlEntity) {
 	e.SpaceComponent.Position.Y = (float32(player.GetY()) * characterSizeY) + characterOffsetY
 }
 
-// Satisfy the Character interface.
 func (p *Player) GetX() int             { return p.X }
 func (p *Player) GetY() int             { return p.Y }
 func (p *Player) SetX(x int)            { p.X = x }
 func (p *Player) SetY(y int)            { p.Y = y }
+func (p *Player) GetType() string       { return p.Type }
 func (p *Player) GetHostility() string  { return p.Hostility }
 func (p *Player) SetHostility(h string) { p.Hostility = h }
 func (p *Player) GetHitPoints() int     { return p.HitPoints }
@@ -137,9 +139,6 @@ func (p *Player) GetDamage() int        { return 1 }
 
 func (p *Player) ModifyHitPoints(amount int) {
 	p.HitPoints += amount
-	if p.HitPoints <= 0 {
-		p.Destroy()
-	}
 }
 
 func (p *Player) Destroy() {

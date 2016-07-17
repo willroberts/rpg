@@ -49,12 +49,12 @@ type Character interface {
 	SetX(int)
 	SetY(int)
 
+	GetType() string
 	GetHostility() string
 	SetHostility(string)
 
 	GetHitPoints() int
 	ModifyHitPoints(int)
-
 	GetDamage() int
 
 	Destroy()

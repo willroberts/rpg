@@ -17,10 +17,11 @@ type Enemy struct {
 	common.RenderComponent
 	common.SpaceComponent
 
-	X, Y int
-
+	Type      string
 	Hostility string
 	HitPoints int
+
+	X, Y int
 }
 
 type EnemyAttributes struct {
@@ -33,10 +34,11 @@ var EnemyTypes = make(map[string]EnemyAttributes)
 func NewEnemy(enemyType string, spriteIndex, x, y int) *Enemy {
 	e := &Enemy{
 		BasicEntity: ecs.NewBasic(),
-		X:           x,
-		Y:           y,
+		Type:        enemyType,
 		Hostility:   "hostile",
 		HitPoints:   EnemyTypes[enemyType].HitPoints,
+		X:           x,
+		Y:           y,
 	}
 
 	// Configure collision.
@@ -66,11 +68,11 @@ func NewEnemy(enemyType string, spriteIndex, x, y int) *Enemy {
 	return e
 }
 
-// Satisfy the Character interface.
 func (e *Enemy) GetX() int             { return e.X }
 func (e *Enemy) GetY() int             { return e.Y }
 func (e *Enemy) SetX(x int)            { e.X = x }
 func (e *Enemy) SetY(y int)            { e.Y = y }
+func (e *Enemy) GetType() string       { return e.Type }
 func (e *Enemy) GetHostility() string  { return e.Hostility }
 func (e *Enemy) SetHostility(h string) { e.Hostility = h }
 func (e *Enemy) GetHitPoints() int     { return e.HitPoints }
@@ -78,9 +80,6 @@ func (e *Enemy) GetDamage() int        { return 1 }
 
 func (e *Enemy) ModifyHitPoints(amount int) {
 	e.HitPoints += amount
-	if e.HitPoints <= 0 {
-		e.Destroy()
-	}
 }
 
 func (e *Enemy) Destroy() {
