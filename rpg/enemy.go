@@ -2,6 +2,8 @@
 package rpg
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"log"
 
 	"engo.io/ecs"
@@ -21,12 +23,20 @@ type Enemy struct {
 	HitPoints int
 }
 
-func NewEnemy(x, y, spriteIndex int) *Enemy {
+type EnemyAttributes struct {
+	HitPoints int `json:"hitpoints" validate:"nonzero"`
+}
+
+// Enemy data is stored in JSON as KV.
+var EnemyTypes = make(map[string]EnemyAttributes)
+
+func NewEnemy(enemyType string, spriteIndex, x, y int) *Enemy {
 	e := &Enemy{
 		BasicEntity: ecs.NewBasic(),
 		X:           x,
 		Y:           y,
 		Hostility:   "hostile",
+		HitPoints:   EnemyTypes[enemyType].HitPoints,
 	}
 
 	// Configure collision.
@@ -74,4 +84,16 @@ func (e *Enemy) ModifyHitPoints(amount int) {
 
 func (e *Enemy) Destroy() {
 	log.Println("Enemy was killed!")
+}
+
+func LoadEnemyTypes() error {
+	b, err := ioutil.ReadFile("data/enemies.json")
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(b, &EnemyTypes)
+	if err != nil {
+		return err
+	}
+	return nil
 }

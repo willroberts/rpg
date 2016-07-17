@@ -44,8 +44,12 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	player = NewPlayer(4, 2, spriteWhiteZombie)
 
 	log.Println("[setup] creating enemies")
+	err = LoadEnemyTypes()
+	if err != nil {
+		panic(err)
+	}
 	enemies := []*Enemy{
-		NewEnemy(5, 6, spriteSkeleton),
+		NewEnemy("skeleton", spriteSkeleton, 5, 6),
 	}
 
 	log.Println("[setup] configuring systems")
