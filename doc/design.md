@@ -35,3 +35,22 @@
 2. The Tiled map only contains static features
 3. The grid is an array of arrays which stores entities and objects
 4. A tile may have one colliding entity and one non-colliding object
+
+### The Grid
+
+The outer row determines vertical (Y) position. The inner row determines
+horizontal (X) position.
+
+```
+[
+	[. . . . . . . .],
+	[. . . . . . . .],
+	[. . . . . . . .],
+	[. . . . . . . .],
+	[. . . . . . . .],
+	[. . . . . . . .],
+	[. . . . . . . .],
+	[. . . . . . . .],
+	[. . . . . . . .],
+]
+```
