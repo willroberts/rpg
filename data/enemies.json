@@ -1,5 +1,18 @@
 {
 	"skeleton": {
+		"damage": 1,
+		"hitpoints": 2
+	},
+	"goblin": {
+		"damage": 2,
+		"hitpoints": 2
+	},
+	"bear": {
+		"damage": 4,
 		"hitpoints": 4
+	},
+	"demon": {
+		"damage": 4,
+		"hitpoints": 8
 	}
 }
