@@ -1,17 +1,30 @@
 // grid.go
+
+// RPG: A 2D game written in Go, with the engo engine.
+// Copyright (C) 2016 Will Roberts
+
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software Foundation,
+// Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 package rpg
 
-import (
-	"errors"
-	"log"
-)
+import "errors"
 
-var (
-	grid *Grid
-)
+var GameGrid *Grid
 
-// Grid is an array of arrays of cells. Cells may hold one entity pointer, and
-// an array of item pointers.
+// A Grid contains an array of arrays of cells corresponding to a Tiled map. It
+// is used for level and movement data for increased accuracy over pixel-based
+// approaches.
 type Grid struct {
 	Rows []*GridRow
 
@@ -21,10 +34,47 @@ type Grid struct {
 	MaxY int
 }
 
-type GridRow struct {
-	Cells []*GridCell
+// Add a character to the grid. Raises an error on failure, as this should not
+// happen during gameplay.
+func (g *Grid) AddCharacter(c Character, atX, atY int) error {
+	dst := g.GetCell(atX, atY)
+	if dst.Character != nil {
+		return errors.New("cannot add character to occupied grid cell")
+	}
+	dst.Character = c
+	return nil
 }
 
+// GetCell returns the GridCell at the given X and Y coordinates.
+func (g *Grid) GetCell(x, y int) *GridCell {
+	return g.Rows[y].Cells[x]
+}
+
+// Move an existing character to a new location if nothing is already there. If
+// a hostile entity is there, trigger combat.
+func (g *Grid) MoveCharacter(c Character, toX, toY int) {
+	dst := g.GetCell(toX, toY)
+	if dst.Character != nil {
+		if dst.Character.GetHostility() == "hostile" {
+			initiateCombat(c, dst.Character)
+		}
+		return
+	}
+	src := g.GetCell(c.GetX(), c.GetY())
+	src.Character = nil
+	dst.Character = c
+	c.SetX(toX)
+	c.SetY(toY)
+}
+
+// RemoveCharacter clears the Character entity from the cell at the given X and Y
+// coordinates.
+func (g *Grid) RemoveCharacter(fromX, fromY int) {
+	g.GetCell(fromX, fromY).Character = nil
+}
+
+// A GridCell has X and Y coordinates, can contain one Character entity, and can
+// contain multiple Items.
 type GridCell struct {
 	X, Y int
 
@@ -32,60 +82,20 @@ type GridCell struct {
 	Items     []*Item
 }
 
-func NewGrid(x, y int) *Grid {
-	rows := make([]*GridRow, y)
+// A GridRow contains an array of GridCells.
+type GridRow struct {
+	Cells []*GridCell
+}
+
+// newGrid returns an empty, pre-initialized Grid of the given dimensions.
+func newGrid(x, y int) *Grid {
+	r := make([]*GridRow, y)
 	for i := 0; i < y; i++ {
-		cells := make([]*GridCell, x)
+		c := make([]*GridCell, x)
 		for j := 0; j < x; j++ {
-			cells[j] = &GridCell{X: j, Y: i}
+			c[j] = &GridCell{X: j, Y: i}
 		}
-		rows[i] = &GridRow{Cells: cells}
+		r[i] = &GridRow{Cells: c}
 	}
-	return &Grid{Rows: rows, MinX: 0, MaxX: x - 1, MinY: 0, MaxY: y - 1}
-}
-
-func (g *Grid) GetCell(x, y int) *GridCell {
-	return g.Rows[y].Cells[x]
-}
-
-// Add a character to the grid. Raises an error on failure, as this should not
-// happen during gameplay.
-func (g *Grid) AddCharacter(c Character, atX, atY int) error {
-	targetCell := g.GetCell(atX, atY)
-	if targetCell.Character != nil {
-		return errors.New("cannot add character to occupied grid cell")
-	}
-	targetCell.Character = c
-	return nil
-}
-
-// Move an existing character to a new location.
-func (g *Grid) MoveCharacter(c Character, toX, toY int) {
-	// Check to see if anything is already there.
-	targetCell := g.GetCell(toX, toY)
-	if targetCell.Character != nil {
-		log.Println("Something is already there!")
-		if targetCell.Character.GetHostility() == "hostile" {
-			log.Println("And it's hostile! Oh no!")
-			// Create a combat event
-			InitiateCombat(c, targetCell.Character)
-		}
-		return
-	}
-
-	// Clear the Character pointer from the original position
-	startingCell := g.GetCell(c.GetX(), c.GetY())
-	startingCell.Character = nil
-
-	// Write the Character pointer to the new position
-	targetCell.Character = c
-
-	// Update the character's coordinates
-	c.SetX(toX)
-	c.SetY(toY)
-}
-
-func (g *Grid) RemoveCharacter(fromX, fromY int) {
-	targetCell := g.GetCell(fromX, fromY)
-	targetCell.Character = nil
+	return &Grid{Rows: r, MinX: 0, MaxX: x - 1, MinY: 0, MaxY: y - 1}
 }

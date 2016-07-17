@@ -1,4 +1,21 @@
 // enemy.go
+
+// RPG: A 2D game written in Go, with the engo engine.
+// Copyright (C) 2016 Will Roberts
+
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software Foundation,
+// Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 package rpg
 
 import (
@@ -10,6 +27,16 @@ import (
 	"engo.io/engo/common"
 )
 
+var EnemyTypes = make(map[string]EnemyAttributes)
+
+// EnemyAttributes stores the game data which are imported from external sources,
+// such as JSON or a database. Once a set of attributes is defined, attributes
+// may be modified freely without modifying the game code.
+type EnemyAttributes struct {
+	HitPoints int `json:"hitpoints" validate:"nonzero"`
+}
+
+// An Enemy is a non-player Character which is hostile by default.
 type Enemy struct {
 	ecs.BasicEntity
 	common.RenderComponent
@@ -22,14 +49,70 @@ type Enemy struct {
 	X, Y int
 }
 
-type EnemyAttributes struct {
-	HitPoints int `json:"hitpoints" validate:"nonzero"`
+// Destroy removes an enemy from the Grid and from the RenderSystem.
+func (e *Enemy) Destroy() {
+	GameGrid.RemoveCharacter(e.GetX(), e.GetY())
+	for _, sys := range GameWorld.Systems() {
+		switch s := sys.(type) {
+		case *common.RenderSystem:
+			s.Remove(e.BasicEntity)
+		}
+	}
 }
 
-// Enemy data is stored in JSON as KV.
-var EnemyTypes = make(map[string]EnemyAttributes)
+// GetDamage returns the damage dealt by this Enemy.
+func (e *Enemy) GetDamage() int { return 1 }
 
-func NewEnemy(enemyType string, spriteIndex, x, y int) *Enemy {
+// GetHitPoints returns the current HP for this Enemy.
+func (e *Enemy) GetHitPoints() int { return e.HitPoints }
+
+// GetHostility returns the demeanor of the enemy for use by the combat system.
+// Running into a hostile Character triggers combat, while running into a neutral
+// Character does not.
+func (e *Enemy) GetHostility() string { return e.Hostility }
+
+// GetType returns the name of this Enemy type, which is used by newEnemy to
+// retrieve its EnemyAttributes.
+func (e *Enemy) GetType() string { return e.Type }
+
+// GetX returns the Enemy's X coordinate.
+func (e *Enemy) GetX() int { return e.X }
+
+// GetY returns the Enemey's Y coordinate.
+func (e *Enemy) GetY() int { return e.Y }
+
+// ModifyHitPoints adds a number to an Enemy's hit points. To deal damage to an
+// Enemy, provide a negative number.
+func (e *Enemy) ModifyHitPoints(amount int) {
+	e.HitPoints += amount
+}
+
+// SetHostility changes an Enemy's demeanor. This can be used to implement "calm"
+// spells against typically hostile enemies, or to create hostility in a
+// typically neutral non-player Character.
+func (e *Enemy) SetHostility(h string) { e.Hostility = h }
+
+// SetX updates the Enemy's X coordinate.
+func (e *Enemy) SetX(x int) { e.X = x }
+
+// SetY updates the Enemy's Y coordinate.
+func (e *Enemy) SetY(y int) { e.Y = y }
+
+// loadEnemyTypes reads EnemyAttributes from JSON, and populates the global map
+// EnemyTypes.
+func loadEnemyTypes() error {
+	b, err := ioutil.ReadFile("data/enemies.json")
+	if err != nil {
+		return err
+	}
+	if err = json.Unmarshal(b, &EnemyTypes); err != nil {
+		return err
+	}
+	return nil
+}
+
+// newEnemy creates and returns an Enemy.
+func newEnemy(enemyType string, spriteIndex, x, y int) *Enemy {
 	e := &Enemy{
 		BasicEntity: ecs.NewBasic(),
 		Type:        enemyType,
@@ -38,9 +121,7 @@ func NewEnemy(enemyType string, spriteIndex, x, y int) *Enemy {
 		X:           x,
 		Y:           y,
 	}
-
-	// Add graphics.
-	enemyTexture := characterSpritesheet.Cell(spriteIndex)
+	enemyTexture := charSpritesheet.Cell(spriteIndex)
 	e.RenderComponent = common.RenderComponent{
 		Drawable: enemyTexture,
 		Scale:    engo.Point{2, 2},
@@ -48,51 +129,12 @@ func NewEnemy(enemyType string, spriteIndex, x, y int) *Enemy {
 	e.RenderComponent.SetZIndex(1)
 	e.SpaceComponent = common.SpaceComponent{
 		Position: engo.Point{
-			(characterSizeX * float32(x)) + characterOffsetX,
-			(characterSizeY * float32(y)) + characterOffsetY,
+			(charSizeX * float32(x)) + charOffsetX,
+			(charSizeY * float32(y)) + charOffsetY,
 		},
-		Width:  characterSizeX,
-		Height: characterSizeY,
+		Width:  charSizeX,
+		Height: charSizeY,
 	}
-
-	// Add to grid.
-	grid.AddCharacter(e, x, y)
-
+	GameGrid.AddCharacter(e, x, y)
 	return e
-}
-
-func (e *Enemy) GetX() int             { return e.X }
-func (e *Enemy) GetY() int             { return e.Y }
-func (e *Enemy) SetX(x int)            { e.X = x }
-func (e *Enemy) SetY(y int)            { e.Y = y }
-func (e *Enemy) GetType() string       { return e.Type }
-func (e *Enemy) GetHostility() string  { return e.Hostility }
-func (e *Enemy) SetHostility(h string) { e.Hostility = h }
-func (e *Enemy) GetHitPoints() int     { return e.HitPoints }
-func (e *Enemy) GetDamage() int        { return 1 }
-
-func (e *Enemy) ModifyHitPoints(amount int) {
-	e.HitPoints += amount
-}
-
-func (e *Enemy) Destroy() {
-	grid.RemoveCharacter(e.GetX(), e.GetY())
-	for _, system := range GameWorld.Systems() {
-		switch sys := system.(type) {
-		case *common.RenderSystem:
-			sys.Remove(e.BasicEntity)
-		}
-	}
-}
-
-func LoadEnemyTypes() error {
-	b, err := ioutil.ReadFile("data/enemies.json")
-	if err != nil {
-		return err
-	}
-	err = json.Unmarshal(b, &EnemyTypes)
-	if err != nil {
-		return err
-	}
-	return nil
 }

@@ -1,4 +1,21 @@
 // player.go
+
+// RPG: A 2D game written in Go, with the engo engine.
+// Copyright (C) 2016 Will Roberts
+
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software Foundation,
+// Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 package rpg
 
 import (
@@ -9,9 +26,7 @@ import (
 	"engo.io/engo/common"
 )
 
-var (
-	player *Player
-)
+var player *Player
 
 type Player struct {
 	ecs.BasicEntity
@@ -41,7 +56,7 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 	}
 
 	// Add graphics.
-	playerTexture := characterSpritesheet.Cell(spriteIndex)
+	playerTexture := charSpritesheet.Cell(spriteIndex)
 	p.RenderComponent = common.RenderComponent{
 		Drawable: playerTexture,
 		Scale:    engo.Point{2, 2},
@@ -49,21 +64,21 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 	p.RenderComponent.SetZIndex(1)
 	p.SpaceComponent = common.SpaceComponent{
 		Position: engo.Point{
-			(characterSizeX * float32(x)) + characterOffsetX,
-			(characterSizeY * float32(y)) + characterOffsetY,
+			(charSizeX * float32(x)) + charOffsetX,
+			(charSizeY * float32(y)) + charOffsetY,
 		},
-		Width:  characterSizeX,
-		Height: characterSizeY,
+		Width:  charSizeX,
+		Height: charSizeY,
 	}
 
 	// Add to grid.
-	grid.AddCharacter(p, x, y)
+	GameGrid.AddCharacter(p, x, y)
 
 	return p
 }
 
 // TODO: Prevent movement when adjacent grid contains an enemy
-func movePlayer(e controlEntity) {
+func movePlayer(e ControlEntity) {
 	// Handle keypresses.
 	var moveDirection string
 	if engo.Input.Button("moveleft").JustPressed() {
@@ -84,42 +99,42 @@ func movePlayer(e controlEntity) {
 
 	switch moveDirection {
 	case "left":
-		if player.GetX() == grid.MinX {
+		if player.GetX() == GameGrid.MinX {
 			log.Println("You can't go that way!")
 			return
 		} else {
-			grid.MoveCharacter(player, player.GetX()-1, player.GetY())
+			GameGrid.MoveCharacter(player, player.GetX()-1, player.GetY())
 		}
 	case "right":
-		if player.GetX() == grid.MaxX {
+		if player.GetX() == GameGrid.MaxX {
 			log.Println("You can't go that way!")
 			return
 		} else {
-			grid.MoveCharacter(player, player.GetX()+1, player.GetY())
+			GameGrid.MoveCharacter(player, player.GetX()+1, player.GetY())
 		}
 	case "up":
-		if player.GetY() == grid.MinY {
+		if player.GetY() == GameGrid.MinY {
 			log.Println("You can't go that way!")
 			return
 		} else {
-			grid.MoveCharacter(player, player.GetX(), player.GetY()-1)
+			GameGrid.MoveCharacter(player, player.GetX(), player.GetY()-1)
 		}
 	case "down":
-		if player.GetY() == grid.MaxY {
+		if player.GetY() == GameGrid.MaxY {
 			log.Println("You can't go that way!")
 			return
 		} else {
-			grid.MoveCharacter(player, player.GetX(), player.GetY()+1)
+			GameGrid.MoveCharacter(player, player.GetX(), player.GetY()+1)
 		}
 	}
 
 	// Update the player's space component for redrawing if necessary.
-	positionX := float32(player.GetX()) * characterSizeX
-	positionY := float32(player.GetY()) * characterSizeY
+	positionX := float32(player.GetX()) * charSizeX
+	positionY := float32(player.GetY()) * charSizeY
 	// The gravestone is a differently-sized asset which doesn't need an offset.
 	if player.HitPoints > 0 {
-		positionX += characterOffsetX
-		positionY += characterOffsetY
+		positionX += charOffsetX
+		positionY += charOffsetY
 	}
 	e.SpaceComponent.Position.X = positionX
 	e.SpaceComponent.Position.Y = positionY

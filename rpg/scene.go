@@ -1,4 +1,21 @@
 // scene.go
+
+// RPG: A 2D game written in Go, with the engo engine.
+// Copyright (C) 2016 Will Roberts
+
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software Foundation,
+// Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 package rpg
 
 import (
@@ -27,10 +44,10 @@ func (scene *DefaultScene) Preload() {
 	if err != nil {
 		panic(err)
 	}
-	characterSpritesheet = common.NewSpritesheetFromFile(
-		characterSpritesheetPath,
-		characterSpritesheetWidth,
-		characterSpritesheetHeight)
+	charSpritesheet = common.NewSpritesheetFromFile(
+		charSpritesheetPath,
+		charSpritesheetWidth,
+		charSpritesheetHeight)
 	decorationSpritesheet = common.NewSpritesheetFromFile(
 		decorationSpritesheetPath,
 		decorationSpritesheetWidth,
@@ -58,24 +75,24 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	}
 
 	log.Println("[setup] processing grid")
-	grid = NewGrid(level.Width(), level.Height())
+	GameGrid = NewGrid(level.Width(), level.Height())
 
 	log.Println("[setup] creating player")
 	player = NewPlayer(1, 1, spriteWhiteZombie)
 
 	log.Println("[setup] creating enemies")
-	err = LoadEnemyTypes()
+	err = loadEnemyTypes()
 	if err != nil {
 		panic(err)
 	}
 	enemies := []*Enemy{
-		NewEnemy("skeleton", spriteSkeleton, 2, 7),
-		NewEnemy("skeleton", spriteSkeleton, 8, 6),
-		NewEnemy("skeleton", spriteSkeleton, 5, 5),
-		NewEnemy("goblin", spriteGoblin, 4, 11),
-		NewEnemy("goblin", spriteGoblin, 7, 12),
-		NewEnemy("bear", spriteBear, 6, 17),
-		NewEnemy("demon", spriteDemon, 10, 22),
+		newEnemy("skeleton", spriteSkeleton, 2, 7),
+		newEnemy("skeleton", spriteSkeleton, 8, 6),
+		newEnemy("skeleton", spriteSkeleton, 5, 5),
+		newEnemy("goblin", spriteGoblin, 4, 11),
+		newEnemy("goblin", spriteGoblin, 7, 12),
+		newEnemy("bear", spriteBear, 6, 17),
+		newEnemy("demon", spriteDemon, 10, 22),
 	}
 
 	log.Println("[setup] configuring systems")
@@ -103,7 +120,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	})
 
 	log.Println("[setup] creating hud")
-	GameHUD, err = NewHUD()
+	GameHUD, err = newHUD()
 	if err != nil {
 		panic(err)
 	}
