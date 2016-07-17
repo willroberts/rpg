@@ -28,7 +28,7 @@ the boundary of the map.
 	- [x] Hit Points
 	- [x] Combat Calculation
 	- [x] Combat Log
-	- [ ] Enemy Death
+	- [x] Enemy Death
 	- [ ] Player Death
 	- [ ] HP Display
 
