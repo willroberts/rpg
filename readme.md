@@ -37,8 +37,7 @@ their direction. When the collision is detected, movement will not be
 allowed, but a round of combat will trigger. The player and the enemy will
 calculate and deal damage at the same time, before either entity has a
 chance to die. When the enemy dies, its sprite should be removed from the
-scene. Combat should use hardcoded damage values initially. One approach
-would be to implement unarmed combat first.
+scene.
 
 - [ ] III. Depth
 	- [ ] Character Data Model
@@ -48,6 +47,7 @@ would be to implement unarmed combat first.
 			- [ ] Endurance: Hit Points and Defense
 		- [ ] Level
 		- [ ] Experience
+		- [ ] Equipment System
 		- [ ] Inventory
 		- [ ] Gold
 	- [ ] Item Data Model
