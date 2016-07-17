@@ -17,6 +17,7 @@ var GameWorld *ecs.World
 func (scene *DefaultScene) Preload() {
 	log.Println("[assets] preloading resources")
 	PreloadMapAssets("maps/stone.tmx")
+
 	log.Println("[assets] loading sprites")
 	err := engo.Files.Load("spritesheets/characters-32x32.png")
 	if err != nil {
@@ -34,6 +35,12 @@ func (scene *DefaultScene) Preload() {
 		decorationSpritesheetPath,
 		decorationSpritesheetWidth,
 		decorationSpritesheetHeight)
+
+	log.Println("[assets] loading fonts")
+	err = engo.Files.Load("fonts/Roboto-Regular.ttf")
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (scene *DefaultScene) Setup(w *ecs.World) {
@@ -52,6 +59,12 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 
 	log.Println("[setup] processing grid")
 	grid = NewGrid(level.Width(), level.Height())
+
+	log.Println("[setup] creating hud")
+	err = ConfigureHUD()
+	if err != nil {
+		panic(err)
+	}
 
 	log.Println("[setup] creating player")
 	player = NewPlayer(1, 1, spriteWhiteZombie)
