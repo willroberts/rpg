@@ -55,16 +55,6 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	log.Println("[setup] configuring systems")
 	for _, system := range w.Systems() {
 		switch sys := system.(type) {
-		/*
-			case *common.CollisionSystem:
-				log.Println("[setup] configuring collision system")
-				sys.Add(&player.BasicEntity, &player.CollisionComponent,
-					&player.SpaceComponent)
-				for _, e := range enemies {
-					sys.Add(&e.BasicEntity, &e.CollisionComponent, &e.SpaceComponent)
-				}
-		*/
-
 		case *common.RenderSystem:
 			log.Println("[setup] configuring render system")
 			for _, t := range tiles {
@@ -75,7 +65,6 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 			for _, e := range enemies {
 				sys.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
 			}
-
 		case *ControlSystem:
 			log.Println("[setup] configuring control system")
 			sys.Add(&player.BasicEntity, &player.ControlComponent,
