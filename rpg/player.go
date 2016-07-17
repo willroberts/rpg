@@ -141,6 +141,25 @@ func (p *Player) ModifyHitPoints(amount int) {
 	p.HitPoints += amount
 }
 
+// When the player dies, we replace the character texture and stop processing
+// incoming movement commands.
 func (p *Player) Destroy() {
-	log.Println("You died!")
+	for _, system := range GameWorld.Systems() {
+		switch sys := system.(type) {
+		case *ControlSystem:
+			// 1. Remove the Player from the ControlSystem
+			sys.Remove(p.BasicEntity)
+		case *common.RenderSystem:
+			// 2. Remove the Player from the RenderSystem
+			sys.Remove(p.BasicEntity)
+			// 3. Add the Gravestone to the RenderSystem
+			playerTexture := decorationSpritesheet.Cell(spriteGravestone)
+			p.RenderComponent = common.RenderComponent{
+				Drawable: playerTexture,
+				Scale:    engo.Point{2, 2},
+			}
+			p.RenderComponent.SetZIndex(1)
+			sys.Add(&p.BasicEntity, &p.RenderComponent, &p.SpaceComponent)
+		}
+	}
 }

@@ -16,6 +16,10 @@ const (
 	characterSpritesheetWidth  int    = 32
 	characterSpritesheetHeight int    = 32
 
+	decorationSpritesheetPath   string = "spritesheets/decoration-20x20-40x40.png"
+	decorationSpritesheetWidth  int    = 40
+	decorationSpritesheetHeight int    = 40
+
 	// Graphics coordinates
 	characterSizeX   float32 = 80
 	characterSizeY   float32 = 80
@@ -35,10 +39,22 @@ const (
 	spriteSkeleton
 	spriteDemon
 	spriteGargoyle
+
+	spriteBones           int = 3
+	spriteStairsDownLeft  int = 4
+	spriteAnimalBones     int = 5
+	spriteTinySignpost    int = 8
+	spriteGravestone      int = 9
+	spriteSignpost        int = 10
+	spriteStairsUpLeft    int = 12
+	spriteStairsDownRight int = 13
+	spriteStairsUpRight   int = 14
+	spriteStairsUpLeft2   int = 15 // darker?
 )
 
 var (
-	characterSpritesheet *common.Spritesheet
+	characterSpritesheet  *common.Spritesheet
+	decorationSpritesheet *common.Spritesheet
 )
 
 // To satisfy this interface, use these methods to return c.X and c.Y.

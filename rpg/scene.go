@@ -18,11 +18,22 @@ func (scene *DefaultScene) Preload() {
 	log.Println("[assets] preloading resources")
 	PreloadMapAssets("maps/stone.tmx")
 	log.Println("[assets] loading sprites")
-	if err := engo.Files.Load("spritesheets/characters-32x32.png"); err != nil {
+	err := engo.Files.Load("spritesheets/characters-32x32.png")
+	if err != nil {
 		panic(err)
 	}
-	characterSpritesheet = common.NewSpritesheetFromFile(characterSpritesheetPath,
-		characterSpritesheetWidth, characterSpritesheetHeight)
+	err = engo.Files.Load("spritesheets/decoration-20x20-40x40.png")
+	if err != nil {
+		panic(err)
+	}
+	characterSpritesheet = common.NewSpritesheetFromFile(
+		characterSpritesheetPath,
+		characterSpritesheetWidth,
+		characterSpritesheetHeight)
+	decorationSpritesheet = common.NewSpritesheetFromFile(
+		decorationSpritesheetPath,
+		decorationSpritesheetWidth,
+		decorationSpritesheetHeight)
 }
 
 func (scene *DefaultScene) Setup(w *ecs.World) {
