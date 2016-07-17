@@ -123,8 +123,15 @@ func movePlayer(e controlEntity) {
 	}
 
 	// Update the player's space component for redrawing if necessary.
-	e.SpaceComponent.Position.X = (float32(player.GetX()) * characterSizeX) + characterOffsetX
-	e.SpaceComponent.Position.Y = (float32(player.GetY()) * characterSizeY) + characterOffsetY
+	positionX := float32(player.GetX()) * characterSizeX
+	positionY := float32(player.GetY()) * characterSizeY
+	// The gravestone is a differently-sized asset which doesn't need an offset.
+	if player.HitPoints > 0 {
+		positionX += characterOffsetX
+		positionY += characterOffsetY
+	}
+	e.SpaceComponent.Position.X = positionX
+	e.SpaceComponent.Position.Y = positionY
 }
 
 func (p *Player) GetX() int             { return p.X }
