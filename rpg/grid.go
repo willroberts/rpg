@@ -84,3 +84,8 @@ func (g *Grid) MoveCharacter(c Character, toX, toY int) {
 	c.SetX(toX)
 	c.SetY(toY)
 }
+
+func (g *Grid) RemoveCharacter(fromX, fromY int) {
+	targetCell := g.GetCell(fromX, fromY)
+	targetCell.Character = nil
+}

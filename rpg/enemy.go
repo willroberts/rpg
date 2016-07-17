@@ -4,7 +4,6 @@ package rpg
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 
 	"engo.io/ecs"
 	"engo.io/engo"
@@ -83,7 +82,17 @@ func (e *Enemy) ModifyHitPoints(amount int) {
 }
 
 func (e *Enemy) Destroy() {
-	log.Println("Enemy was killed!")
+	grid.RemoveCharacter(e.GetX(), e.GetY())
+	// Remove from the render system
+	// How to get access to ecs.World outside of scene logic?
+	/*
+		for _, system := range w.Systems() {
+			switch sys := system.(type) {
+			case *common.RenderSystem:
+				sys.Remove(e.BasicEntity, e.RenderComponent, e.SpaceComponent)
+			}
+		}
+	*/
 }
 
 func LoadEnemyTypes() error {
