@@ -6,43 +6,67 @@ import (
 	"image/color"
 
 	"engo.io/ecs"
+	"engo.io/engo"
 	"engo.io/engo/common"
 )
 
-type TextLabel struct {
+type HUD struct {
 	ecs.BasicEntity
 	common.RenderComponent
 	common.SpaceComponent
 }
 
-func ConfigureHUD() error {
-	fnt := &common.Font{
+var (
+	GameHUD  *HUD
+	GameFont *common.Font
+)
+
+func NewHUD() (*HUD, error) {
+	GameFont = &common.Font{
 		URL:  "fonts/Roboto-Regular.ttf",
-		FG:   color.Black,
-		Size: 64,
+		BG:   color.Black,
+		FG:   color.White,
+		Size: 48,
 	}
-	err := fnt.CreatePreloaded()
+	err := GameFont.CreatePreloaded()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	// Create HP display
-	hpLabel := TextLabel{BasicEntity: ecs.NewBasic()}
-	hpLabel.RenderComponent.Drawable = common.Text{
-		Font: fnt,
-		Text: fmt.Sprintf("Hit Points: %d", 10),
+	h := &HUD{BasicEntity: ecs.NewBasic()}
+	h.RenderComponent.Drawable = common.Text{
+		Font: GameFont,
+		Text: fmt.Sprintf("HP: %d", player.GetHitPoints()),
 	}
-	hpLabel.SetShader(common.HUDShader)
+	h.SetShader(common.HUDShader)
+	h.SpaceComponent = common.SpaceComponent{
+		Position: engo.Point{16, 16},
+	}
 
 	for _, system := range GameWorld.Systems() {
 		switch sys := system.(type) {
 		case *common.RenderSystem:
 			sys.Add(
-				&hpLabel.BasicEntity,
-				&hpLabel.RenderComponent,
-				&hpLabel.SpaceComponent)
+				&h.BasicEntity,
+				&h.RenderComponent,
+				&h.SpaceComponent)
 		}
 	}
 
-	return nil
+	return h, nil
+}
+
+func (h *HUD) UpdateHealth() {
+	for _, system := range GameWorld.Systems() {
+		switch sys := system.(type) {
+		case *common.RenderSystem:
+			sys.Remove(h.BasicEntity)
+			h.RenderComponent.Drawable = common.Text{
+				Font: GameFont,
+				Text: fmt.Sprintf("HP: %d", player.GetHitPoints()),
+			}
+			sys.Add(&h.BasicEntity, &h.RenderComponent, &h.SpaceComponent)
+		}
+	}
 }

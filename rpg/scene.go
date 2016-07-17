@@ -60,12 +60,6 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	log.Println("[setup] processing grid")
 	grid = NewGrid(level.Width(), level.Height())
 
-	log.Println("[setup] creating hud")
-	err = ConfigureHUD()
-	if err != nil {
-		panic(err)
-	}
-
 	log.Println("[setup] creating player")
 	player = NewPlayer(1, 1, spriteWhiteZombie)
 
@@ -108,6 +102,13 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 		TrackingBounds: level.Bounds(),
 	})
 
+	log.Println("[setup] creating hud")
+	GameHUD, err = NewHUD()
+	if err != nil {
+		panic(err)
+	}
+
+	log.Println("[setup] binding controls")
 	BindControls()
 }
 
