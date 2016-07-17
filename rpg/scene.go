@@ -43,7 +43,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	grid = NewGrid(level.Width(), level.Height())
 
 	log.Println("[setup] creating player")
-	player = NewPlayer(4, 2, spriteWhiteZombie)
+	player = NewPlayer(1, 1, spriteWhiteZombie)
 
 	log.Println("[setup] creating enemies")
 	err = LoadEnemyTypes()
@@ -51,7 +51,13 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 		panic(err)
 	}
 	enemies := []*Enemy{
-		NewEnemy("skeleton", spriteSkeleton, 5, 6),
+		NewEnemy("skeleton", spriteSkeleton, 2, 7),
+		NewEnemy("skeleton", spriteSkeleton, 8, 6),
+		NewEnemy("skeleton", spriteSkeleton, 5, 5),
+		NewEnemy("goblin", spriteGoblin, 4, 11),
+		NewEnemy("goblin", spriteGoblin, 7, 12),
+		NewEnemy("bear", spriteBear, 6, 17),
+		NewEnemy("demon", spriteDemon, 10, 22),
 	}
 
 	log.Println("[setup] configuring systems")
