@@ -26,10 +26,11 @@ the boundary of the map.
 	- [x] Enemies
 	- [x] Enemy Collision
 	- [x] Hit Points
-	- [ ] Combat Calculation
-	- [ ] Combat Log
+	- [x] Combat Calculation
+	- [x] Combat Log
 	- [ ] Enemy Death
 	- [ ] Player Death
+	- [ ] HP Display
 
 The player should be able to encounter and 'fight' enemies by moving in
 their direction. When the collision is detected, movement will not be
