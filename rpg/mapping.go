@@ -31,69 +31,51 @@ var (
 	levelHeight float32
 )
 
+// A Tile is the basic map unit. We parse a Tiled map and create a Tile for each
+// tile in the map.
 type Tile struct {
 	ecs.BasicEntity
 	common.RenderComponent
 	common.SpaceComponent
 }
 
-func PreloadMapAssets(m string) error {
+// loadMap parses a Tiled map, returning a processed level and a set of Tiles to
+// be rendered.
+func loadMap(m string) (*common.Level, []*Tile, error) {
+	tiles := make([]*Tile, 0)
+	resource, err := engo.Files.Resource(m)
+	if err != nil {
+		return &common.Level{}, tiles, err
+	}
+	l := resource.(common.TMXResource).Level
+	levelWidth = l.Bounds().Max.X
+	levelHeight = l.Bounds().Max.Y
+	log.Println("[setup] processing tile layers")
+	for _, tl := range l.TileLayers {
+		for _, te := range tl.Tiles {
+			if te.Image != nil {
+				t := &Tile{BasicEntity: ecs.NewBasic()}
+				t.RenderComponent = common.RenderComponent{
+					Drawable: te,
+					Scale:    engo.Point{4, 4},
+				}
+				t.SpaceComponent = common.SpaceComponent{
+					Position: te.Point,
+					Width:    0,
+					Height:   0,
+				}
+				tiles = append(tiles, t)
+			}
+		}
+	}
+	return l, tiles, nil
+}
+
+// preloadMapAssets loads a Tiled map file at the given path.
+func preloadMapAssets(m string) error {
 	log.Println("[assets] preloading map")
 	if err := engo.Files.Load(m); err != nil {
 		return err
 	}
 	return nil
-}
-
-func LoadMap(m string) (*common.Level, []*Tile, error) {
-	tiles := make([]*Tile, 0)
-
-	resource, err := engo.Files.Resource(m)
-	if err != nil {
-		return &common.Level{}, tiles, err
-	}
-
-	tmxResource := resource.(common.TMXResource)
-	level := tmxResource.Level
-	levelWidth = level.Bounds().Max.X
-	levelHeight = level.Bounds().Max.Y
-
-	log.Println("[setup] processing tile layers")
-	for _, tileLayer := range level.TileLayers {
-		for _, tileElement := range tileLayer.Tiles {
-			if tileElement.Image != nil {
-				tile := &Tile{BasicEntity: ecs.NewBasic()}
-				tile.RenderComponent = common.RenderComponent{
-					Drawable: tileElement,
-					Scale:    engo.Point{4, 4},
-				}
-				tile.SpaceComponent = common.SpaceComponent{
-					Position: tileElement.Point,
-					Width:    0,
-					Height:   0,
-				}
-				tiles = append(tiles, tile)
-			}
-		}
-	}
-
-	log.Println("[setup] processing image layers")
-	for _, imageLayer := range level.ImageLayers {
-		for _, imageElement := range imageLayer.Images {
-			if imageElement.Image != nil {
-				tile := &Tile{BasicEntity: ecs.NewBasic()}
-				tile.RenderComponent = common.RenderComponent{
-					Drawable: imageElement,
-					Scale:    engo.Point{4, 4},
-				}
-				tile.SpaceComponent = common.SpaceComponent{
-					Position: imageElement.Point,
-					Width:    0,
-					Height:   0,
-				}
-				tiles = append(tiles, tile)
-			}
-		}
-	}
-	return level, tiles, nil
 }

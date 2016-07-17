@@ -24,8 +24,8 @@ import (
 )
 
 var (
-	heightLimit float32
 	widthLimit  float32
+	heightLimit float32
 )
 
 // A ControlComponent is attached to a ControlEntity when being added to the

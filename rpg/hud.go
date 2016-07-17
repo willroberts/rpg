@@ -28,16 +28,18 @@ import (
 )
 
 var (
-	GameHUD  *HUD
 	GameFont *common.Font
+	GameHUD  *HUD
 )
 
+// The HUD contains all on-screen text, controls, and buttons.
 type HUD struct {
 	ecs.BasicEntity
 	common.RenderComponent
 	common.SpaceComponent
 }
 
+// UpdateHealth redraws the HP text on the screen when PLayer HP changes.
 func (h *HUD) UpdateHealth() {
 	for _, sys := range GameWorld.Systems() {
 		switch s := sys.(type) {
@@ -52,6 +54,7 @@ func (h *HUD) UpdateHealth() {
 	}
 }
 
+// newHUD configures and returns a HUD system.
 func newHUD() (*HUD, error) {
 	GameFont = &common.Font{
 		URL:  "fonts/Roboto-Regular.ttf",
@@ -59,28 +62,21 @@ func newHUD() (*HUD, error) {
 		FG:   color.White,
 		Size: 48,
 	}
-	err := GameFont.CreatePreloaded()
-	if err != nil {
+	if err := GameFont.CreatePreloaded(); err != nil {
 		return nil, err
 	}
-
-	// Create HP display
 	h := &HUD{BasicEntity: ecs.NewBasic()}
 	h.RenderComponent.Drawable = common.Text{
 		Font: GameFont,
 		Text: fmt.Sprintf("HP: %d", player.GetHitPoints()),
 	}
 	h.SetShader(common.HUDShader)
-	h.SpaceComponent = common.SpaceComponent{
-		Position: engo.Point{16, 16},
-	}
-
+	h.SpaceComponent = common.SpaceComponent{Position: engo.Point{16, 16}}
 	for _, sys := range GameWorld.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Add(&h.BasicEntity, &h.RenderComponent, &h.SpaceComponent)
 		}
 	}
-
 	return h, nil
 }

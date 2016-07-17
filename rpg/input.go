@@ -24,7 +24,8 @@ import (
 	"engo.io/engo"
 )
 
-func BindControls() {
+// bindControls assigns the arrow keys to Player movement.
+func bindControls() {
 	log.Println("[input] binding controls")
 	engo.Input.RegisterButton("moveup", engo.ArrowUp)
 	engo.Input.RegisterButton("movedown", engo.ArrowDown)

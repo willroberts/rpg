@@ -18,4 +18,6 @@
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 package rpg
 
+// An Item is an object which can be dropped by an Enemy, picked up by the
+// Player, and potentially used by the Player. It is not yet implemented.
 type Item struct{}

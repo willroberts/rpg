@@ -28,6 +28,7 @@ import (
 
 var player *Player
 
+// Player is the player-controlled entity in the game.
 type Player struct {
 	ecs.BasicEntity
 	common.RenderComponent
@@ -41,7 +42,69 @@ type Player struct {
 	X, Y int
 }
 
-func NewPlayer(x, y, spriteIndex int) *Player {
+// When the player dies, we replace the character texture and stop processing
+// incoming movement commands. Removes the Player from the ControlSystem and the
+// RenderSystem, and then re-add the Player to the RenderSystem as a gravestone.
+func (p *Player) Destroy() {
+	for _, sys := range GameWorld.Systems() {
+		switch s := sys.(type) {
+		case *ControlSystem:
+			s.Remove(p.BasicEntity)
+		case *common.RenderSystem:
+			s.Remove(p.BasicEntity)
+			p.RenderComponent = common.RenderComponent{
+				Drawable: decorationSpritesheet.Cell(spriteGravestone),
+				Scale:    engo.Point{2, 2},
+			}
+			p.RenderComponent.SetZIndex(1)
+			s.Add(&p.BasicEntity, &p.RenderComponent, &p.SpaceComponent)
+		}
+	}
+}
+
+// GetDamage returns the damage dealt by the Player.
+func (p *Player) GetDamage() int { return 1 }
+
+// GetHitPoints returns the current HP for the Player.
+func (p *Player) GetHitPoints() int { return p.HitPoints }
+
+// GetHostility returns the demeanor of an enemy or NPC. It's included here just
+// to statisfy the Character interface.
+// FIXME: See if we can remove this from the Character interface.
+func (p *Player) GetHostility() string { return p.Hostility }
+
+// GetType returns the name of the Player type. It's included here just to
+// satisfy the Character interface. It is also used temporarily to provide a name
+// for the combat log. Eventually we'll want to use the Player's chosen name in
+// the combat log.
+// FIXME: See if we can remove this from the Character interface.
+func (p *Player) GetType() string { return p.Type }
+
+// GetX returns the Player's X coordinate.
+func (p *Player) GetX() int { return p.X }
+
+// GetY returns the Player's Y coordinate.
+func (p *Player) GetY() int { return p.Y }
+
+// ModifyHitPoints adds a number to the Player's hit points. To deal damage to
+// the Player, provide a negative number.
+func (p *Player) ModifyHitPoints(amount int) {
+	p.HitPoints += amount
+}
+
+// SetHostility changes the Player's demeanor. It's included here just to satisfy
+// the Character interface.
+// FIXME: See if we can remove this from the Character interface.
+func (p *Player) SetHostility(h string) { p.Hostility = h }
+
+// SetX updates the Player's X coordinate.
+func (p *Player) SetX(x int) { p.X = x }
+
+// SetY updates the Player's Y coordinate.
+func (p *Player) SetY(y int) { p.Y = y }
+
+// newPlayer creates and returns a Player.
+func newPlayer(x, y, spriteIndex int) *Player {
 	p := &Player{
 		BasicEntity: ecs.NewBasic(),
 		ControlComponent: ControlComponent{
@@ -52,13 +115,10 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 		Y:         y,
 		Type:      "player",
 		Hostility: "neutral",
-		HitPoints: 10, // New characters start with 10 HP for now.
+		HitPoints: 10,
 	}
-
-	// Add graphics.
-	playerTexture := charSpritesheet.Cell(spriteIndex)
 	p.RenderComponent = common.RenderComponent{
-		Drawable: playerTexture,
+		Drawable: charSpritesheet.Cell(spriteIndex),
 		Scale:    engo.Point{2, 2},
 	}
 	p.RenderComponent.SetZIndex(1)
@@ -70,34 +130,30 @@ func NewPlayer(x, y, spriteIndex int) *Player {
 		Width:  charSizeX,
 		Height: charSizeY,
 	}
-
-	// Add to grid.
 	GameGrid.AddCharacter(p, x, y)
-
 	return p
 }
 
-// TODO: Prevent movement when adjacent grid contains an enemy
+// movePlayer reads keyboard input, checks level bounds, and processes Player
+// movement.
+// FIXME: Is the ControlEntity parameter needed? We can refer to player globally.
+// FIXME: Only call movePlayer from scene when a key has recently been pressed.
 func movePlayer(e ControlEntity) {
-	// Handle keypresses.
-	var moveDirection string
+	var d string
 	if engo.Input.Button("moveleft").JustPressed() {
-		moveDirection = "left"
+		d = "left"
 	} else if engo.Input.Button("moveright").JustPressed() {
-		moveDirection = "right"
+		d = "right"
 	} else if engo.Input.Button("moveup").JustPressed() {
-		moveDirection = "up"
+		d = "up"
 	} else if engo.Input.Button("movedown").JustPressed() {
-		moveDirection = "down"
+		d = "down"
 	}
-
-	// Don't process empty keypresses.
-	// FIXME: Move keypress detection back to the scene, before this is called.
-	if moveDirection == "" {
+	if d == "" {
+		// Don't process empty keypresses.
 		return
 	}
-
-	switch moveDirection {
+	switch d {
 	case "left":
 		if player.GetX() == GameGrid.MinX {
 			log.Println("You can't go that way!")
@@ -127,52 +183,13 @@ func movePlayer(e ControlEntity) {
 			GameGrid.MoveCharacter(player, player.GetX(), player.GetY()+1)
 		}
 	}
-
-	// Update the player's space component for redrawing if necessary.
-	positionX := float32(player.GetX()) * charSizeX
-	positionY := float32(player.GetY()) * charSizeY
-	// The gravestone is a differently-sized asset which doesn't need an offset.
-	if player.HitPoints > 0 {
-		positionX += charOffsetX
-		positionY += charOffsetY
+	posX := float32(player.GetX()) * charSizeX
+	posY := float32(player.GetY()) * charSizeY
+	if player.GetHitPoints() > 0 {
+		// The gravestone is a differently-sized asset which doesn't need an offset.
+		posX += charOffsetX
+		posY += charOffsetY
 	}
-	e.SpaceComponent.Position.X = positionX
-	e.SpaceComponent.Position.Y = positionY
-}
-
-func (p *Player) GetX() int             { return p.X }
-func (p *Player) GetY() int             { return p.Y }
-func (p *Player) SetX(x int)            { p.X = x }
-func (p *Player) SetY(y int)            { p.Y = y }
-func (p *Player) GetType() string       { return p.Type }
-func (p *Player) GetHostility() string  { return p.Hostility }
-func (p *Player) SetHostility(h string) { p.Hostility = h }
-func (p *Player) GetHitPoints() int     { return p.HitPoints }
-func (p *Player) GetDamage() int        { return 1 }
-
-func (p *Player) ModifyHitPoints(amount int) {
-	p.HitPoints += amount
-}
-
-// When the player dies, we replace the character texture and stop processing
-// incoming movement commands.
-func (p *Player) Destroy() {
-	for _, system := range GameWorld.Systems() {
-		switch sys := system.(type) {
-		case *ControlSystem:
-			// 1. Remove the Player from the ControlSystem
-			sys.Remove(p.BasicEntity)
-		case *common.RenderSystem:
-			// 2. Remove the Player from the RenderSystem
-			sys.Remove(p.BasicEntity)
-			// 3. Add the Gravestone to the RenderSystem
-			playerTexture := decorationSpritesheet.Cell(spriteGravestone)
-			p.RenderComponent = common.RenderComponent{
-				Drawable: playerTexture,
-				Scale:    engo.Point{2, 2},
-			}
-			p.RenderComponent.SetZIndex(1)
-			sys.Add(&p.BasicEntity, &p.RenderComponent, &p.SpaceComponent)
-		}
-	}
+	e.SpaceComponent.Position.X = posX
+	e.SpaceComponent.Position.Y = posY
 }

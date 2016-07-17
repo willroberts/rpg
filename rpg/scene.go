@@ -27,14 +27,17 @@ import (
 	"engo.io/engo/common"
 )
 
-type DefaultScene struct{}
-
 var GameWorld *ecs.World
 
+// DefaultScene is our first and only scene at the moment. It includes the first
+// map, a static set of enemies, and only one room.
+type DefaultScene struct{}
+
+// Preload validates and loads assets. In can cause panics, since the game cannot
+// run without its assets.
 func (scene *DefaultScene) Preload() {
 	log.Println("[assets] preloading resources")
-	PreloadMapAssets("maps/stone.tmx")
-
+	preloadMapAssets("maps/stone.tmx")
 	log.Println("[assets] loading sprites")
 	err := engo.Files.Load("spritesheets/characters-32x32.png")
 	if err != nil {
@@ -52,7 +55,6 @@ func (scene *DefaultScene) Preload() {
 		decorationSpritesheetPath,
 		decorationSpritesheetWidth,
 		decorationSpritesheetHeight)
-
 	log.Println("[assets] loading fonts")
 	err = engo.Files.Load("fonts/Roboto-Regular.ttf")
 	if err != nil {
@@ -60,29 +62,25 @@ func (scene *DefaultScene) Preload() {
 	}
 }
 
+// Setup initializes all systems necessary for the game to function. It can
+// panic, since the game cannot run without these systems.
 func (scene *DefaultScene) Setup(w *ecs.World) {
-	log.Println("[setup] setting up scene")
 	GameWorld = w
+	log.Println("[setup] setting up scene")
 	common.SetBackground(color.Black)
-
 	w.AddSystem(&common.RenderSystem{})
 	w.AddSystem(&ControlSystem{})
-
 	log.Println("[setup] loading map")
-	level, tiles, err := LoadMap("maps/stone.tmx")
+	level, tiles, err := loadMap("maps/stone.tmx")
 	if err != nil {
 		panic(err)
 	}
-
 	log.Println("[setup] processing grid")
-	GameGrid = NewGrid(level.Width(), level.Height())
-
+	GameGrid = newGrid(level.Width(), level.Height())
 	log.Println("[setup] creating player")
-	player = NewPlayer(1, 1, spriteWhiteZombie)
-
+	player = newPlayer(1, 1, spriteWhiteZombie)
 	log.Println("[setup] creating enemies")
-	err = loadEnemyTypes()
-	if err != nil {
+	if err = loadEnemyTypes(); err != nil {
 		panic(err)
 	}
 	enemies := []*Enemy{
@@ -94,41 +92,40 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 		newEnemy("bear", spriteBear, 6, 17),
 		newEnemy("demon", spriteDemon, 10, 22),
 	}
-
 	log.Println("[setup] configuring systems")
-	for _, system := range w.Systems() {
-		switch sys := system.(type) {
+	for _, sys := range w.Systems() {
+		switch s := sys.(type) {
 		case *common.RenderSystem:
 			log.Println("[setup] configuring render system")
 			for _, t := range tiles {
-				sys.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
+				s.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
 			}
-			sys.Add(&player.BasicEntity, &player.RenderComponent,
-				&player.SpaceComponent)
+			s.Add(&player.BasicEntity, &player.RenderComponent, &player.SpaceComponent)
 			for _, e := range enemies {
-				sys.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
+				s.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
 			}
 		case *ControlSystem:
 			log.Println("[setup] configuring control system")
-			sys.Add(&player.BasicEntity, &player.ControlComponent,
+			s.Add(&player.BasicEntity, &player.ControlComponent,
 				&player.SpaceComponent)
 		}
 	}
+	log.Println("[setup] configuring camera")
 	w.AddSystem(&common.EntityScroller{
 		SpaceComponent: &player.SpaceComponent,
 		TrackingBounds: level.Bounds(),
 	})
-
 	log.Println("[setup] creating hud")
 	GameHUD, err = newHUD()
 	if err != nil {
 		panic(err)
 	}
-
 	log.Println("[setup] binding controls")
-	BindControls()
+	bindControls()
 }
 
+// Type returns the name of the scene. This is used to satisfy engo's Scene
+// interface.
 func (scene *DefaultScene) Type() string {
 	return "DefaultScene"
 }
