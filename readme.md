@@ -80,7 +80,7 @@ scene.
 - [ ] Generate randomized Maps
 	- [ ] Implement Walls and Wall collision
 
-# VI. Bonus Features
+### VI. Bonus Features
 
 - [ ] Recreate the map and enemies from the first Castle of the Winds episode
 - [ ] Score Tracking
