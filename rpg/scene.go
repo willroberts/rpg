@@ -38,6 +38,7 @@ type DefaultScene struct{}
 func (scene *DefaultScene) Preload() {
 	log.Println("[assets] preloading resources")
 	preloadMapAssets("maps/stone.tmx")
+
 	log.Println("[assets] loading sprites")
 	err := engo.Files.Load("spritesheets/characters-32x32.png")
 	if err != nil {
@@ -55,8 +56,13 @@ func (scene *DefaultScene) Preload() {
 		decorationSpritesheetPath,
 		decorationSpritesheetWidth,
 		decorationSpritesheetHeight)
+
 	log.Println("[assets] loading fonts")
-	err = engo.Files.Load("fonts/Roboto-Regular.ttf")
+	err = engo.Files.Load("fonts/hud.ttf")
+	if err != nil {
+		panic(err)
+	}
+	err = engo.Files.Load("fonts/combatlog.ttf")
 	if err != nil {
 		panic(err)
 	}
@@ -116,6 +122,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 		TrackingBounds: level.Bounds(),
 	})
 	log.Println("[setup] creating hud")
+	initializeFonts()
 	GameHUD, err = newHUD()
 	if err != nil {
 		panic(err)

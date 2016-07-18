@@ -33,8 +33,9 @@ const (
 )
 
 var (
-	GameFont *common.Font
-	GameHUD  *HUD
+	GameHUD       *HUD
+	HUDFont       *common.Font
+	CombatLogFont *common.Font
 )
 
 // CombatLog stores a rolling set of five combat messages to be displayed on the
@@ -75,7 +76,7 @@ func (h *HUD) UpdateHealth() {
 		case *common.RenderSystem:
 			s.Remove(h.BasicEntity)
 			h.RenderComponent.Drawable = common.Text{
-				Font: GameFont,
+				Font: HUDFont,
 				Text: fmt.Sprintf("HP: %d", player.GetHitPoints()),
 			}
 			s.Add(&h.BasicEntity, &h.RenderComponent, &h.SpaceComponent)
@@ -83,19 +84,37 @@ func (h *HUD) UpdateHealth() {
 	}
 }
 
-// newCombatLog creates a rotating log window on the screen.
-func newCombatLog() error {
-	if GameFont == nil {
-		GameFont = &common.Font{
-			URL:  "fonts/Roboto-Regular.ttf",
+// initializeFonts creates the various sizes of fonts we need.
+func initializeFonts() error {
+	if HUDFont == nil {
+		HUDFont = &common.Font{
+			URL:  "fonts/hud.ttf",
 			BG:   color.Black,
 			FG:   color.White,
-			Size: 32,
-		}
-		if err := GameFont.CreatePreloaded(); err != nil {
-			return err
+			Size: 48,
 		}
 	}
+	if err := HUDFont.CreatePreloaded(); err != nil {
+		return err
+	}
+
+	if CombatLogFont == nil {
+		CombatLogFont = &common.Font{
+			URL:  "fonts/combatlog.ttf",
+			BG:   color.Black,
+			FG:   color.White,
+			Size: 24,
+		}
+	}
+	if err := CombatLogFont.CreatePreloaded(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// newCombatLog creates a rotating log window on the screen.
+func newCombatLog() error {
 	l := &CombatLog{}
 	offset := 0
 	for i := 0; i < 5; i++ {
@@ -105,9 +124,10 @@ func newCombatLog() error {
 	return nil
 }
 
+// newCombatMessage creates one of the message rows in the CombatLog.
 func newCombatMessage(msg string, offset int) *CombatMessage {
 	m := &CombatMessage{Text: msg}
-	m.RenderComponent.Drawable = common.Text{Font: GameFont, Text: m.Text}
+	m.RenderComponent.Drawable = common.Text{Font: CombatLogFont, Text: m.Text}
 	m.SetShader(common.HUDShader)
 	m.SpaceComponent = common.SpaceComponent{Position: engo.Point{
 		float32(CombatLogPosX),
@@ -124,20 +144,9 @@ func newCombatMessage(msg string, offset int) *CombatMessage {
 
 // newHUD configures and returns a HUD system.
 func newHUD() (*HUD, error) {
-	if GameFont == nil {
-		GameFont = &common.Font{
-			URL:  "fonts/Roboto-Regular.ttf",
-			BG:   color.Black,
-			FG:   color.White,
-			Size: 32,
-		}
-		if err := GameFont.CreatePreloaded(); err != nil {
-			return nil, err
-		}
-	}
 	h := &HUD{BasicEntity: ecs.NewBasic()}
 	h.RenderComponent.Drawable = common.Text{
-		Font: GameFont,
+		Font: HUDFont,
 		Text: fmt.Sprintf("HP: %d", player.GetHitPoints()),
 	}
 	h.SetShader(common.HUDShader)
