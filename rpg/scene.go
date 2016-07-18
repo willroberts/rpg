@@ -131,8 +131,6 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 		panic(err)
 	}
 	GameLog = newActivityLog()
-	GameLog.Update("foo")
-	GameLog.Update("bar")
 	GameLog.Update("Welcome to the game.")
 	GameLog.Update("There are three skeletons near you.")
 	GameLog.Update("Try moving into them to attack.")
