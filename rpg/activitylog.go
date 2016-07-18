@@ -88,7 +88,7 @@ func (m *ActivityMessage) Draw() {
 func initializeActivityMessage(msg string, offset int) *ActivityMessage {
 	m := &ActivityMessage{Text: msg}
 	m.RenderComponent.Drawable = common.Text{Font: ActivityLogFont, Text: m.Text}
-	m.RenderComponent.SetZIndex(zHUD)
+	m.RenderComponent.SetZIndex(zText)
 	m.SetShader(common.HUDShader)
 	m.SpaceComponent = common.SpaceComponent{Position: engo.Point{
 		float32(ActivityLogPosX),
@@ -125,7 +125,7 @@ func newActivityLog() *ActivityLog {
 			Drawable: "FOO", // FIXME
 			Scale:    engo.Point{1, 1},
 		}
-		p.RenderComponent.SetZIndex(3)
+		p.RenderComponent.SetZIndex(zText)
 		for _, sys := range GameWorld.Systems() {
 			switch s := sys.(type) {
 			case *common.RenderSystem:
