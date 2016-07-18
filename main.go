@@ -25,14 +25,20 @@ import (
 	"github.com/willroberts/rpg/rpg"
 )
 
+const (
+	width  int = 960
+	height int = 720
+)
+
 // Main starts the game.
 func main() {
 	log.Println("[engine] configuring engine")
 	o := engo.RunOptions{
 		Title:  "RPG",
-		Width:  960,
-		Height: 720,
+		Width:  width,
+		Height: height,
 	}
+	log.Printf("[engine] video resolution: %dx%d\n", width, height)
 	log.Println("[engine] starting game")
 	engo.Run(o, &rpg.DefaultScene{})
 }

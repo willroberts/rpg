@@ -56,7 +56,7 @@ func (p *Player) Destroy() {
 				Drawable: decorationSpritesheet.Cell(spriteGravestone),
 				Scale:    engo.Point{2, 2},
 			}
-			p.RenderComponent.SetZIndex(1)
+			p.RenderComponent.SetZIndex(zCharacters)
 			s.Add(&p.BasicEntity, &p.RenderComponent, &p.SpaceComponent)
 		}
 	}

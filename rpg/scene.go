@@ -116,18 +116,27 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 				&player.SpaceComponent)
 		}
 	}
+
 	log.Println("[setup] configuring camera")
 	w.AddSystem(&common.EntityScroller{
 		SpaceComponent: &player.SpaceComponent,
 		TrackingBounds: level.Bounds(),
 	})
+
 	log.Println("[setup] creating hud")
-	initializeFonts()
+	initializeHUDFont()
+	initializeLogFont()
 	GameHUD, err = newHUD()
 	if err != nil {
 		panic(err)
 	}
-	newCombatLog()
+	GameLog = newActivityLog()
+	GameLog.Update("foo")
+	GameLog.Update("bar")
+	GameLog.Update("Welcome to the game.")
+	GameLog.Update("There are three skeletons near you.")
+	GameLog.Update("Try moving into them to attack.")
+
 	log.Println("[setup] binding controls")
 	bindControls()
 }

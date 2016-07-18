@@ -59,6 +59,7 @@ func loadMap(m string) (*common.Level, []*Tile, error) {
 					Drawable: te,
 					Scale:    engo.Point{4, 4},
 				}
+				t.RenderComponent.SetZIndex(zWorld)
 				t.SpaceComponent = common.SpaceComponent{
 					Position: te.Point,
 					Width:    0,

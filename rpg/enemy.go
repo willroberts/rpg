@@ -126,7 +126,7 @@ func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 		Drawable: enemyTexture,
 		Scale:    engo.Point{2, 2},
 	}
-	e.RenderComponent.SetZIndex(1)
+	e.RenderComponent.SetZIndex(zCharacters)
 	e.SpaceComponent = common.SpaceComponent{
 		Position: engo.Point{
 			(charSizeX * float32(x)) + charOffsetX,
