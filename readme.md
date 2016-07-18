@@ -4,17 +4,18 @@ A 2D game written in Go, with the engo engine.
 
 ## Design
 
-Recreation of Castle of the Winds (1993): an orthogonal, tile-based RPG in
+Basic recreation of Castle of the Winds (1993): an orthogonal tile-based RPG in
 which the game advances when the player moves. There are no animations,
 and there is no audio.
 
 ## Milestones
 
-- [x] I. Minimum Interactive Content
-	- [x] Tiled Maps
-	- [x] Controllable Player
-	- [x] Player-Centric Camera
-	- [x] Window Bounds Checking
+### I. Interaction
+
+- [x] Tiled Maps
+- [x] Controllable Player
+- [x] Player-Centric Camera
+- [x] Window Bounds Checking
 
 The player should be able to control a character with the arrow keys, and
 move around within a graphical tiled map. The camera should follow the
@@ -22,15 +23,16 @@ player during movement, allowing exploration of the map when the map is
 larger than the game window. The player should not be able to move outside
 the boundary of the map.
 
-- [x] II. Combat
-	- [x] Enemies
-	- [x] Enemy Collision
-	- [x] Hit Points
-	- [x] Combat Calculation
-	- [x] Enemy Death
-	- [x] Player Death
-	- [x] HP Display
-	- [x] On-Screen Combat Log
+### II. Combat
+
+- [x] Enemies
+- [x] Enemy Collision
+- [x] Hit Points
+- [x] Combat Calculation
+- [x] Enemy Death
+- [x] Player Death
+- [x] HP Display
+- [x] On-Screen Combat Log
 
 The player should be able to encounter and 'fight' enemies by moving in
 their direction. When the collision is detected, movement will not be
@@ -39,50 +41,57 @@ calculate and deal damage at the same time, before either entity has a
 chance to die. When the enemy dies, its sprite should be removed from the
 scene.
 
-- [ ] III. Depth
-	- [ ] Character Data Model
-		- [ ] Attributes
-			- [ ] Strength: Attack Damage
-			- [ ] Dexterity: Hit and Dodge Chances
-			- [ ] Endurance: Hit Points and Defense
-		- [ ] Level
-		- [ ] Experience
-		- [ ] Equipment System
-		- [ ] Inventory
-		- [ ] Gold
-	- [ ] Item Data Model
-	- [ ] Intelligence, Mana, and Spells
-	- [ ] A.I.
-		- [ ] Vision Radius
-		- [ ] Enemy Movement
-	- [ ] Randomized Maps
-	- [ ] Randomized Enemies
-	- [ ] Randomized Loot
+### III. Improved Interaction
 
-The player should have attributes, a level, experience points, some amount
-of gold, and an inventory system. Characters could be randomly generated
-initially. Items should have attributes as well, and should be equippable.
-Enemies should drop randomized items when killed. Both offensive and
-defensive spells should be added. For example, there should be spells for
-close-range offense, ranged offense, healing, shielding, cursing, etc.
+- [ ] Start Menu
+- [ ] Artificial Intelligence
+	- [ ] Enemies can see Player within N tiles
+	- [ ] Enemies advance one step toward the player when spotted
+	-	[ ] Enemies have limited decision making and may flee
+- [ ] Fog of War
 
-- [ ] IV. Polish
-	- [ ] Walls and Wall Collision
-	- [ ] Start Menu
-	- [ ] Character Creation
+### IV. Increased Depth
+
+- [ ] Experience Points and Leveling
+- [ ] Enemies drop Gold
+	- [ ] Player can collect Gold
+- [ ] Enemies drop Items
+	- [ ] Player can store Items
+	- [ ] Player can equip Items
+- [ ] Character Creation
+- [ ] Character Attribute: Endurance
+	-	[ ] +1 HP per Something
+- [ ] Character Attribute: Strength
+	- [ ] +1 Damage per Something
+- [ ] Character Attribute: Dexterity
+	- [ ] Accuracy System
+- [ ] Character Attribute: Intelligence
+	- [ ] Mana
+	- [ ] +1 Mana per Something
+	- [ ] Defensive Spells
+	- [ ] Offensive Spells
+
+### V. Roguelike Replayability
+
+- [ ] Generate randomized Characters
+- [ ] Generate randomized Items
+- [ ] Generate randomized Enemies
+- [ ] Generate randomized Vendors
+- [ ] Generate randomized Maps
+	- [ ] Implement Walls and Wall collision
+
+# VI. Bonus Features
+
+- [ ] Recreate the map and enemies from the first Castle of the Winds episode
+- [ ] Score Tracking
 	- [ ] High Scores
-	- [ ] Fog of War
-	- [ ] Combat Animations
-	- [ ] Sound Effects and Music
-	- [ ] Windows/Mac/Linux Build Targets
+- [ ] Minimal Combat Animations
+	-	[ ] Slight nudge of sprite towards occupied tile for <1s
+	- [ ] "Slash" sprite over damaged enemy
+- [ ] Music
+- [ ] Sound Effects
 
-Build complex maps/levels with proper collision detection. Create a menu
-system with a start menu, a high scores screen, and a character creation
-process. Create build targets for Windows, Mac OS X, and Linux. Android
-and iOS could be considered, but the primary input will be keyboard and
-mouse unless something changes along the way.
+## Credits
 
-## Assets
-
-2D art comes from Jesse Freeman's Tile Crusader spritesheets:
+Art Assets: Jesse Freeman, Tile Crusader
 http://jessefreeman.com/articles/free-game-art-tile-crusader
