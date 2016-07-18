@@ -22,7 +22,7 @@ player during movement, allowing exploration of the map when the map is
 larger than the game window. The player should not be able to move outside
 the boundary of the map.
 
-- [ ] II. Combat
+- [x] II. Combat
 	- [x] Enemies
 	- [x] Enemy Collision
 	- [x] Hit Points
@@ -30,7 +30,7 @@ the boundary of the map.
 	- [x] Enemy Death
 	- [x] Player Death
 	- [x] HP Display
-	- [ ] On-Screen Combat Log
+	- [x] On-Screen Combat Log
 
 The player should be able to encounter and 'fight' enemies by moving in
 their direction. When the collision is detected, movement will not be
