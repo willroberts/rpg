@@ -8,3 +8,4 @@
 
 * The tiles selected in Tiled do not appear in-game
 	* Higher-indexed tiles cause an `index out of range` error
+	* Tiles also flicker during gameplay
