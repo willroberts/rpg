@@ -56,7 +56,7 @@ func (p *Player) Destroy() {
 				Drawable: decorationSpritesheet.Cell(spriteGravestone),
 				Scale:    engo.Point{2, 2},
 			}
-			p.RenderComponent.SetZIndex(zCharacters)
+			p.RenderComponent.SetZIndex(zCharacter)
 			s.Add(&p.BasicEntity, &p.RenderComponent, &p.SpaceComponent)
 		}
 	}
@@ -117,7 +117,7 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 		Drawable: charSpritesheet.Cell(spriteIndex),
 		Scale:    engo.Point{2, 2},
 	}
-	p.RenderComponent.SetZIndex(1)
+	p.RenderComponent.SetZIndex(zCharacter)
 	p.SpaceComponent = common.SpaceComponent{
 		Position: engo.Point{
 			(charSizeX * float32(x)) + charOffsetX,

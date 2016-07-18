@@ -64,6 +64,16 @@ func (l *ActivityLog) Update(m string) {
 	r5.Draw()
 }
 
+// ActivityLogWindow is the HUD element under the messages.
+type ActivityLogWindow struct {
+	ecs.BasicEntity
+	common.RenderComponent
+	common.SpaceComponent
+
+	PosX, PosY    float32
+	Width, Height float32
+}
+
 // ActivityMessage is a log of an event from the game logic.
 type ActivityMessage struct {
 	ecs.BasicEntity
@@ -115,26 +125,37 @@ func initializeLogFont() error {
 }
 
 // newActivityLog creates a rotating log window on the screen.
+// FIXME: Player can still walk under the activity log.
+// FIXME: Use constants.
 func newActivityLog() *ActivityLog {
-	l := &ActivityLog{}
-
 	// Draw background rectangle.
-	/*
-		r := &struct{BasicEntity: ecs.NewBasic()}
-		r.RenderComponent = common.RenderComponent{
-			Drawable: "FOO", // FIXME
-			Scale:    engo.Point{1, 1},
+	w := &ActivityLogWindow{
+		BasicEntity: ecs.NewBasic(),
+		PosX:        8,
+		PosY:        570,
+		Width:       400,
+		Height:      138,
+	}
+	w.RenderComponent = common.RenderComponent{
+		Drawable: common.Rectangle{},
+		Color:    color.Black,
+	}
+	w.RenderComponent.SetZIndex(zHUD)
+	w.SetShader(common.HUDShader)
+	w.SpaceComponent = common.SpaceComponent{
+		Position: engo.Point{w.PosX, w.PosY},
+		Width:    w.Width,
+		Height:   w.Height,
+	}
+	for _, sys := range GameWorld.Systems() {
+		switch s := sys.(type) {
+		case *common.RenderSystem:
+			s.Add(&w.BasicEntity, &w.RenderComponent, &w.SpaceComponent)
 		}
-		p.RenderComponent.SetZIndex(zText)
-		for _, sys := range GameWorld.Systems() {
-			switch s := sys.(type) {
-			case *common.RenderSystem:
-				s.Add(&r.BasicEntity, &r.RenderComponent, &r.SpaceComponent)
-			}
-		}
-	*/
+	}
 
 	// Draw log messages.
+	l := &ActivityLog{}
 	offset := 0
 	for i := 0; i < 5; i++ {
 		l.Log[i] = initializeActivityMessage("", offset)

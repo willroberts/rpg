@@ -29,8 +29,8 @@ import (
 
 const (
 	zWorld = iota
+	zCharacter
 	zHUD
-	zCharacters
 	zText
 )
 
