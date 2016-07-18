@@ -1,5 +1,14 @@
 package: github.com/willroberts/rpg
+
 import:
 - package: engo.io/ecs
+  version: 95e9cb668349043e78cfe2bc6bb3aca12b0b6507
+  vcs: git
+  repo: https://github.com/EngoEngine/ecs.git
+
 - package: engo.io/engo
-- package: engo.io/engo/common
+  version: f6f6fe37bf922c2f8f58c57ae7fbb85023c831cd
+  vcs: git
+  repo: https://github.com/EngoEngine/engo.git
+  subpackages:
+  - common
