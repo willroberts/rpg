@@ -19,12 +19,12 @@
 package rpg
 
 import (
-	"log"
-
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
 )
+
+const failedMovementMsg string = "You can't go that way!"
 
 var player *Player
 
@@ -152,28 +152,28 @@ func movePlayer(e ControlEntity) {
 	switch d {
 	case "left":
 		if player.GetX() == GameGrid.MinX {
-			log.Println("You can't go that way!")
+			GameLog.Update(failedMovementMsg)
 			return
 		} else {
 			GameGrid.MoveCharacter(player, player.GetX()-1, player.GetY())
 		}
 	case "right":
 		if player.GetX() == GameGrid.MaxX {
-			log.Println("You can't go that way!")
+			GameLog.Update(failedMovementMsg)
 			return
 		} else {
 			GameGrid.MoveCharacter(player, player.GetX()+1, player.GetY())
 		}
 	case "up":
 		if player.GetY() == GameGrid.MinY {
-			log.Println("You can't go that way!")
+			GameLog.Update(failedMovementMsg)
 			return
 		} else {
 			GameGrid.MoveCharacter(player, player.GetX(), player.GetY()-1)
 		}
 	case "down":
 		if player.GetY() == GameGrid.MaxY {
-			log.Println("You can't go that way!")
+			GameLog.Update(failedMovementMsg)
 			return
 		} else {
 			GameGrid.MoveCharacter(player, player.GetX(), player.GetY()+1)
