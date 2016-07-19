@@ -34,13 +34,13 @@ const (
 
 // Main starts the game.
 func main() {
-	log.Println("[engine] configuring engine")
+	log.Println("configuring engine")
 	o := engo.RunOptions{
 		Title:  "RPG",
 		Width:  width,
 		Height: height,
 	}
-	log.Printf("[engine] video resolution: %dx%d\n", width, height)
-	log.Println("[engine] starting game")
+	log.Printf("video resolution: %dx%d\n", width, height)
+	log.Println("starting game")
 	engo.Run(o, &rpg.DefaultScene{})
 }

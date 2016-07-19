@@ -37,10 +37,10 @@ type DefaultScene struct{}
 // Preload validates and loads assets. In can cause panics, since the game cannot
 // run without its assets.
 func (scene *DefaultScene) Preload() {
-	log.Println("[assets] preloading resources")
+	log.Println("preloading resources")
 	preloadMapAssets("maps/stone.tmx")
 
-	log.Println("[assets] loading sprites")
+	log.Println("loading sprites")
 	err := engo.Files.Load("spritesheets/characters-32x32.png")
 	if err != nil {
 		panic(err)
@@ -58,7 +58,7 @@ func (scene *DefaultScene) Preload() {
 		decorationSpritesheetWidth,
 		decorationSpritesheetHeight)
 
-	log.Println("[assets] loading fonts")
+	log.Println("loading fonts")
 	err = engo.Files.Load("fonts/hud.ttf")
 	if err != nil {
 		panic(err)
@@ -73,20 +73,20 @@ func (scene *DefaultScene) Preload() {
 // panic, since the game cannot run without these systems.
 func (scene *DefaultScene) Setup(w *ecs.World) {
 	GameWorld = w
-	log.Println("[setup] setting up scene")
+	log.Println("setting up scene")
 	common.SetBackground(color.Black)
 	w.AddSystem(&common.RenderSystem{})
 	w.AddSystem(&ControlSystem{})
-	log.Println("[setup] loading map")
+	log.Println("loading map")
 	level, tiles, err := loadMap("maps/stone.tmx")
 	if err != nil {
 		panic(err)
 	}
-	log.Println("[setup] processing grid")
+	log.Println("processing grid")
 	GameGrid = newGrid(level.Width(), level.Height())
-	log.Println("[setup] creating player")
+	log.Println("creating player")
 	player = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
-	log.Println("[setup] creating enemies")
+	log.Println("creating enemies")
 	if err = loadEnemyTypes(); err != nil {
 		panic(err)
 	}
@@ -99,11 +99,11 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 		newEnemy("Bear", spriteBear, 6, 17),
 		newEnemy("Demon", spriteDemon, 10, 22),
 	}
-	log.Println("[setup] configuring systems")
+	log.Println("configuring systems")
 	for _, sys := range w.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
-			log.Println("[setup] configuring render system")
+			log.Println("configuring render system")
 			for _, t := range tiles {
 				s.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
 			}
@@ -112,19 +112,19 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 				s.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
 			}
 		case *ControlSystem:
-			log.Println("[setup] configuring control system")
+			log.Println("configuring control system")
 			s.Add(&player.BasicEntity, &player.ControlComponent,
 				&player.SpaceComponent)
 		}
 	}
 
-	log.Println("[setup] configuring camera")
+	log.Println("configuring camera")
 	w.AddSystem(&common.EntityScroller{
 		SpaceComponent: &player.SpaceComponent,
 		TrackingBounds: level.Bounds(),
 	})
 
-	log.Println("[setup] creating hud")
+	log.Println("creating hud")
 	initializeHUDFont()
 	initializeLogFont()
 	GameHUD, err = newHUD()
@@ -136,8 +136,9 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	GameLog.Update("There are three skeletons near you.")
 	GameLog.Update("Try moving into them to attack.")
 
-	log.Println("[setup] binding controls")
+	log.Println("binding controls")
 	bindControls()
+	log.Println("control bound. use the arrow keys to move")
 }
 
 // Type returns the name of the scene. This is used to satisfy engo's Scene
