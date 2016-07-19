@@ -24,6 +24,7 @@ import (
 	"engo.io/engo/common"
 )
 
+// FIXME: Do these need package scope?
 var (
 	widthLimit  float32
 	heightLimit float32

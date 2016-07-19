@@ -35,9 +35,10 @@ const (
 	zText
 )
 
+// FIXME: package scope
 var (
-	GameHUD *HUD
-	HUDFont *common.Font
+	gameHUD *HUD
+	hudFont *common.Font
 )
 
 // The HUD contains all on-screen text, controls, and buttons.
@@ -54,7 +55,7 @@ func (h *HUD) UpdateHealth() {
 		case *common.RenderSystem:
 			s.Remove(h.BasicEntity)
 			h.RenderComponent.Drawable = common.Text{
-				Font: HUDFont,
+				Font: hudFont,
 				Text: fmt.Sprintf("HP: %d", player.GetHitPoints()),
 			}
 			s.Add(&h.BasicEntity, &h.RenderComponent, &h.SpaceComponent)
@@ -62,17 +63,17 @@ func (h *HUD) UpdateHealth() {
 	}
 }
 
-// initializeFonts creates the various sizes of fonts we need.
+// initializeHUDFont prepares the font used in the HUD.
 func initializeHUDFont() error {
-	if HUDFont == nil {
-		HUDFont = &common.Font{
+	if hudFont == nil {
+		hudFont = &common.Font{
 			URL:  "fonts/hud.ttf",
 			BG:   color.Black,
 			FG:   color.White,
 			Size: 48,
 		}
 	}
-	if err := HUDFont.CreatePreloaded(); err != nil {
+	if err := hudFont.CreatePreloaded(); err != nil {
 		return err
 	}
 	return nil
@@ -82,7 +83,7 @@ func initializeHUDFont() error {
 func newHUD() (*HUD, error) {
 	h := &HUD{BasicEntity: ecs.NewBasic()}
 	h.RenderComponent.Drawable = common.Text{
-		Font: HUDFont,
+		Font: hudFont,
 		Text: fmt.Sprintf("HP: %d", player.GetHitPoints()),
 	}
 	h.RenderComponent.SetZIndex(zHUD)

@@ -25,6 +25,7 @@ import (
 	"engo.io/engo/common"
 )
 
+// FIXME: package scope
 var (
 	levelWidth  float32
 	levelHeight float32

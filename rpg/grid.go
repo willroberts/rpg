@@ -21,6 +21,7 @@ package rpg
 
 import "errors"
 
+// FIXME: Does this need package scope?
 var GameGrid *Grid
 
 // A Grid contains an array of arrays of cells corresponding to a Tiled map. It

@@ -28,7 +28,8 @@ import (
 	"engo.io/engo/common"
 )
 
-var EnemyTypes = make(map[string]EnemyAttributes)
+// FIXME: Does this need package scope?
+var enemyTypes = make(map[string]EnemyAttributes)
 
 // EnemyAttributes stores the game data which are imported from external sources,
 // such as JSON or a database. Once a set of attributes is defined, attributes
@@ -100,13 +101,13 @@ func (e *Enemy) SetX(x int) { e.X = x }
 func (e *Enemy) SetY(y int) { e.Y = y }
 
 // loadEnemyTypes reads EnemyAttributes from JSON, and populates the global map
-// EnemyTypes.
+// enemyTypes.
 func loadEnemyTypes() error {
 	b, err := ioutil.ReadFile("data/enemies.json")
 	if err != nil {
 		return err
 	}
-	if err = json.Unmarshal(b, &EnemyTypes); err != nil {
+	if err = json.Unmarshal(b, &enemyTypes); err != nil {
 		return err
 	}
 	return nil
@@ -118,7 +119,7 @@ func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 		BasicEntity: ecs.NewBasic(),
 		Name:        name,
 		Hostility:   "hostile",
-		HitPoints:   EnemyTypes[name].HitPoints,
+		HitPoints:   enemyTypes[name].HitPoints,
 		X:           x,
 		Y:           y,
 	}

@@ -132,14 +132,14 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	log.Println("creating hud")
 	initializeHUDFont()
 	initializeLogFont()
-	GameHUD, err = newHUD()
+	gameHUD, err = newHUD()
 	if err != nil {
 		panic(err)
 	}
-	GameLog = newActivityLog()
-	GameLog.Update("Welcome to the game.")
-	GameLog.Update("There are three skeletons near you.")
-	GameLog.Update("Try moving into them to attack.")
+	gameLog = newActivityLog()
+	gameLog.Update("Welcome to the game.")
+	gameLog.Update("There are three skeletons near you.")
+	gameLog.Update("Try moving into them to attack.")
 
 	log.Println("binding controls")
 	bindControls()

@@ -62,6 +62,7 @@ const (
 	charOffsetY float32 = 4
 )
 
+// FIXME: Do these need package scope?
 var (
 	charSpritesheet       *common.Spritesheet
 	decorationSpritesheet *common.Spritesheet

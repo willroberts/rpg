@@ -27,6 +27,7 @@ import (
 
 const failedMovementMsg string = "You can't go that way!"
 
+// FIXME: package scope
 var player *Player
 
 // Player is the player-controlled entity in the game.
@@ -153,28 +154,28 @@ func movePlayer(e ControlEntity) {
 	switch d {
 	case "left":
 		if player.GetX() == GameGrid.MinX {
-			GameLog.Update(failedMovementMsg)
+			gameLog.Update(failedMovementMsg)
 			return
 		} else {
 			GameGrid.MoveCharacter(player, player.GetX()-1, player.GetY())
 		}
 	case "right":
 		if player.GetX() == GameGrid.MaxX {
-			GameLog.Update(failedMovementMsg)
+			gameLog.Update(failedMovementMsg)
 			return
 		} else {
 			GameGrid.MoveCharacter(player, player.GetX()+1, player.GetY())
 		}
 	case "up":
 		if player.GetY() == GameGrid.MinY {
-			GameLog.Update(failedMovementMsg)
+			gameLog.Update(failedMovementMsg)
 			return
 		} else {
 			GameGrid.MoveCharacter(player, player.GetX(), player.GetY()-1)
 		}
 	case "down":
 		if player.GetY() == GameGrid.MaxY {
-			GameLog.Update(failedMovementMsg)
+			gameLog.Update(failedMovementMsg)
 			return
 		} else {
 			GameGrid.MoveCharacter(player, player.GetX(), player.GetY()+1)

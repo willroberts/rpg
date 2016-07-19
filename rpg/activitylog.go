@@ -28,14 +28,15 @@ import (
 )
 
 const (
-	ActivityLogPosX    int = 16  // 16px from the left
-	ActivityLogPosY    int = 580 // gameheight minus two tiles (160px) plus 20px buffer to center it
-	ActivityLogSpacing int = 24
+	activityLogPosX    int = 16  // 16px from the left
+	activityLogPosY    int = 580 // game height - 2 tiles, plus a buffer to center
+	activityLogSpacing int = 24
 )
 
+// FIXME: Do these need package scope?
 var (
-	GameLog         *ActivityLog
-	ActivityLogFont *common.Font
+	gameLog         *ActivityLog
+	activityLogFont *common.Font
 )
 
 // ActivityLog stores a rolling set of five messages to be displayed on the screen.
@@ -86,7 +87,7 @@ type ActivityMessage struct {
 
 // Draw draws a log message on the screen
 func (m *ActivityMessage) Draw() {
-	m.RenderComponent.Drawable = common.Text{Font: ActivityLogFont, Text: m.Text}
+	m.RenderComponent.Drawable = common.Text{Font: activityLogFont, Text: m.Text}
 	for _, sys := range GameWorld.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
@@ -98,28 +99,28 @@ func (m *ActivityMessage) Draw() {
 // initializeActivityMessage creates one of the message rows in the ActivityLog.
 func initializeActivityMessage(msg string, offset int) *ActivityMessage {
 	m := &ActivityMessage{Text: msg}
-	m.RenderComponent.Drawable = common.Text{Font: ActivityLogFont, Text: m.Text}
+	m.RenderComponent.Drawable = common.Text{Font: activityLogFont, Text: m.Text}
 	m.RenderComponent.SetZIndex(zText)
 	m.SetShader(common.HUDShader)
 	m.SpaceComponent = common.SpaceComponent{Position: engo.Point{
-		float32(ActivityLogPosX),
-		float32(ActivityLogPosY + offset),
+		float32(activityLogPosX),
+		float32(activityLogPosY + offset),
 	}}
 	m.Draw()
 	return m
 }
 
-// initializeFonts creates the various sizes of fonts we need.
+// initializeLogFont prepares the font used in the activity log.
 func initializeLogFont() error {
-	if ActivityLogFont == nil {
-		ActivityLogFont = &common.Font{
+	if activityLogFont == nil {
+		activityLogFont = &common.Font{
 			URL:  "fonts/combatlog.ttf",
 			BG:   color.Black,
 			FG:   color.White,
 			Size: 24,
 		}
 	}
-	if err := ActivityLogFont.CreatePreloaded(); err != nil {
+	if err := activityLogFont.CreatePreloaded(); err != nil {
 		return err
 	}
 	return nil
@@ -157,10 +158,10 @@ func newActivityLog() *ActivityLog {
 
 	// Draw log messages.
 	l := &ActivityLog{}
-	offset := 0
+	var offset int
 	for i := 0; i < 5; i++ {
 		l.Log[i] = initializeActivityMessage("", offset)
-		offset += ActivityLogSpacing
+		offset += activityLogSpacing
 	}
 	return l
 }
