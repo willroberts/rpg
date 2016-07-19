@@ -19,3 +19,30 @@
 
 // Package rpg contains all systems needed to run our 2D RPG.
 package rpg
+
+import (
+	"engo.io/ecs"
+	"engo.io/engo/common"
+)
+
+// Create some shared variables in the package scope.
+// All shared variables start with "game".
+// FIXME: Do all of these need package scope?
+var (
+	gameWorld       *ecs.World
+	gameHeight      float32
+	gameHeightLimit float32
+	gameWidth       float32
+	gameWidthLimit  float32
+
+	gameGrid    *Grid
+	gameHUD     *HUD
+	gameFontHUD *common.Font
+	gameLog     *ActivityLog
+	gameFontLog *common.Font
+
+	gamePlayer      *Player
+	gameEnemyTypes  map[string]EnemyAttributes = make(map[string]EnemyAttributes)
+	gameSpritesChar *common.Spritesheet
+	gameSpritesDeco *common.Spritesheet
+)

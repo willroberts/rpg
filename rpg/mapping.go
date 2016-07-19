@@ -25,12 +25,6 @@ import (
 	"engo.io/engo/common"
 )
 
-// FIXME: package scope
-var (
-	levelWidth  float32
-	levelHeight float32
-)
-
 // A Tile is the basic map unit. We parse a Tiled map and create a Tile for each
 // tile in the map.
 type Tile struct {
@@ -48,8 +42,8 @@ func loadMap(m string) (*common.Level, []*Tile, error) {
 		return &common.Level{}, tiles, err
 	}
 	l := resource.(common.TMXResource).Level
-	levelWidth = l.Bounds().Max.X
-	levelHeight = l.Bounds().Max.Y
+	gameWidth = l.Bounds().Max.X
+	gameHeight = l.Bounds().Max.Y
 	for _, tl := range l.TileLayers {
 		for _, te := range tl.Tiles {
 			if te.Image != nil {

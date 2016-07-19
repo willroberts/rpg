@@ -33,12 +33,6 @@ const (
 	activityLogSpacing int = 24
 )
 
-// FIXME: Do these need package scope?
-var (
-	gameLog         *ActivityLog
-	activityLogFont *common.Font
-)
-
 // ActivityLog stores a rolling set of five messages to be displayed on the screen.
 type ActivityLog struct {
 	Log [5]*ActivityMessage
@@ -87,8 +81,8 @@ type ActivityMessage struct {
 
 // Draw draws a log message on the screen
 func (m *ActivityMessage) Draw() {
-	m.RenderComponent.Drawable = common.Text{Font: activityLogFont, Text: m.Text}
-	for _, sys := range GameWorld.Systems() {
+	m.RenderComponent.Drawable = common.Text{Font: gameFontLog, Text: m.Text}
+	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Add(&m.BasicEntity, &m.RenderComponent, &m.SpaceComponent)
@@ -99,7 +93,7 @@ func (m *ActivityMessage) Draw() {
 // initializeActivityMessage creates one of the message rows in the ActivityLog.
 func initializeActivityMessage(msg string, offset int) *ActivityMessage {
 	m := &ActivityMessage{Text: msg}
-	m.RenderComponent.Drawable = common.Text{Font: activityLogFont, Text: m.Text}
+	m.RenderComponent.Drawable = common.Text{Font: gameFontLog, Text: m.Text}
 	m.RenderComponent.SetZIndex(zText)
 	m.SetShader(common.HUDShader)
 	m.SpaceComponent = common.SpaceComponent{Position: engo.Point{
@@ -112,15 +106,15 @@ func initializeActivityMessage(msg string, offset int) *ActivityMessage {
 
 // initializeLogFont prepares the font used in the activity log.
 func initializeLogFont() error {
-	if activityLogFont == nil {
-		activityLogFont = &common.Font{
+	if gameFontLog == nil {
+		gameFontLog = &common.Font{
 			URL:  "fonts/combatlog.ttf",
 			BG:   color.Black,
 			FG:   color.White,
 			Size: 24,
 		}
 	}
-	if err := activityLogFont.CreatePreloaded(); err != nil {
+	if err := gameFontLog.CreatePreloaded(); err != nil {
 		return err
 	}
 	return nil
@@ -149,7 +143,7 @@ func newActivityLog() *ActivityLog {
 		Width:    w.Width,
 		Height:   w.Height,
 	}
-	for _, sys := range GameWorld.Systems() {
+	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Add(&w.BasicEntity, &w.RenderComponent, &w.SpaceComponent)

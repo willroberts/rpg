@@ -28,9 +28,6 @@ import (
 	"engo.io/engo/common"
 )
 
-// FIXME: Does this need to be a package-scoped variable?
-var GameWorld *ecs.World
-
 // DefaultScene is our first and only scene at the moment. It includes the first
 // map, a static set of enemies, and only one room.
 type DefaultScene struct{}
@@ -42,30 +39,15 @@ func (scene *DefaultScene) Preload() {
 	preloadMapAssets("maps/stone.tmx")
 
 	log.Println("preloading sprites")
-	err := engo.Files.Load("spritesheets/characters-32x32.png")
-	if err != nil {
+	if err := preloadSprites(); err != nil {
 		panic(err)
 	}
-	err = engo.Files.Load("spritesheets/decoration-20x20-40x40.png")
-	if err != nil {
-		panic(err)
-	}
-	charSpritesheet = common.NewSpritesheetFromFile(
-		charSpritesheetPath,
-		charSpritesheetWidth,
-		charSpritesheetHeight)
-	decorationSpritesheet = common.NewSpritesheetFromFile(
-		decorationSpritesheetPath,
-		decorationSpritesheetWidth,
-		decorationSpritesheetHeight)
 
 	log.Println("preloading fonts")
-	err = engo.Files.Load("fonts/hud.ttf")
-	if err != nil {
+	if err := engo.Files.Load("fonts/hud.ttf"); err != nil {
 		panic(err)
 	}
-	err = engo.Files.Load("fonts/combatlog.ttf")
-	if err != nil {
+	if err := engo.Files.Load("fonts/combatlog.ttf"); err != nil {
 		panic(err)
 	}
 }
@@ -74,7 +56,7 @@ func (scene *DefaultScene) Preload() {
 // panic, since the game cannot run without these systems.
 func (scene *DefaultScene) Setup(w *ecs.World) {
 	log.Println("creating scene")
-	GameWorld = w
+	gameWorld = w
 	common.SetBackground(color.Black)
 	w.AddSystem(&common.RenderSystem{})
 	w.AddSystem(&ControlSystem{})
@@ -86,10 +68,10 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 	}
 
 	log.Println("creating level grid")
-	GameGrid = newGrid(level.Width(), level.Height())
+	gameGrid = newGrid(level.Width(), level.Height())
 
 	log.Println("creating player")
-	player = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
+	gamePlayer = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
 
 	log.Println("creating enemies")
 	if err = loadEnemyTypes(); err != nil {
@@ -112,20 +94,20 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 			for _, t := range tiles {
 				s.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
 			}
-			s.Add(&player.BasicEntity, &player.RenderComponent, &player.SpaceComponent)
+			s.Add(&gamePlayer.BasicEntity, &gamePlayer.RenderComponent, &gamePlayer.SpaceComponent)
 			for _, e := range enemies {
 				s.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
 			}
 		case *ControlSystem:
 			log.Println("configuring control system")
-			s.Add(&player.BasicEntity, &player.ControlComponent,
-				&player.SpaceComponent)
+			s.Add(&gamePlayer.BasicEntity, &gamePlayer.ControlComponent,
+				&gamePlayer.SpaceComponent)
 		}
 	}
 
 	log.Println("configuring camera")
 	w.AddSystem(&common.EntityScroller{
-		SpaceComponent: &player.SpaceComponent,
+		SpaceComponent: &gamePlayer.SpaceComponent,
 		TrackingBounds: level.Bounds(),
 	})
 

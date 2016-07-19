@@ -24,12 +24,6 @@ import (
 	"engo.io/engo/common"
 )
 
-// FIXME: Do these need package scope?
-var (
-	widthLimit  float32
-	heightLimit float32
-)
-
 // A ControlComponent is attached to a ControlEntity when being added to the
 // ControlSystem.
 type ControlComponent struct {
@@ -74,8 +68,8 @@ func (c *ControlSystem) Remove(te ecs.BasicEntity) {
 // Update processes events for the control system.
 func (c *ControlSystem) Update(dt float32) {
 	for _, e := range c.entities {
-		heightLimit = levelHeight - e.SpaceComponent.Height
-		widthLimit = levelWidth - e.SpaceComponent.Width
+		gameHeightLimit = gameHeight - e.SpaceComponent.Height
+		gameWidthLimit = gameWidth - e.SpaceComponent.Width
 		movePlayer(e)
 	}
 }

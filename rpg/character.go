@@ -19,7 +19,10 @@
 
 package rpg
 
-import "engo.io/engo/common"
+import (
+	"engo.io/engo"
+	"engo.io/engo/common"
+)
 
 const (
 	// Sprite constants are named indices in the spritesheets.
@@ -45,12 +48,12 @@ const (
 	spriteStairsUpLeft2   int = 15 // darker?
 
 	// Spritesheets
-	charSpritesheetPath         string = "spritesheets/characters-32x32.png"
-	charSpritesheetWidth        int    = 32
-	charSpritesheetHeight       int    = 32
-	decorationSpritesheetPath   string = "spritesheets/decoration-20x20-40x40.png"
-	decorationSpritesheetWidth  int    = 40
-	decorationSpritesheetHeight int    = 40
+	charSpritesheetPath   string = "spritesheets/characters-32x32.png"
+	charSpritesheetWidth  int    = 32
+	charSpritesheetHeight int    = 32
+	decoSpritesheetPath   string = "spritesheets/decoration-20x20-40x40.png"
+	decoSpritesheetWidth  int    = 40
+	decoSpritesheetHeight int    = 40
 
 	// SpaceComponent dimensions of characters.
 	charSizeX float32 = 80
@@ -60,12 +63,6 @@ const (
 	// to be centered in an 80x80 tile.
 	charOffsetX float32 = 8
 	charOffsetY float32 = 4
-)
-
-// FIXME: Do these need package scope?
-var (
-	charSpritesheet       *common.Spritesheet
-	decorationSpritesheet *common.Spritesheet
 )
 
 // A Character is a generic entity which can occupy space on a tile, including
@@ -85,4 +82,23 @@ type Character interface {
 	GetDamage() int
 
 	Destroy()
+}
+
+// preloadSprites reads sprites from files on disk.
+func preloadSprites() error {
+	if err := engo.Files.Load(charSpritesheetPath); err != nil {
+		return err
+	}
+	gameSpritesChar = common.NewSpritesheetFromFile(
+		charSpritesheetPath,
+		charSpritesheetWidth,
+		charSpritesheetHeight)
+	if err := engo.Files.Load(decoSpritesheetPath); err != nil {
+		return err
+	}
+	gameSpritesDeco = common.NewSpritesheetFromFile(
+		decoSpritesheetPath,
+		decoSpritesheetWidth,
+		decoSpritesheetHeight)
+	return nil
 }

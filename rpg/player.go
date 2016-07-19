@@ -27,9 +27,6 @@ import (
 
 const failedMovementMsg string = "You can't go that way!"
 
-// FIXME: package scope
-var player *Player
-
 // Player is the player-controlled entity in the game.
 type Player struct {
 	ecs.BasicEntity
@@ -48,14 +45,14 @@ type Player struct {
 // incoming movement commands. Removes the Player from the ControlSystem and the
 // RenderSystem, and then re-add the Player to the RenderSystem as a gravestone.
 func (p *Player) Destroy() {
-	for _, sys := range GameWorld.Systems() {
+	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
 		case *ControlSystem:
 			s.Remove(p.BasicEntity)
 		case *common.RenderSystem:
 			s.Remove(p.BasicEntity)
 			p.RenderComponent = common.RenderComponent{
-				Drawable: decorationSpritesheet.Cell(spriteGravestone),
+				Drawable: gameSpritesDeco.Cell(spriteGravestone),
 				Scale:    engo.Point{2, 2},
 			}
 			p.RenderComponent.SetZIndex(zCharacter)
@@ -116,7 +113,7 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 		HitPoints: 10,
 	}
 	p.RenderComponent = common.RenderComponent{
-		Drawable: charSpritesheet.Cell(spriteIndex),
+		Drawable: gameSpritesChar.Cell(spriteIndex),
 		Scale:    engo.Point{2, 2},
 	}
 	p.RenderComponent.SetZIndex(zCharacter)
@@ -128,7 +125,7 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 		Width:  charSizeX,
 		Height: charSizeY,
 	}
-	GameGrid.AddCharacter(p, x, y)
+	gameGrid.AddCharacter(p, x, y)
 	return p
 }
 
@@ -136,6 +133,7 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 // movement.
 // FIXME: Is the ControlEntity parameter needed? We can refer to player globally.
 // FIXME: Only call movePlayer from scene when a key has recently been pressed.
+// FIXME: Make this a function bound to *Player instead
 func movePlayer(e ControlEntity) {
 	var d string
 	if engo.Input.Button("moveleft").JustPressed() {
@@ -153,37 +151,37 @@ func movePlayer(e ControlEntity) {
 	}
 	switch d {
 	case "left":
-		if player.GetX() == GameGrid.MinX {
+		if gamePlayer.GetX() == gameGrid.MinX {
 			gameLog.Update(failedMovementMsg)
 			return
 		} else {
-			GameGrid.MoveCharacter(player, player.GetX()-1, player.GetY())
+			gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX()-1, gamePlayer.GetY())
 		}
 	case "right":
-		if player.GetX() == GameGrid.MaxX {
+		if gamePlayer.GetX() == gameGrid.MaxX {
 			gameLog.Update(failedMovementMsg)
 			return
 		} else {
-			GameGrid.MoveCharacter(player, player.GetX()+1, player.GetY())
+			gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX()+1, gamePlayer.GetY())
 		}
 	case "up":
-		if player.GetY() == GameGrid.MinY {
+		if gamePlayer.GetY() == gameGrid.MinY {
 			gameLog.Update(failedMovementMsg)
 			return
 		} else {
-			GameGrid.MoveCharacter(player, player.GetX(), player.GetY()-1)
+			gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX(), gamePlayer.GetY()-1)
 		}
 	case "down":
-		if player.GetY() == GameGrid.MaxY {
+		if gamePlayer.GetY() == gameGrid.MaxY {
 			gameLog.Update(failedMovementMsg)
 			return
 		} else {
-			GameGrid.MoveCharacter(player, player.GetX(), player.GetY()+1)
+			gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX(), gamePlayer.GetY()+1)
 		}
 	}
-	posX := float32(player.GetX()) * charSizeX
-	posY := float32(player.GetY()) * charSizeY
-	if player.GetHitPoints() > 0 {
+	posX := float32(gamePlayer.GetX()) * charSizeX
+	posY := float32(gamePlayer.GetY()) * charSizeY
+	if gamePlayer.GetHitPoints() > 0 {
 		// The gravestone is a differently-sized asset which doesn't need an offset.
 		posX += charOffsetX
 		posY += charOffsetY

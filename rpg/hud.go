@@ -35,12 +35,6 @@ const (
 	zText
 )
 
-// FIXME: package scope
-var (
-	gameHUD *HUD
-	hudFont *common.Font
-)
-
 // The HUD contains all on-screen text, controls, and buttons.
 type HUD struct {
 	ecs.BasicEntity
@@ -50,13 +44,13 @@ type HUD struct {
 
 // UpdateHealth redraws the HP text on the screen when Player HP changes.
 func (h *HUD) UpdateHealth() {
-	for _, sys := range GameWorld.Systems() {
+	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Remove(h.BasicEntity)
 			h.RenderComponent.Drawable = common.Text{
-				Font: hudFont,
-				Text: fmt.Sprintf("HP: %d", player.GetHitPoints()),
+				Font: gameFontHUD,
+				Text: fmt.Sprintf("HP: %d", gamePlayer.GetHitPoints()),
 			}
 			s.Add(&h.BasicEntity, &h.RenderComponent, &h.SpaceComponent)
 		}
@@ -65,15 +59,15 @@ func (h *HUD) UpdateHealth() {
 
 // initializeHUDFont prepares the font used in the HUD.
 func initializeHUDFont() error {
-	if hudFont == nil {
-		hudFont = &common.Font{
+	if gameFontHUD == nil {
+		gameFontHUD = &common.Font{
 			URL:  "fonts/hud.ttf",
 			BG:   color.Black,
 			FG:   color.White,
 			Size: 48,
 		}
 	}
-	if err := hudFont.CreatePreloaded(); err != nil {
+	if err := gameFontHUD.CreatePreloaded(); err != nil {
 		return err
 	}
 	return nil
@@ -83,13 +77,13 @@ func initializeHUDFont() error {
 func newHUD() (*HUD, error) {
 	h := &HUD{BasicEntity: ecs.NewBasic()}
 	h.RenderComponent.Drawable = common.Text{
-		Font: hudFont,
-		Text: fmt.Sprintf("HP: %d", player.GetHitPoints()),
+		Font: gameFontHUD,
+		Text: fmt.Sprintf("HP: %d", gamePlayer.GetHitPoints()),
 	}
 	h.RenderComponent.SetZIndex(zHUD)
 	h.SetShader(common.HUDShader)
 	h.SpaceComponent = common.SpaceComponent{Position: engo.Point{16, 16}}
-	for _, sys := range GameWorld.Systems() {
+	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Add(&h.BasicEntity, &h.RenderComponent, &h.SpaceComponent)

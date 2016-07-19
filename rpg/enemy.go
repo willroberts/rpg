@@ -28,9 +28,6 @@ import (
 	"engo.io/engo/common"
 )
 
-// FIXME: Does this need package scope?
-var enemyTypes = make(map[string]EnemyAttributes)
-
 // EnemyAttributes stores the game data which are imported from external sources,
 // such as JSON or a database. Once a set of attributes is defined, attributes
 // may be modified freely without modifying the game code.
@@ -53,8 +50,8 @@ type Enemy struct {
 
 // Destroy removes an enemy from the Grid and from the RenderSystem.
 func (e *Enemy) Destroy() {
-	GameGrid.RemoveCharacter(e.GetX(), e.GetY())
-	for _, sys := range GameWorld.Systems() {
+	gameGrid.RemoveCharacter(e.GetX(), e.GetY())
+	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Remove(e.BasicEntity)
@@ -101,13 +98,13 @@ func (e *Enemy) SetX(x int) { e.X = x }
 func (e *Enemy) SetY(y int) { e.Y = y }
 
 // loadEnemyTypes reads EnemyAttributes from JSON, and populates the global map
-// enemyTypes.
+// gameEnemyTypes.
 func loadEnemyTypes() error {
 	b, err := ioutil.ReadFile("data/enemies.json")
 	if err != nil {
 		return err
 	}
-	if err = json.Unmarshal(b, &enemyTypes); err != nil {
+	if err = json.Unmarshal(b, &gameEnemyTypes); err != nil {
 		return err
 	}
 	return nil
@@ -119,11 +116,11 @@ func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 		BasicEntity: ecs.NewBasic(),
 		Name:        name,
 		Hostility:   "hostile",
-		HitPoints:   enemyTypes[name].HitPoints,
+		HitPoints:   gameEnemyTypes[name].HitPoints,
 		X:           x,
 		Y:           y,
 	}
-	enemyTexture := charSpritesheet.Cell(spriteIndex)
+	enemyTexture := gameSpritesChar.Cell(spriteIndex)
 	e.RenderComponent = common.RenderComponent{
 		Drawable: enemyTexture,
 		Scale:    engo.Point{2, 2},
@@ -137,6 +134,6 @@ func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 		Width:  charSizeX,
 		Height: charSizeY,
 	}
-	GameGrid.AddCharacter(e, x, y)
+	gameGrid.AddCharacter(e, x, y)
 	return e
 }
