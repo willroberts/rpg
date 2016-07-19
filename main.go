@@ -40,5 +40,5 @@ func main() {
 		Height: height,
 	}
 	log.Printf("starting game. video resolution: %dx%d\n", width, height)
-	engo.Run(o, &rpg.DefaultScene{})
+	engo.Run(o, &rpg.DungeonScene{})
 }
