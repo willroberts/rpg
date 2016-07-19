@@ -41,9 +41,10 @@ type Player struct {
 	X, Y int
 }
 
-// When the player dies, we replace the character texture and stop processing
-// incoming movement commands. Removes the Player from the ControlSystem and the
-// RenderSystem, and then re-add the Player to the RenderSystem as a gravestone.
+// Destroy removes a Player entity from the game. When the player dies, we
+// replace the character texture and stop processing incoming movement commands.
+// Removes the Player from the ControlSystem and the RenderSystem, and then re-add
+// the Player to the RenderSystem as a gravestone.
 func (p *Player) Destroy() {
 	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
@@ -154,30 +155,26 @@ func movePlayer(e ControlEntity) {
 		if gamePlayer.GetX() == gameGrid.MinX {
 			gameLog.Update(failedMovementMsg)
 			return
-		} else {
-			gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX()-1, gamePlayer.GetY())
 		}
+		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX()-1, gamePlayer.GetY())
 	case "right":
 		if gamePlayer.GetX() == gameGrid.MaxX {
 			gameLog.Update(failedMovementMsg)
 			return
-		} else {
-			gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX()+1, gamePlayer.GetY())
 		}
+		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX()+1, gamePlayer.GetY())
 	case "up":
 		if gamePlayer.GetY() == gameGrid.MinY {
 			gameLog.Update(failedMovementMsg)
 			return
-		} else {
-			gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX(), gamePlayer.GetY()-1)
 		}
+		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX(), gamePlayer.GetY()-1)
 	case "down":
 		if gamePlayer.GetY() == gameGrid.MaxY {
 			gameLog.Update(failedMovementMsg)
 			return
-		} else {
-			gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX(), gamePlayer.GetY()+1)
 		}
+		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX(), gamePlayer.GetY()+1)
 	}
 	posX := float32(gamePlayer.GetX()) * charSizeX
 	posY := float32(gamePlayer.GetY()) * charSizeY

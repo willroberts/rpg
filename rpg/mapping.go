@@ -36,7 +36,7 @@ type Tile struct {
 // loadMap parses a Tiled map, returning a processed level and a set of Tiles to
 // be rendered.
 func loadMap(m string) (*common.Level, []*Tile, error) {
-	tiles := make([]*Tile, 0)
+	var tiles []*Tile
 	resource, err := engo.Files.Resource(m)
 	if err != nil {
 		return &common.Level{}, tiles, err

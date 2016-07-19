@@ -33,8 +33,8 @@ type Grid struct {
 	MaxY int
 }
 
-// Add a character to the grid. Raises an error on failure, as this should not
-// happen during gameplay.
+// AddCharacter adds a character to the grid. Raises an error on failure, as this
+// should not happen during gameplay.
 func (g *Grid) AddCharacter(c Character, atX, atY int) error {
 	dst := g.GetCell(atX, atY)
 	if dst.Character != nil {
@@ -49,8 +49,8 @@ func (g *Grid) GetCell(x, y int) *GridCell {
 	return g.Rows[y].Cells[x]
 }
 
-// Move an existing character to a new location if nothing is already there. If
-// a hostile entity is there, trigger combat.
+// MoveCharacter moves an existing character to a new location if nothing is
+// already there. If a hostile entity is there, combat is started.
 func (g *Grid) MoveCharacter(c Character, toX, toY int) {
 	dst := g.GetCell(toX, toY)
 	if dst.Character != nil {

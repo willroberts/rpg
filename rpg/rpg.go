@@ -42,7 +42,7 @@ var (
 	gameFontLog *common.Font
 
 	gamePlayer      *Player
-	gameEnemyTypes  map[string]EnemyAttributes = make(map[string]EnemyAttributes)
+	gameEnemyTypes  = make(map[string]EnemyAttributes)
 	gameSpritesChar *common.Spritesheet
 	gameSpritesDeco *common.Spritesheet
 )
