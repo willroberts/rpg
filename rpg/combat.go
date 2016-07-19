@@ -23,8 +23,6 @@ import "fmt"
 
 // Given pointers to two entities, resolve combat between them. Applies damage
 // simultaneously and then updates the HUD before destroying any Characters.
-// TODO: Move logs to on-screen combat log.
-// TODO: Capitalize the first letter in the logs.
 func initiateCombat(c1, c2 Character) {
 	gameLog.Update(fmt.Sprintf("%s hits %s for %d damage!", c1.GetName(),
 		c2.GetName(), c2.GetDamage()))
