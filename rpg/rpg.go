@@ -1,4 +1,4 @@
-// input.go
+// rpg.go
 
 // RPG: A 2D game written in Go, with the engo engine.
 // Copyright (C) 2016 Will Roberts
@@ -17,21 +17,5 @@
 // along with this program; if not, write to the Free Software Foundation,
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
+// Package rpg contains all systems needed to run our 2D RPG.
 package rpg
-
-import (
-	"log"
-
-	"engo.io/engo"
-)
-
-// bindControls assigns the arrow keys to Player movement.
-func bindControls() {
-	log.Println("[input] binding controls")
-	engo.Input.RegisterButton("moveup", engo.ArrowUp)
-	engo.Input.RegisterButton("movedown", engo.ArrowDown)
-	engo.Input.RegisterButton("moveleft", engo.ArrowLeft)
-	engo.Input.RegisterButton("moveright", engo.ArrowRight)
-	log.Println("[input] controls bound")
-	log.Println("[input] use the arrow keys to move")
-}
