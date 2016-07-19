@@ -41,7 +41,7 @@ calculate and deal damage at the same time, before either entity has a
 chance to die. When the enemy dies, its sprite should be removed from the
 scene.
 
-### III. Improved Interaction
+### III. Improvements
 
 - [ ] Start Menu
 - [ ] Artificial Intelligence
@@ -49,6 +49,10 @@ scene.
 	- [ ] Enemies advance one step toward the player when spotted
 	-	[ ] Enemies have limited decision making and may flee
 - [ ] Fog of War
+- [ ] Fix tile rendering bug
+- [ ] Make HUD look better
+- [ ] Make HUD not part of the moveable surface
+- [ ] Reduce the scale of tiles, add more of them
 
 ### IV. Increased Depth
 
