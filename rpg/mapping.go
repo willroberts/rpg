@@ -20,8 +20,6 @@
 package rpg
 
 import (
-	"log"
-
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
@@ -51,7 +49,6 @@ func loadMap(m string) (*common.Level, []*Tile, error) {
 	l := resource.(common.TMXResource).Level
 	levelWidth = l.Bounds().Max.X
 	levelHeight = l.Bounds().Max.Y
-	log.Println("[setup] processing tile layers")
 	for _, tl := range l.TileLayers {
 		for _, te := range tl.Tiles {
 			if te.Image != nil {
@@ -75,7 +72,6 @@ func loadMap(m string) (*common.Level, []*Tile, error) {
 
 // preloadMapAssets loads a Tiled map file at the given path.
 func preloadMapAssets(m string) error {
-	log.Println("[assets] preloading map")
 	if err := engo.Files.Load(m); err != nil {
 		return err
 	}

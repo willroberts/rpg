@@ -28,6 +28,7 @@ import (
 	"engo.io/engo/common"
 )
 
+// FIXME: Does this need to be a package-scoped variable?
 var GameWorld *ecs.World
 
 // DefaultScene is our first and only scene at the moment. It includes the first
@@ -37,10 +38,10 @@ type DefaultScene struct{}
 // Preload validates and loads assets. In can cause panics, since the game cannot
 // run without its assets.
 func (scene *DefaultScene) Preload() {
-	log.Println("preloading resources")
+	log.Println("preloading maps")
 	preloadMapAssets("maps/stone.tmx")
 
-	log.Println("loading sprites")
+	log.Println("preloading sprites")
 	err := engo.Files.Load("spritesheets/characters-32x32.png")
 	if err != nil {
 		panic(err)
@@ -58,7 +59,7 @@ func (scene *DefaultScene) Preload() {
 		decorationSpritesheetWidth,
 		decorationSpritesheetHeight)
 
-	log.Println("loading fonts")
+	log.Println("preloading fonts")
 	err = engo.Files.Load("fonts/hud.ttf")
 	if err != nil {
 		panic(err)
@@ -72,20 +73,24 @@ func (scene *DefaultScene) Preload() {
 // Setup initializes all systems necessary for the game to function. It can
 // panic, since the game cannot run without these systems.
 func (scene *DefaultScene) Setup(w *ecs.World) {
+	log.Println("creating scene")
 	GameWorld = w
-	log.Println("setting up scene")
 	common.SetBackground(color.Black)
 	w.AddSystem(&common.RenderSystem{})
 	w.AddSystem(&ControlSystem{})
+
 	log.Println("loading map")
 	level, tiles, err := loadMap("maps/stone.tmx")
 	if err != nil {
 		panic(err)
 	}
-	log.Println("processing grid")
+
+	log.Println("creating level grid")
 	GameGrid = newGrid(level.Width(), level.Height())
+
 	log.Println("creating player")
 	player = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
+
 	log.Println("creating enemies")
 	if err = loadEnemyTypes(); err != nil {
 		panic(err)
@@ -138,7 +143,7 @@ func (scene *DefaultScene) Setup(w *ecs.World) {
 
 	log.Println("binding controls")
 	bindControls()
-	log.Println("control bound. use the arrow keys to move")
+	log.Println("controls bound. use the arrow keys to move")
 }
 
 // Type returns the name of the scene. This is used to satisfy engo's Scene
