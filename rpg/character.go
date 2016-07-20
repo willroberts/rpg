@@ -56,6 +56,7 @@ const (
 	decoSpritesheetHeight int    = 40
 
 	// SpaceComponent dimensions of characters.
+	charScale float32 = 2.0 // 32 -> 64px
 	charSizeX float32 = 80
 	charSizeY float32 = 80
 

@@ -25,6 +25,10 @@ import (
 	"engo.io/engo/common"
 )
 
+const (
+	tileScale float32 = 4.0
+)
+
 // A Tile is the basic map unit. We parse a Tiled map and create a Tile for each
 // tile in the map.
 type Tile struct {
@@ -48,7 +52,7 @@ func loadMap(m string) (*common.Level, []*Tile, error) {
 				t := &Tile{BasicEntity: ecs.NewBasic()}
 				t.RenderComponent = common.RenderComponent{
 					Drawable: te,
-					Scale:    engo.Point{4, 4},
+					Scale:    engo.Point{tileScale, tileScale},
 				}
 				t.RenderComponent.SetZIndex(zWorld)
 				t.SpaceComponent = common.SpaceComponent{
