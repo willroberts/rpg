@@ -68,8 +68,6 @@ func (c *ControlSystem) Remove(te ecs.BasicEntity) {
 // Update processes events for the control system.
 func (c *ControlSystem) Update(dt float32) {
 	for _, e := range c.entities {
-		gameHeightLimit = gameHeight - e.SpaceComponent.Height
-		gameWidthLimit = gameWidth - e.SpaceComponent.Width
 		movePlayer(e)
 	}
 }

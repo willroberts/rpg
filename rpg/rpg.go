@@ -30,11 +30,11 @@ import (
 // FIXME: Do all of these need package scope?
 // TODO: Use message passing between systems instead of sharing data.
 var (
-	gameWorld       *ecs.World
-	gameHeight      float32
-	gameHeightLimit float32
-	gameWidth       float32
-	gameWidthLimit  float32
+	gameWorld *ecs.World
+
+	// gameWidth and gameHeight store the pixel dimensions of the level (960x1920)
+	gameWidth  float32
+	gameHeight float32
 
 	gameGrid    *Grid
 	gameHUD     *HUD
