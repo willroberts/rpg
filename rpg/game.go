@@ -1,4 +1,4 @@
-// dungeon.go
+// game.go
 
 // RPG: A 2D game written in Go, with the engo engine.
 // Copyright (C) 2016 Will Roberts
@@ -28,13 +28,13 @@ import (
 	"engo.io/engo/common"
 )
 
-// DungeonScene is our first and only scene at the moment. It includes the first
+// GameScene is our first and only scene at the moment. It includes the first
 // map, a static set of enemies, and only one room.
-type DungeonScene struct{}
+type GameScene struct{}
 
 // Preload validates and loads assets. In can cause panics, since the game cannot
 // run without its assets.
-func (scene *DungeonScene) Preload() {
+func (scene *GameScene) Preload() {
 	log.Println("preloading maps")
 	preloadMapAssets("maps/stone.tmx")
 
@@ -54,7 +54,7 @@ func (scene *DungeonScene) Preload() {
 
 // Setup initializes all systems necessary for the game to function. It can
 // panic, since the game cannot run without these systems.
-func (scene *DungeonScene) Setup(w *ecs.World) {
+func (scene *GameScene) Setup(w *ecs.World) {
 	log.Println("creating scene")
 	gameWorld = w
 	common.SetBackground(color.Black)
@@ -130,6 +130,6 @@ func (scene *DungeonScene) Setup(w *ecs.World) {
 
 // Type returns the name of the scene. This is used to satisfy engo's Scene
 // interface.
-func (scene *DungeonScene) Type() string {
-	return "DungeonScene"
+func (scene *GameScene) Type() string {
+	return "GameScene"
 }
