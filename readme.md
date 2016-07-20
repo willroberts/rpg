@@ -43,6 +43,7 @@ scene.
 
 ### III. Improvements
 
+- [ ] Fix tile rendering bug
 - [ ] Make HUD not part of the moveable surface
 - [ ] Make HUD look better
 - [ ] Start Menu
@@ -51,7 +52,6 @@ scene.
 	- [ ] Enemies advance one step toward the player when spotted
 	-	[ ] Enemies have limited decision making and may flee
 - [ ] Fog of War
-- [ ] Fix tile rendering bug
 - [ ] Address all FIXME and TODO notes
 - [ ] Add a comment under filename.go summarizing what it contains
 
