@@ -51,15 +51,17 @@ func (scene *MenuScene) Setup(w *ecs.World) {
 	w.AddSystem(&common.RenderSystem{})
 	w.AddSystem(&ControlSystem{})
 
-	log.Println("configuring systems")
-	for _, sys := range w.Systems() {
-		switch s := sys.(type) {
-		case *common.RenderSystem:
-			log.Println("configuring render system")
-		case *ControlSystem:
-			log.Println("configuring control system")
-		}
-	}
+	/*
+		log.Println("configuring systems")
+			for _, sys := range w.Systems() {
+				switch s := sys.(type) {
+				case *common.RenderSystem:
+					log.Println("configuring render system")
+				case *ControlSystem:
+					log.Println("configuring control system")
+				}
+			}
+	*/
 
 	log.Println("configuring camera")
 
