@@ -125,7 +125,7 @@ func (scene *GameScene) Setup(w *ecs.World) {
 
 	log.Println("binding controls")
 	bindControls()
-	log.Println("controls bound. use the arrow keys to move")
+	log.Println("use the arrow keys to move")
 }
 
 // Type returns the name of the scene. This is used to satisfy engo's Scene
