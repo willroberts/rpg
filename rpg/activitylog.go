@@ -28,36 +28,37 @@ import (
 )
 
 const (
-	activityLogPosX    int = 16  // 16px from the left
-	activityLogPosY    int = 580 // game height - 2 tiles, plus a buffer to center
-	activityLogSpacing int = 24
+	logWindowX      float32 = 8
+	logWindowY      float32 = 570
+	logWindowWidth  float32 = 400
+	logWindowHeight float32 = 138
+
+	logMessageX        int     = 16
+	logMessageY        int     = 580
+	logMessageCount    int     = 5
+	logMessageSpacing  int     = 25
+	logMessageFontSize float64 = 24
 )
 
 // ActivityLog stores a rolling set of five messages to be displayed on the screen.
 type ActivityLog struct {
-	Log [5]*ActivityMessage
+	Log [logMessageCount]*ActivityMessage
 }
 
 // Update rotates the ActivityLog and then updates the last entry.
-// FIXME: Condense this code.
 func (l *ActivityLog) Update(m string) {
-	r1 := l.Log[0]
-	r2 := l.Log[1]
-	r3 := l.Log[2]
-	r4 := l.Log[3]
-	r5 := l.Log[4]
+	// Shift all messages up one line, and place the new message at the bottom.
+	// FIXME: Use logMessageCount constant here.
+	l.Log[0].Text = l.Log[1].Text
+	l.Log[1].Text = l.Log[2].Text
+	l.Log[2].Text = l.Log[3].Text
+	l.Log[3].Text = l.Log[4].Text
+	l.Log[4].Text = m
 
-	r1.Text = r2.Text
-	r2.Text = r3.Text
-	r3.Text = r4.Text
-	r4.Text = r5.Text
-	r5.Text = m
-
-	r1.Draw()
-	r2.Draw()
-	r3.Draw()
-	r4.Draw()
-	r5.Draw()
+	// Redraw all messages in the log.
+	for i := 0; i < logMessageCount; i++ {
+		l.Log[i].Draw()
+	}
 }
 
 // ActivityLogWindow is the HUD element under the messages.
@@ -97,8 +98,8 @@ func initializeActivityMessage(msg string, offset int) *ActivityMessage {
 	m.RenderComponent.SetZIndex(zText)
 	m.SetShader(common.HUDShader)
 	m.SpaceComponent = common.SpaceComponent{Position: engo.Point{
-		float32(activityLogPosX),
-		float32(activityLogPosY + offset),
+		float32(logMessageX),
+		float32(logMessageY + offset),
 	}}
 	m.Draw()
 	return m
@@ -111,7 +112,7 @@ func initializeLogFont() error {
 			URL:  "fonts/combatlog.ttf",
 			BG:   color.Black,
 			FG:   color.White,
-			Size: 24,
+			Size: logMessageFontSize,
 		}
 	}
 	if err := gameFontLog.CreatePreloaded(); err != nil {
@@ -122,15 +123,14 @@ func initializeLogFont() error {
 
 // newActivityLog creates a rotating log window on the screen.
 // FIXME: Player can still walk under the activity log.
-// FIXME: Use constants.
 func newActivityLog() *ActivityLog {
 	// Draw background rectangle.
 	w := &ActivityLogWindow{
 		BasicEntity: ecs.NewBasic(),
-		PosX:        8,
-		PosY:        570,
-		Width:       400,
-		Height:      138,
+		PosX:        logWindowX,
+		PosY:        logWindowY,
+		Width:       logWindowWidth,
+		Height:      logWindowHeight,
 	}
 	w.RenderComponent = common.RenderComponent{
 		Drawable: common.Rectangle{},
@@ -153,9 +153,9 @@ func newActivityLog() *ActivityLog {
 	// Draw log messages.
 	l := &ActivityLog{}
 	var offset int
-	for i := 0; i < 5; i++ {
+	for i := 0; i < logMessageCount; i++ {
 		l.Log[i] = initializeActivityMessage("", offset)
-		offset += activityLogSpacing
+		offset += logMessageSpacing
 	}
 	return l
 }
