@@ -28,8 +28,8 @@ import (
 )
 
 const (
-	width  int = 960
-	height int = 880
+	width  int = 1600
+	height int = 900
 )
 
 // Main starts the game.
