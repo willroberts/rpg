@@ -43,16 +43,17 @@ scene.
 
 ### III. Improvements
 
+- [ ] Reduce the scale of tiles, add more of them
+- [ ] Fix tile rendering bug
+- [ ] Make HUD not part of the moveable surface
+- [ ] Make HUD look better
 - [ ] Start Menu
 - [ ] Artificial Intelligence
 	- [ ] Enemies can see Player within N tiles
 	- [ ] Enemies advance one step toward the player when spotted
 	-	[ ] Enemies have limited decision making and may flee
 - [ ] Fog of War
-- [ ] Fix tile rendering bug
-- [ ] Make HUD look better
-- [ ] Make HUD not part of the moveable surface
-- [ ] Reduce the scale of tiles, add more of them
+- [ ] Address all FIXME and TODO notes
 
 ### IV. Increased Depth
 
@@ -75,7 +76,7 @@ scene.
 	- [ ] Defensive Spells
 	- [ ] Offensive Spells
 
-### V. Roguelike Replayability
+### V. Replayability
 
 - [ ] Generate randomized Characters
 - [ ] Generate randomized Items
@@ -94,6 +95,7 @@ scene.
 	- [ ] "Slash" sprite over damaged enemy
 - [ ] Music
 - [ ] Sound Effects
+- [ ] Thin fog layer over the entire game window
 
 ## Credits
 
