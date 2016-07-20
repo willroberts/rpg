@@ -26,8 +26,9 @@ import (
 )
 
 // Create some shared variables in the package scope.
-// All shared variables start with "game".
+// All shared variables should start with "game".
 // FIXME: Do all of these need package scope?
+// TODO: Use message passing between systems instead of sharing data.
 var (
 	gameWorld       *ecs.World
 	gameHeight      float32
