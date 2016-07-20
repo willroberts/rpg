@@ -32,18 +32,14 @@ import (
 var (
 	gameWorld *ecs.World
 
-	// gameWidth and gameHeight store the pixel dimensions of the level (960x1920)
-	gameWidth  float32
-	gameHeight float32
-
-	gameGrid    *Grid
-	gameHUD     *HUD
-	gameFontHUD *common.Font
-	gameLog     *ActivityLog
-	gameFontLog *common.Font
-
-	gamePlayer      *Player
-	gameEnemyTypes  = make(map[string]EnemyAttributes)
+	gameFontHUD     *common.Font
+	gameFontLog     *common.Font
 	gameSpritesChar *common.Spritesheet
 	gameSpritesDeco *common.Spritesheet
+
+	gameGrid       *Grid
+	gameHUD        *HUD
+	gameLog        *ActivityLog
+	gamePlayer     *Player
+	gameEnemyTypes = make(map[string]EnemyAttributes)
 )

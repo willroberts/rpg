@@ -42,8 +42,6 @@ func loadMap(m string) (*common.Level, []*Tile, error) {
 		return &common.Level{}, tiles, err
 	}
 	l := resource.(common.TMXResource).Level
-	gameWidth = l.Bounds().Max.X
-	gameHeight = l.Bounds().Max.Y
 	for _, tl := range l.TileLayers {
 		for _, te := range tl.Tiles {
 			if te.Image != nil {
