@@ -29,7 +29,7 @@ import (
 
 const (
 	width  int = 960
-	height int = 720
+	height int = 880
 )
 
 // Main starts the game.
@@ -40,5 +40,5 @@ func main() {
 		Height: height,
 	}
 	log.Printf("starting game. video resolution: %dx%d\n", width, height)
-	engo.Run(o, &rpg.DungeonScene{})
+	engo.Run(o, &rpg.GameScene{})
 }
