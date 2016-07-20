@@ -47,13 +47,13 @@ type ActivityLog struct {
 
 // Update rotates the ActivityLog and then updates the last entry.
 func (l *ActivityLog) Update(m string) {
-	// Shift all messages up one line, and place the new message at the bottom.
-	// FIXME: Use logMessageCount constant here.
-	l.Log[0].Text = l.Log[1].Text
-	l.Log[1].Text = l.Log[2].Text
-	l.Log[2].Text = l.Log[3].Text
-	l.Log[3].Text = l.Log[4].Text
-	l.Log[4].Text = m
+	// Shift all messages up one line.
+	for i := 0; i < logMessageCount-1; i++ {
+		l.Log[i].Text = l.Log[i+1].Text
+	}
+
+	// Place the new message at the bottom.
+	l.Log[logMessageCount-1].Text = m
 
 	// Redraw all messages in the log.
 	for i := 0; i < logMessageCount; i++ {
