@@ -3,10 +3,10 @@
  <tileset firstgid="1" name="floor_tiles" tilewidth="20" tileheight="20" tilecount="260">
   <image source="../spritesheets/floor-tiles-20x20.png" width="400" height="260"/>
  </tileset>
- <layer name="Tile Layer 1" width="12" height="24">
+ <layer name="tile layer" width="12" height="24">
   <data encoding="base64" compression="zlib">
    eJxjYWBgYAZiFiJpQmpYCOglBrPQSQ855qNjUvQQGxbYwpOWfqNFGNEq7kgxm5w4G0mYnDChJP1j0wcAOhwDnQ==
   </data>
  </layer>
- <objectgroup name="Object Layer 1"/>
+ <objectgroup name="object layer"/>
 </map>
