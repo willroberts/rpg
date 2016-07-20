@@ -32,7 +32,7 @@ type Player struct {
 	ecs.BasicEntity
 	common.RenderComponent
 	common.SpaceComponent
-	ControlComponent
+	CameraComponent
 
 	Name      string
 	Hostility string
@@ -43,12 +43,12 @@ type Player struct {
 
 // Destroy removes a Player entity from the game. When the player dies, we
 // replace the character texture and stop processing incoming movement commands.
-// Removes the Player from the ControlSystem and the RenderSystem, and then re-add
+// Removes the Player from the CameraSystem and the RenderSystem, and then re-add
 // the Player to the RenderSystem as a gravestone.
 func (p *Player) Destroy() {
 	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
-		case *ControlSystem:
+		case *CameraSystem:
 			s.Remove(p.BasicEntity)
 		case *common.RenderSystem:
 			s.Remove(p.BasicEntity)
@@ -103,7 +103,7 @@ func (p *Player) SetY(y int) { p.Y = y }
 func newPlayer(name string, spriteIndex, x, y int) *Player {
 	p := &Player{
 		BasicEntity: ecs.NewBasic(),
-		ControlComponent: ControlComponent{
+		CameraComponent: CameraComponent{
 			SchemeHoriz: "horizontal",
 			SchemeVert:  "vertical",
 		},
@@ -132,10 +132,10 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 
 // movePlayer reads keyboard input, checks level bounds, and processes Player
 // movement.
-// FIXME: Is the ControlEntity parameter needed? We can refer to player globally.
+// FIXME: Is the CameraEntity parameter needed? We can refer to player globally.
 // FIXME: Only call movePlayer from scene when a key has recently been pressed.
 // FIXME: Make this a function bound to *Player instead
-func movePlayer(e ControlEntity) {
+func movePlayer(e CameraEntity) {
 	var d string
 	if engo.Input.Button("moveleft").JustPressed() {
 		d = "left"

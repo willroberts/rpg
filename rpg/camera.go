@@ -1,4 +1,4 @@
-// control.go
+// camera.go
 
 // RPG: A 2D game written in Go, with the engo engine.
 // Copyright (C) 2016 Will Roberts
@@ -24,35 +24,35 @@ import (
 	"engo.io/engo/common"
 )
 
-// A ControlComponent is attached to a ControlEntity when being added to the
-// ControlSystem.
-type ControlComponent struct {
+// A CameraComponent is attached to a CameraEntity when being added to the
+// CameraSystem.
+type CameraComponent struct {
 	SchemeVert  string
 	SchemeHoriz string
 }
 
-// A ControlEntity is anythin which can be tracked by the control system. In our
+// A CameraEntity is anythin which can be tracked by the camera system. In our
 // case this is usually the player entity.
-type ControlEntity struct {
+type CameraEntity struct {
 	*ecs.BasicEntity
-	*ControlComponent
+	*CameraComponent
 	*common.SpaceComponent
 }
 
-// The ControlSystem keeps track of all controllable entities.
-type ControlSystem struct {
-	entities []ControlEntity
+// The CameraSystem keeps track of all cameralable entities.
+type CameraSystem struct {
+	entities []CameraEntity
 }
 
-// Add starts tracking an entity in the control system.
-func (c *ControlSystem) Add(b *ecs.BasicEntity, ctrl *ControlComponent,
+// Add starts tracking an entity in the camera system.
+func (c *CameraSystem) Add(b *ecs.BasicEntity, ctrl *CameraComponent,
 	s *common.SpaceComponent) {
-	c.entities = append(c.entities, ControlEntity{b, ctrl, s})
+	c.entities = append(c.entities, CameraEntity{b, ctrl, s})
 }
 
-// Remove stops tracking an entity in the control system. If the target entity
+// Remove stops tracking an entity in the camera system. If the target entity
 // is in our tracked entities, remove it.
-func (c *ControlSystem) Remove(te ecs.BasicEntity) {
+func (c *CameraSystem) Remove(te ecs.BasicEntity) {
 	del := -1
 	for i, e := range c.entities {
 		if e.BasicEntity.ID() == te.ID() {
@@ -65,8 +65,8 @@ func (c *ControlSystem) Remove(te ecs.BasicEntity) {
 	}
 }
 
-// Update processes events for the control system.
-func (c *ControlSystem) Update(dt float32) {
+// Update processes events for the camera system.
+func (c *CameraSystem) Update(dt float32) {
 	for _, e := range c.entities {
 		movePlayer(e)
 	}

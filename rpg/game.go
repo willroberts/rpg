@@ -59,7 +59,7 @@ func (scene *GameScene) Setup(w *ecs.World) {
 	gameWorld = w
 	common.SetBackground(color.Black)
 	w.AddSystem(&common.RenderSystem{})
-	w.AddSystem(&ControlSystem{})
+	w.AddSystem(&CameraSystem{})
 
 	log.Println("loading map")
 	level, tiles, err := loadMap("maps/stone.tmx")
@@ -98,9 +98,9 @@ func (scene *GameScene) Setup(w *ecs.World) {
 			for _, e := range enemies {
 				s.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
 			}
-		case *ControlSystem:
-			log.Println("configuring control system")
-			s.Add(&gamePlayer.BasicEntity, &gamePlayer.ControlComponent,
+		case *CameraSystem:
+			log.Println("configuring camera system")
+			s.Add(&gamePlayer.BasicEntity, &gamePlayer.CameraComponent,
 				&gamePlayer.SpaceComponent)
 		}
 	}
@@ -126,6 +126,8 @@ func (scene *GameScene) Setup(w *ecs.World) {
 	log.Println("binding controls")
 	bindControls()
 	log.Println("controls bound. use the arrow keys to move")
+
+	log.Println("CameraBounds:", common.CameraBounds)
 }
 
 // Type returns the name of the scene. This is used to satisfy engo's Scene

@@ -49,7 +49,7 @@ func (scene *MenuScene) Setup(w *ecs.World) {
 	gameWorld = w
 	common.SetBackground(color.Black)
 	w.AddSystem(&common.RenderSystem{})
-	w.AddSystem(&ControlSystem{})
+	w.AddSystem(&CameraSystem{})
 
 	/*
 		log.Println("configuring systems")
@@ -57,8 +57,8 @@ func (scene *MenuScene) Setup(w *ecs.World) {
 				switch s := sys.(type) {
 				case *common.RenderSystem:
 					log.Println("configuring render system")
-				case *ControlSystem:
-					log.Println("configuring control system")
+				case *CameraSystem:
+					log.Println("configuring camera system")
 				}
 			}
 	*/
