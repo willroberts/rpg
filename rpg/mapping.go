@@ -45,6 +45,7 @@ func loadMap(m string) (*common.Level, []*Tile, error) {
 	if err != nil {
 		return &common.Level{}, tiles, err
 	}
+
 	l := resource.(common.TMXResource).Level
 	for _, tl := range l.TileLayers {
 		for _, te := range tl.Tiles {
@@ -64,6 +65,7 @@ func loadMap(m string) (*common.Level, []*Tile, error) {
 			}
 		}
 	}
+
 	return l, tiles, nil
 }
 
