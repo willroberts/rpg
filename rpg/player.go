@@ -153,25 +153,25 @@ func movePlayer(e CameraEntity) {
 	switch d {
 	case "left":
 		if gamePlayer.GetX() == gameGrid.MinX {
-			gameLog.Update(failedMovementMsg)
+			//gameLog.Update(failedMovementMsg)
 			return
 		}
 		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX()-1, gamePlayer.GetY())
 	case "right":
 		if gamePlayer.GetX() == gameGrid.MaxX {
-			gameLog.Update(failedMovementMsg)
+			//gameLog.Update(failedMovementMsg)
 			return
 		}
 		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX()+1, gamePlayer.GetY())
 	case "up":
 		if gamePlayer.GetY() == gameGrid.MinY {
-			gameLog.Update(failedMovementMsg)
+			//gameLog.Update(failedMovementMsg)
 			return
 		}
 		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX(), gamePlayer.GetY()-1)
 	case "down":
 		if gamePlayer.GetY() == gameGrid.MaxY {
-			gameLog.Update(failedMovementMsg)
+			//gameLog.Update(failedMovementMsg)
 			return
 		}
 		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX(), gamePlayer.GetY()+1)
