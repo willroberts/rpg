@@ -21,3 +21,13 @@
 :GoCoverage				Visually highlight test coverage
 :GoCoverageClear	Remove coverage highlighting
 :GoCoverageToggle	Toggle coverage highlighting
+
+## Map Tile Issues
+
+* When the game window is larger than the game world:
+	* Areas outside the map should be black
+	* Instead, tiles not used by the map are placed there
+	* The camera shifts when moving closer to one side
+* Without the above issue:
+	* A block of 16 tiles (4x4) use the wrong sprite
+	* The last tile (last x and y coordinates) uses the wrong sprite
