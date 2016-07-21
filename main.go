@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	width  int = 1280
+	width  int = 720
 	height int = 720
 )
 
