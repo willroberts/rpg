@@ -70,7 +70,6 @@ func (scene *GameScene) Setup(w *ecs.World) {
 	log.Println("creating level grid")
 	gameGrid = newGrid(level.Width(), level.Height())
 
-	/* Temporarily disable the Player and Enemies.
 	log.Println("creating player")
 	gamePlayer = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
 
@@ -87,7 +86,6 @@ func (scene *GameScene) Setup(w *ecs.World) {
 		newEnemy("Bear", spriteBear, 6, 17),
 		newEnemy("Demon", spriteDemon, 10, 22),
 	}
-	*/
 
 	log.Println("configuring systems")
 	for _, sys := range w.Systems() {
@@ -97,18 +95,17 @@ func (scene *GameScene) Setup(w *ecs.World) {
 			for _, t := range tiles {
 				s.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
 			}
-			//s.Add(&gamePlayer.BasicEntity, &gamePlayer.RenderComponent, &gamePlayer.SpaceComponent)
-			//for _, e := range enemies {
-			//	s.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
-			//}
+			s.Add(&gamePlayer.BasicEntity, &gamePlayer.RenderComponent, &gamePlayer.SpaceComponent)
+			for _, e := range enemies {
+				s.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
+			}
 		case *CameraSystem:
 			log.Println("configuring camera system")
-			//s.Add(&gamePlayer.BasicEntity, &gamePlayer.CameraComponent,
-			//	&gamePlayer.SpaceComponent)
+			s.Add(&gamePlayer.BasicEntity, &gamePlayer.CameraComponent,
+				&gamePlayer.SpaceComponent)
 		}
 	}
 
-	/* Temporarily disable the Camera, HUD, Log, and Controls.
 	log.Println("configuring camera")
 	w.AddSystem(&common.EntityScroller{
 		SpaceComponent: &gamePlayer.SpaceComponent,
@@ -130,7 +127,6 @@ func (scene *GameScene) Setup(w *ecs.World) {
 	log.Println("binding controls")
 	bindControls()
 	log.Println("use the arrow keys to move")
-	*/
 }
 
 // Type returns the name of the scene. This is used to satisfy engo's Scene
