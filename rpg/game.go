@@ -73,21 +73,19 @@ func (scene *GameScene) Setup(w *ecs.World) {
 	log.Println("creating player")
 	gamePlayer = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
 
-	/*
-		log.Println("creating enemies")
-		if err = loadEnemyTypes(); err != nil {
-			panic(err)
-		}
-		enemies := []*Enemy{
-			newEnemy("Skeleton", spriteSkeleton, 2, 7),
-			newEnemy("Skeleton", spriteSkeleton, 8, 6),
-			newEnemy("Skeleton", spriteSkeleton, 5, 5),
-			newEnemy("Goblin", spriteGoblin, 4, 11),
-			newEnemy("Goblin", spriteGoblin, 7, 12),
-			newEnemy("Bear", spriteBear, 6, 17),
-			newEnemy("Demon", spriteDemon, 10, 22),
-		}
-	*/
+	log.Println("creating enemies")
+	if err = loadEnemyTypes(); err != nil {
+		panic(err)
+	}
+	enemies := []*Enemy{
+		newEnemy("Skeleton", spriteSkeleton, 2, 7),
+		newEnemy("Skeleton", spriteSkeleton, 8, 6),
+		newEnemy("Skeleton", spriteSkeleton, 5, 5),
+		newEnemy("Goblin", spriteGoblin, 4, 11),
+		newEnemy("Goblin", spriteGoblin, 7, 12),
+		newEnemy("Bear", spriteBear, 6, 17),
+		newEnemy("Demon", spriteDemon, 10, 22),
+	}
 
 	log.Println("configuring systems")
 	for _, sys := range w.Systems() {
@@ -98,11 +96,9 @@ func (scene *GameScene) Setup(w *ecs.World) {
 				s.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
 			}
 			s.Add(&gamePlayer.BasicEntity, &gamePlayer.RenderComponent, &gamePlayer.SpaceComponent)
-			/*
-				for _, e := range enemies {
-					s.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
-				}
-			*/
+			for _, e := range enemies {
+				s.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
+			}
 		case *CameraSystem:
 			log.Println("configuring camera system")
 			s.Add(&gamePlayer.BasicEntity, &gamePlayer.CameraComponent,
@@ -116,19 +112,17 @@ func (scene *GameScene) Setup(w *ecs.World) {
 		TrackingBounds: level.Bounds(),
 	})
 
-	/*
-		log.Println("creating hud")
-		initializeHUDFont()
-		initializeLogFont()
-		gameHUD, err = newHUD()
-		if err != nil {
-			panic(err)
-		}
-		gameLog = newActivityLog()
-		gameLog.Update("Welcome to the game.")
-		gameLog.Update("There are three skeletons near you.")
-		gameLog.Update("Try moving into them to attack.")
-	*/
+	log.Println("creating hud")
+	initializeHUDFont()
+	initializeLogFont()
+	gameHUD, err = newHUD()
+	if err != nil {
+		panic(err)
+	}
+	gameLog = newActivityLog()
+	gameLog.Update("Welcome to the game.")
+	gameLog.Update("There are three skeletons near you.")
+	gameLog.Update("Try moving into them to attack.")
 
 	log.Println("binding controls")
 	bindControls()
