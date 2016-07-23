@@ -34,9 +34,11 @@ type Player struct {
 	common.SpaceComponent
 	CameraComponent
 
-	Name      string
-	Hostility string
-	HitPoints int
+	Name       string
+	Hostility  string
+	HitPoints  int
+	Level      int
+	Experience int
 
 	X, Y int
 }
@@ -46,6 +48,7 @@ type Player struct {
 // Removes the Player from the CameraSystem and the RenderSystem, and then re-add
 // the Player to the RenderSystem as a gravestone.
 func (p *Player) Destroy() {
+	gameLog.Update("You died!")
 	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
 		case *CameraSystem:
@@ -76,6 +79,10 @@ func (p *Player) GetHostility() string { return p.Hostility }
 // GetName returns the name of the Player.
 func (p *Player) GetName() string { return p.Name }
 
+// GetXPAmount is stubbed for Player entities. Only needed for Enemy entities, but
+// we include it here to satisfy the Character interface.
+func (p *Player) GetXPAmount() int { return 0 }
+
 // GetX returns the Player's X coordinate.
 func (p *Player) GetX() int { return p.X }
 
@@ -86,6 +93,9 @@ func (p *Player) GetY() int { return p.Y }
 // the Player, provide a negative number.
 func (p *Player) ModifyHitPoints(amount int) {
 	p.HitPoints += amount
+	if p.HitPoints < 0 {
+		p.HitPoints = 0
+	}
 }
 
 // SetHostility changes the Player's demeanor. It's included here just to satisfy
@@ -107,11 +117,13 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 			SchemeHoriz: "horizontal",
 			SchemeVert:  "vertical",
 		},
-		X:         x,
-		Y:         y,
-		Name:      name,
-		Hostility: "neutral",
-		HitPoints: 10,
+		X:          x,
+		Y:          y,
+		Name:       name,
+		Hostility:  "neutral",
+		HitPoints:  10,
+		Level:      1,
+		Experience: 0,
 	}
 	p.RenderComponent = common.RenderComponent{
 		Drawable: gameSpritesChar.Cell(spriteIndex),

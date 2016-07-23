@@ -1,18 +1,22 @@
 {
 	"Skeleton": {
 		"damage": 1,
-		"hitpoints": 2
+		"hitpoints": 2,
+		"experience_granted": 2
 	},
 	"Goblin": {
 		"damage": 2,
-		"hitpoints": 2
+		"hitpoints": 2,
+		"experience_granted": 4
 	},
 	"Bear": {
 		"damage": 4,
-		"hitpoints": 4
+		"hitpoints": 4,
+		"experience_granted": 8
 	},
 	"Demon": {
 		"damage": 4,
-		"hitpoints": 8
+		"hitpoints": 8,
+		"experience_granted": 12
 	}
 }

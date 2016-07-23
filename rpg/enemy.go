@@ -21,6 +21,7 @@ package rpg
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 
 	"engo.io/ecs"
@@ -32,7 +33,9 @@ import (
 // such as JSON or a database. Once a set of attributes is defined, attributes
 // may be modified freely without modifying the game code.
 type EnemyAttributes struct {
-	HitPoints int `json:"hitpoints" validate:"nonzero"`
+	HitPoints         int `json:"hitpoints" validate:"nonzero"`
+	Damage            int `json:"damage" validate:"nonzero"`
+	ExperienceGranted int `json:"experience_granted" validate:"nonzero"`
 }
 
 // An Enemy is a non-player Character which is hostile by default.
@@ -41,15 +44,18 @@ type Enemy struct {
 	common.RenderComponent
 	common.SpaceComponent
 
-	Name      string
-	Hostility string
-	HitPoints int
+	Name              string
+	Hostility         string
+	HitPoints         int
+	Damage            int
+	ExperienceGranted int
 
 	X, Y int
 }
 
 // Destroy removes an enemy from the Grid and from the RenderSystem.
 func (e *Enemy) Destroy() {
+	gameLog.Update(fmt.Sprintf("%s was destroyed!", e.GetName()))
 	gameGrid.RemoveCharacter(e.GetX(), e.GetY())
 	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
@@ -60,7 +66,7 @@ func (e *Enemy) Destroy() {
 }
 
 // GetDamage returns the damage dealt by this Enemy.
-func (e *Enemy) GetDamage() int { return 1 }
+func (e *Enemy) GetDamage() int { return e.Damage }
 
 // GetHitPoints returns the current HP for this Enemy.
 func (e *Enemy) GetHitPoints() int { return e.HitPoints }
@@ -74,6 +80,10 @@ func (e *Enemy) GetHostility() string { return e.Hostility }
 // retrieve its EnemyAttributes.
 func (e *Enemy) GetName() string { return e.Name }
 
+// GetXPAmount returns the number of experience points granted upon killing this
+// enemy type.
+func (e *Enemy) GetXPAmount() int { return e.ExperienceGranted }
+
 // GetX returns the Enemy's X coordinate.
 func (e *Enemy) GetX() int { return e.X }
 
@@ -84,6 +94,9 @@ func (e *Enemy) GetY() int { return e.Y }
 // Enemy, provide a negative number.
 func (e *Enemy) ModifyHitPoints(amount int) {
 	e.HitPoints += amount
+	if e.HitPoints < 0 {
+		e.HitPoints = 0
+	}
 }
 
 // SetHostility changes an Enemy's demeanor. This can be used to implement "calm"
@@ -113,12 +126,14 @@ func loadEnemyTypes() error {
 // newEnemy creates and returns an Enemy.
 func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 	e := &Enemy{
-		BasicEntity: ecs.NewBasic(),
-		Name:        name,
-		Hostility:   "hostile",
-		HitPoints:   gameEnemyTypes[name].HitPoints,
-		X:           x,
-		Y:           y,
+		BasicEntity:       ecs.NewBasic(),
+		Name:              name,
+		Hostility:         "hostile",
+		HitPoints:         gameEnemyTypes[name].HitPoints,
+		Damage:            gameEnemyTypes[name].Damage,
+		ExperienceGranted: gameEnemyTypes[name].ExperienceGranted,
+		X:                 x,
+		Y:                 y,
 	}
 	enemyTexture := gameSpritesChar.Cell(spriteIndex)
 	e.RenderComponent = common.RenderComponent{

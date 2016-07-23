@@ -81,6 +81,7 @@ type Character interface {
 	GetHitPoints() int
 	ModifyHitPoints(int)
 	GetDamage() int
+	GetXPAmount() int
 
 	Destroy()
 }
