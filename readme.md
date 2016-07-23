@@ -41,21 +41,7 @@ calculate and deal damage at the same time, before either entity has a
 chance to die. When the enemy dies, its sprite should be removed from the
 scene.
 
-### III. Improvements
-
-- [ ] Fix tile rendering bug
-- [ ] Make HUD not part of the moveable surface
-- [ ] Make HUD look better
-- [ ] Start Menu
-- [ ] Artificial Intelligence
-	- [ ] Enemies can see Player within N tiles
-	- [ ] Enemies advance one step toward the player when spotted
-	-	[ ] Enemies have limited decision making and may flee
-- [ ] Fog of War
-- [ ] Address all FIXME and TODO notes
-- [ ] Add a comment under filename.go summarizing what it contains
-
-### IV. Increased Depth
+### III. Increased Depth
 
 - [ ] Experience Points and Leveling
 - [ ] Enemies drop Gold
@@ -75,6 +61,20 @@ scene.
 	- [ ] +1 Mana per Something
 	- [ ] Defensive Spells
 	- [ ] Offensive Spells
+
+### IV. Improvements
+
+- [ ] Make HUD not part of the moveable surface
+- [ ] Make HUD look better
+- [ ] Start Menu
+- [ ] Artificial Intelligence
+	- [ ] Enemies can see Player within N tiles
+	- [ ] Enemies advance one step toward the player when spotted
+	-	[ ] Enemies have limited decision making and may flee
+- [ ] Fog of War
+- [ ] Address all FIXME and TODO notes
+- [ ] Add a comment under filename.go summarizing what it contains
+- [ ] Fix tile rendering bug
 
 ### V. Replayability
 
