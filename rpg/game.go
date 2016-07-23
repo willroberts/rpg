@@ -71,7 +71,6 @@ func (scene *GameScene) Setup(w *ecs.World) {
 	if err := loadExperienceTable(); err != nil {
 		panic(err)
 	}
-	log.Println("XP Table:", gameExperienceTable)
 
 	log.Println("creating enemies")
 	if err = loadEnemyTypes(); err != nil {
