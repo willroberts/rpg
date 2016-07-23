@@ -131,7 +131,7 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 		Y:          y,
 		Name:       name,
 		Hostility:  "neutral",
-		HitPoints:  10,
+		HitPoints:  20,
 		Level:      1,
 		Experience: 0,
 	}
