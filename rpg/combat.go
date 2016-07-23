@@ -57,8 +57,8 @@ func initiateCombat(c1, c2 Character) {
 
 	// If the Player was not destroyed, grant Experience Points and update the HUD.
 	if enemyDestroyed && !playerDestroyed {
-		gamePlayer.ModifyExperience(xpBonus)
 		gameLog.Update(fmt.Sprintf("You gained %d experience points.", xpBonus))
+		gamePlayer.ModifyExperience(xpBonus)
 		gameHUD.Update()
 	}
 }
