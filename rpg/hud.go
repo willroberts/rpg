@@ -29,6 +29,9 @@ const (
 	zCharacter
 	zHUD
 	zText
+
+	hudFormatter string  = "Level: %d\nXP: %d\nHP: %d"
+	hudFontSize  float64 = 32
 )
 
 // The HUD contains all on-screen text, controls, and buttons.
@@ -46,8 +49,8 @@ func (h *HUD) Update() {
 			s.Remove(h.BasicEntity)
 			h.RenderComponent.Drawable = common.Text{
 				Font: gameFontHUD,
-				Text: fmt.Sprintf("HP: %d  XP: %d", gamePlayer.GetHitPoints(),
-					gamePlayer.GetExperience()),
+				Text: fmt.Sprintf(hudFormatter, gamePlayer.GetLevel(),
+					gamePlayer.GetExperience(), gamePlayer.GetHitPoints()),
 			}
 			s.Add(&h.BasicEntity, &h.RenderComponent, &h.SpaceComponent)
 		}
@@ -61,7 +64,7 @@ func initializeHUDFont() error {
 			URL:  "fonts/hud.ttf",
 			BG:   color.Black,
 			FG:   color.White,
-			Size: 48,
+			Size: hudFontSize,
 		}
 	}
 	if err := gameFontHUD.CreatePreloaded(); err != nil {
@@ -75,12 +78,12 @@ func newHUD() (*HUD, error) {
 	h := &HUD{BasicEntity: ecs.NewBasic()}
 	h.RenderComponent.Drawable = common.Text{
 		Font: gameFontHUD,
-		Text: fmt.Sprintf("HP: %d  XP: %d", gamePlayer.GetHitPoints(),
-			gamePlayer.GetExperience()),
+		Text: fmt.Sprintf(hudFormatter, gamePlayer.GetLevel(),
+			gamePlayer.GetExperience(), gamePlayer.GetHitPoints()),
 	}
 	h.RenderComponent.SetZIndex(zHUD)
 	h.SetShader(common.HUDShader)
-	h.SpaceComponent = common.SpaceComponent{Position: engo.Point{16, 16}}
+	h.SpaceComponent = common.SpaceComponent{Position: engo.Point{0, 0}}
 	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
