@@ -16,6 +16,9 @@
 package rpg
 
 import (
+	"encoding/json"
+	"io/ioutil"
+
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
@@ -66,6 +69,9 @@ func (p *Player) GetDamage() int { return 1 }
 
 // GetHitPoints returns the current HP for the Player.
 func (p *Player) GetHitPoints() int { return p.HitPoints }
+
+// GetLevel returns the current Level of the Player.
+func (p *Player) GetLevel() int { return p.Level }
 
 // GetExperience returns the current XP for the Player.
 func (p *Player) GetExperience() int { return p.Experience }
@@ -201,4 +207,16 @@ func movePlayer(e CameraEntity) {
 	}
 	e.SpaceComponent.Position.X = posX
 	e.SpaceComponent.Position.Y = posY
+}
+
+// loadExperienceTable reads the ExperienceTable from data/experience.json.
+func loadExperienceTable() error {
+	b, err := ioutil.ReadFile("data/experience.json")
+	if err != nil {
+		return err
+	}
+	if err = json.Unmarshal(b, &gameExperienceTable); err != nil {
+		return err
+	}
+	return nil
 }

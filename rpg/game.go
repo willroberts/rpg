@@ -68,6 +68,10 @@ func (scene *GameScene) Setup(w *ecs.World) {
 
 	log.Println("creating player")
 	gamePlayer = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
+	if err := loadExperienceTable(); err != nil {
+		panic(err)
+	}
+	log.Println("XP Table:", gameExperienceTable)
 
 	log.Println("creating enemies")
 	if err = loadEnemyTypes(); err != nil {

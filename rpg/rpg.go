@@ -33,9 +33,10 @@ var (
 	gameSpritesChar *common.Spritesheet
 	gameSpritesDeco *common.Spritesheet
 
-	gameGrid       *Grid
-	gameHUD        *HUD
-	gameLog        *ActivityLog
-	gamePlayer     *Player
-	gameEnemyTypes = make(map[string]EnemyAttributes)
+	gameGrid            *Grid
+	gameHUD             *HUD
+	gameLog             *ActivityLog
+	gamePlayer          *Player
+	gameEnemyTypes      = make(map[string]EnemyAttributes)
+	gameExperienceTable = make(map[string]int)
 )
