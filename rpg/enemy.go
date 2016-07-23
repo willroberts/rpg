@@ -80,9 +80,9 @@ func (e *Enemy) GetHostility() string { return e.Hostility }
 // retrieve its EnemyAttributes.
 func (e *Enemy) GetName() string { return e.Name }
 
-// GetXPAmount returns the number of experience points granted upon killing this
+// GetXPBonus returns the number of experience points granted upon killing this
 // enemy type.
-func (e *Enemy) GetXPAmount() int { return e.ExperienceGranted }
+func (e *Enemy) GetXPBonus() int { return e.ExperienceGranted }
 
 // GetX returns the Enemy's X coordinate.
 func (e *Enemy) GetX() int { return e.X }

@@ -42,15 +42,16 @@ type HUD struct {
 	common.SpaceComponent
 }
 
-// UpdateHealth redraws the HP text on the screen when Player HP changes.
-func (h *HUD) UpdateHealth() {
+// Update redraws the HUD to use current values.
+func (h *HUD) Update() {
 	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Remove(h.BasicEntity)
 			h.RenderComponent.Drawable = common.Text{
 				Font: gameFontHUD,
-				Text: fmt.Sprintf("HP: %d", gamePlayer.GetHitPoints()),
+				Text: fmt.Sprintf("HP: %d  XP: %d", gamePlayer.GetHitPoints(),
+					gamePlayer.GetExperience()),
 			}
 			s.Add(&h.BasicEntity, &h.RenderComponent, &h.SpaceComponent)
 		}
@@ -78,7 +79,8 @@ func newHUD() (*HUD, error) {
 	h := &HUD{BasicEntity: ecs.NewBasic()}
 	h.RenderComponent.Drawable = common.Text{
 		Font: gameFontHUD,
-		Text: fmt.Sprintf("HP: %d", gamePlayer.GetHitPoints()),
+		Text: fmt.Sprintf("HP: %d  XP: %d", gamePlayer.GetHitPoints(),
+			gamePlayer.GetExperience()),
 	}
 	h.RenderComponent.SetZIndex(zHUD)
 	h.SetShader(common.HUDShader)

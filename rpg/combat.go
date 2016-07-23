@@ -33,7 +33,7 @@ func initiateCombat(c1, c2 Character) {
 		c2.GetName(), c1.GetDamage()))
 	gameLog.Update(fmt.Sprintf("%s hits %s for %d damage!", c2.GetName(),
 		c1.GetName(), c2.GetDamage()))
-	gameHUD.UpdateHealth()
+	gameHUD.Update()
 
 	// Destroy any entities with no HP remaining, and determine if the Player died.
 	var playerDestroyed bool
@@ -46,7 +46,7 @@ func initiateCombat(c1, c2 Character) {
 			playerDestroyed = true
 		} else {
 			enemyDestroyed = true
-			xpBonus = c1.GetXPAmount()
+			xpBonus = c1.GetXPBonus()
 		}
 	}
 	if c2.GetHitPoints() == 0 {
@@ -55,12 +55,14 @@ func initiateCombat(c1, c2 Character) {
 			playerDestroyed = true
 		} else {
 			enemyDestroyed = true
-			xpBonus = c2.GetXPAmount()
+			xpBonus = c2.GetXPBonus()
 		}
 	}
 
-	// If the Player was not destroyed, grant Experience Points.
+	// If the Player was not destroyed, grant Experience Points and update the HUD.
 	if enemyDestroyed && !playerDestroyed {
+		gamePlayer.ModifyExperience(xpBonus)
 		gameLog.Update(fmt.Sprintf("You gained %d experience points.", xpBonus))
+		gameHUD.Update()
 	}
 }

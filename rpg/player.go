@@ -71,6 +71,9 @@ func (p *Player) GetDamage() int { return 1 }
 // GetHitPoints returns the current HP for the Player.
 func (p *Player) GetHitPoints() int { return p.HitPoints }
 
+// GetExperience returns the current XP for the Player.
+func (p *Player) GetExperience() int { return p.Experience }
+
 // GetHostility returns the demeanor of an enemy or NPC. It's included here just
 // to statisfy the Character interface.
 // FIXME: See if we can remove this from the Character interface.
@@ -79,9 +82,9 @@ func (p *Player) GetHostility() string { return p.Hostility }
 // GetName returns the name of the Player.
 func (p *Player) GetName() string { return p.Name }
 
-// GetXPAmount is stubbed for Player entities. Only needed for Enemy entities, but
+// GetXPBonus is stubbed for Player entities. Only needed for Enemy entities, but
 // we include it here to satisfy the Character interface.
-func (p *Player) GetXPAmount() int { return 0 }
+func (p *Player) GetXPBonus() int { return 0 }
 
 // GetX returns the Player's X coordinate.
 func (p *Player) GetX() int { return p.X }
@@ -96,6 +99,11 @@ func (p *Player) ModifyHitPoints(amount int) {
 	if p.HitPoints < 0 {
 		p.HitPoints = 0
 	}
+}
+
+// ModifyExperience adds a number to the Player's experience points.
+func (p *Player) ModifyExperience(amount int) {
+	p.Experience += amount
 }
 
 // SetHostility changes the Player's demeanor. It's included here just to satisfy
