@@ -30,7 +30,7 @@ const (
 	zHUD
 	zText
 
-	hudFormatter string  = "Level: %d\nXP: %d\nHP: %d"
+	hudFormatter string  = "Level: %d\nXP: %d\nHP: %d/%d"
 	hudFontSize  float64 = 32
 )
 
@@ -50,7 +50,8 @@ func (h *HUD) Update() {
 			h.RenderComponent.Drawable = common.Text{
 				Font: gameFontHUD,
 				Text: fmt.Sprintf(hudFormatter, gamePlayer.GetLevel(),
-					gamePlayer.GetExperience(), gamePlayer.GetHitPoints()),
+					gamePlayer.GetExperience(), gamePlayer.GetHitPoints(),
+					gamePlayer.GetMaxHitPoints()),
 			}
 			s.Add(&h.BasicEntity, &h.RenderComponent, &h.SpaceComponent)
 		}
@@ -79,7 +80,8 @@ func newHUD() (*HUD, error) {
 	h.RenderComponent.Drawable = common.Text{
 		Font: gameFontHUD,
 		Text: fmt.Sprintf(hudFormatter, gamePlayer.GetLevel(),
-			gamePlayer.GetExperience(), gamePlayer.GetHitPoints()),
+			gamePlayer.GetExperience(), gamePlayer.GetHitPoints(),
+			gamePlayer.GetMaxHitPoints()),
 	}
 	h.RenderComponent.SetZIndex(zHUD)
 	h.SetShader(common.HUDShader)
