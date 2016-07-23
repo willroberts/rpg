@@ -43,7 +43,7 @@ scene.
 
 ### III. Increased Depth
 
-- [ ] Experience Points and Leveling
+- [x] Experience Points and Leveling
 - [ ] Enemies drop Gold
 	- [ ] Player can collect Gold
 - [ ] Enemies drop Items
