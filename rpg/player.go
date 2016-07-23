@@ -18,6 +18,7 @@ package rpg
 import (
 	"encoding/json"
 	"io/ioutil"
+	"strconv"
 
 	"engo.io/ecs"
 	"engo.io/engo"
@@ -33,11 +34,12 @@ type Player struct {
 	common.SpaceComponent
 	CameraComponent
 
-	Name       string
-	Hostility  string
-	HitPoints  int
-	Level      int
-	Experience int
+	Name         string
+	Hostility    string
+	HitPoints    int
+	MaxHitPoints int
+	Level        int
+	Experience   int
 
 	X, Y int
 }
@@ -69,6 +71,9 @@ func (p *Player) GetDamage() int { return 1 }
 
 // GetHitPoints returns the current HP for the Player.
 func (p *Player) GetHitPoints() int { return p.HitPoints }
+
+// GetMaxHitPoints returns the maximum HP for the Player.
+func (p *Player) GetMaxHitPoints() int { return p.MaxHitPoints }
 
 // GetLevel returns the current Level of the Player.
 func (p *Player) GetLevel() int { return p.Level }
@@ -106,6 +111,19 @@ func (p *Player) ModifyHitPoints(amount int) {
 // ModifyExperience adds a number to the Player's experience points.
 func (p *Player) ModifyExperience(amount int) {
 	p.Experience += amount
+	nextLevel := strconv.Itoa(p.Level + 1)
+	if p.Experience >= gameExperienceTable[nextLevel] {
+		p.LevelUp()
+	}
+}
+
+// LevelUp increases the Player's level, increases MaxHitPoints, and restores HP.
+func (p *Player) LevelUp() {
+	gameLog.Update("Level up!")
+	p.Level += 1
+	p.Experience = 0
+	p.MaxHitPoints += 2
+	p.HitPoints = p.MaxHitPoints
 }
 
 // SetHostility changes the Player's demeanor. It's included here just to satisfy
@@ -127,13 +145,14 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 			SchemeHoriz: "horizontal",
 			SchemeVert:  "vertical",
 		},
-		X:          x,
-		Y:          y,
-		Name:       name,
-		Hostility:  "neutral",
-		HitPoints:  20,
-		Level:      1,
-		Experience: 0,
+		X:            x,
+		Y:            y,
+		Name:         name,
+		Hostility:    "neutral",
+		HitPoints:    20,
+		MaxHitPoints: 20,
+		Level:        1,
+		Experience:   0,
 	}
 	p.RenderComponent = common.RenderComponent{
 		Drawable: gameSpritesChar.Cell(spriteIndex),
