@@ -5,8 +5,10 @@ engine.
 
 ## Design
 
-Inspired by Castle of the Winds (1993): an orthogonal tile-based RPG in which the
-game advances when the player moves. There are no animations or sound effects.
+Inspired by
+[Castle of the Winds](https://en.wikipedia.org/wiki/Castle_of_the_Winds): an
+orthogonal tile-based RPG in which the game advances when the player moves. There
+are no animations or sound effects.
 
 ## Milestones
 
