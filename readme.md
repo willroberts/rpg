@@ -20,8 +20,8 @@ the boundary of the map.
 
 Bugs:
 
-	-	[-] Tiles are not accurately displayed by the engine, and moving the player
-		sometimes changes the tiles in a level. Waiting on upstream to fix this.
+-	[-] Tiles are not accurately displayed by the engine, and moving the player
+	sometimes changes the tiles in a level. Waiting on upstream to fix this.
 
 ### II. Combat System (Reached July 17 2016)
 
@@ -35,8 +35,8 @@ combat activities should be displayed in a log window.
 
 Bugs:
 
-	- [ ] The player can move under the HUD elements. Need to make the game
-		boundaries smaller than the game window.
+- [ ] The player can move under the HUD elements. Need to make the game
+	boundaries smaller than the game window.
 
 ### III. Role-Playing Elements
 
