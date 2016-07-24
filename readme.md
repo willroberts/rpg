@@ -12,7 +12,9 @@ are no animations or sound effects.
 
 ## Milestones
 
-### I. Player and Movement (Reached July 14 2016)
+Project started July 12, 2016.
+
+### I. Player and Movement (Reached July 14 2016 - Day 3)
 
 The player should be able to control a character with the arrow keys, and
 move around within a graphical tiled map. The camera should follow the
@@ -25,7 +27,7 @@ Bugs:
 -	[ ] Tiles are not accurately displayed by the engine, and moving the player
 	sometimes changes the tiles in a level. Waiting on upstream to fix this.
 
-### II. Combat System (Reached July 17 2016)
+### II. Combat System (Reached July 17 2016 - Day 6)
 
 The player should be able to encounter and 'fight' enemies by moving in
 their direction. When the collision is detected, movement will not be
@@ -44,8 +46,8 @@ Bugs:
 
 - [x] Experience Points
 - [x] Leveling
-- [ ] Character Creation
 - [ ] Character Attributes (STR: ATK, DEX: ACC, INT: MP, END/VIT: HP)
+- [ ] Character Creation
 
 ### IV. Items
 
