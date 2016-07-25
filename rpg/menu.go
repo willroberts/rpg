@@ -36,13 +36,16 @@ func (s *MenuScene) Preload() {
 	if err != nil {
 		panic(err)
 	}
+	log.Println("preloading menu sprites")
+	gameSprites, err = PreloadSprites()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (s *MenuScene) Setup(w *ecs.World) {
 	common.SetBackground(color.RGBA{40, 44, 40, 255})
 	w.AddSystem(&common.RenderSystem{})
-
-	// draw some kind of non-black background
 
 	// Create title label and "Portrait:" label.
 	// FIXME: Determine width automatically - via t.SpaceComponent.Width?

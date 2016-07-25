@@ -46,8 +46,8 @@ Bugs:
 
 - [x] Experience Points
 - [x] Leveling
-- [ ] Character Attributes (STR: ATK, DEX: ACC, INT: MP, END/VIT: HP)
 - [ ] Character Creation
+- [ ] Character Attributes (STR: ATK, DEX: ACC, INT: MP, END/VIT: HP)
 
 ### IV. Items
 
