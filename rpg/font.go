@@ -44,12 +44,12 @@ type FontSet struct {
 }
 
 // LoadFont preloads a single font and returns it.
-func LoadFont(font string, size float64) (*common.Font, error) {
-	if err := engo.Files.Load(font); err != nil {
+func LoadFont(path string, size float64) (*common.Font, error) {
+	if err := engo.Files.Load(path); err != nil {
 		return &common.Font{}, err
 	}
 	f := &common.Font{
-		URL:  font,
+		URL:  path,
 		FG:   color.White,
 		Size: size,
 	}

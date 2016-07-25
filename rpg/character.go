@@ -15,53 +15,6 @@
 
 package rpg
 
-import (
-	"engo.io/engo"
-	"engo.io/engo/common"
-)
-
-const (
-	// Sprite constants are named indices in the spritesheets.
-	spriteHuman = iota
-	spriteGreenZombie
-	spriteOliveZombie
-	spriteGoblin
-	spriteBear
-	spriteWhiteZombie
-	spriteMummy
-	spriteSkeleton
-	spriteDemon
-	spriteGargoyle
-	spriteBones           int = 3
-	spriteStairsDownLeft  int = 4
-	spriteAnimalBones     int = 5
-	spriteTinySignpost    int = 8
-	spriteGravestone      int = 9
-	spriteSignpost        int = 10
-	spriteStairsUpLeft    int = 12
-	spriteStairsDownRight int = 13
-	spriteStairsUpRight   int = 14
-	spriteStairsUpLeft2   int = 15 // darker?
-
-	// Spritesheets
-	charSpritesheetPath   string = "spritesheets/characters-32x32.png"
-	charSpritesheetWidth  int    = 32
-	charSpritesheetHeight int    = 32
-	decoSpritesheetPath   string = "spritesheets/decoration-20x20-40x40.png"
-	decoSpritesheetWidth  int    = 40
-	decoSpritesheetHeight int    = 40
-
-	// SpaceComponent dimensions of characters.
-	charScale float32 = 2.0 // 32 -> 64px
-	charSizeX float32 = 80
-	charSizeY float32 = 80
-
-	// Character art is 64x64 when scaled, and needs to be slightly offset in order
-	// to be centered in an 80x80 tile.
-	charOffsetX float32 = 8
-	charOffsetY float32 = 4
-)
-
 // A Character is a generic entity which can occupy space on a tile, including
 // player characters and non-player characters.
 type Character interface {
@@ -80,23 +33,4 @@ type Character interface {
 	GetXPBonus() int
 
 	Destroy()
-}
-
-// preloadSprites reads sprites from files on disk.
-func preloadSprites() error {
-	if err := engo.Files.Load(charSpritesheetPath); err != nil {
-		return err
-	}
-	gameSpritesChar = common.NewSpritesheetFromFile(
-		charSpritesheetPath,
-		charSpritesheetWidth,
-		charSpritesheetHeight)
-	if err := engo.Files.Load(decoSpritesheetPath); err != nil {
-		return err
-	}
-	gameSpritesDeco = common.NewSpritesheetFromFile(
-		decoSpritesheetPath,
-		decoSpritesheetWidth,
-		decoSpritesheetHeight)
-	return nil
 }
