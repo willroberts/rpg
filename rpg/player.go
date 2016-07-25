@@ -57,7 +57,7 @@ func (p *Player) Destroy() {
 		case *common.RenderSystem:
 			s.Remove(p.BasicEntity)
 			p.RenderComponent = common.RenderComponent{
-				Drawable: gameSpritesDeco.Cell(spriteGravestone),
+				Drawable: gameSprites.Decorations.Cell(spriteGravestone),
 				Scale:    engo.Point{charScale, charScale},
 			}
 			p.RenderComponent.SetZIndex(zCharacter)
@@ -155,7 +155,7 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 		Experience:   0,
 	}
 	p.RenderComponent = common.RenderComponent{
-		Drawable: gameSpritesChar.Cell(spriteIndex),
+		Drawable: gameSprites.Characters.Cell(spriteIndex),
 		Scale:    engo.Point{charScale, charScale},
 	}
 	p.RenderComponent.SetZIndex(zCharacter)

@@ -30,15 +30,13 @@ type GameScene struct{}
 // Preload validates and loads assets. In can cause panics, since the game cannot
 // run without its assets.
 func (scene *GameScene) Preload() {
-	log.Println("preloading maps")
+	log.Println("preloading")
 	preloadMapAssets("maps/stone.tmx")
-
-	log.Println("preloading sprites")
-	if err := preloadSprites(); err != nil {
+	var err error
+	gameSprites, err = PreloadSprites()
+	if err != nil {
 		panic(err)
 	}
-
-	var err error
 	gameFonts, err = PreloadFonts()
 	if err != nil {
 		panic(err)

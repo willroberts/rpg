@@ -131,7 +131,7 @@ func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 		X:                 x,
 		Y:                 y,
 	}
-	enemyTexture := gameSpritesChar.Cell(spriteIndex)
+	enemyTexture := gameSprites.Characters.Cell(spriteIndex)
 	e.RenderComponent = common.RenderComponent{
 		Drawable: enemyTexture,
 		Scale:    engo.Point{2, 2},

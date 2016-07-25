@@ -65,8 +65,6 @@ func PreloadFonts() (*FontSet, error) {
 		log.Println("fonts already loaded, reusing")
 		return gameFonts, nil
 	}
-
-	log.Println("preloading fonts")
 	fs := &FontSet{}
 
 	hf, err := LoadFont(HUDFontPath, 32)

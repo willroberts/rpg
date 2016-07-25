@@ -17,6 +17,8 @@
 package rpg
 
 import (
+	"log"
+
 	"engo.io/engo"
 	"engo.io/engo/common"
 )
@@ -49,12 +51,6 @@ const (
 	CharacterSpritesheetPath  string = "spritesheets/characters-32x32.png"
 	DecorationSpritesheetPath string = "spritesheets/decoration-20x20-40x40.png"
 
-	// Spritesheets
-	charSpritesheetWidth  int = 32
-	charSpritesheetHeight int = 32
-	decoSpritesheetWidth  int = 40
-	decoSpritesheetHeight int = 40
-
 	// SpaceComponent dimensions of characters.
 	charScale float32 = 2.0 // 32 -> 64px
 	charSizeX float32 = 80
@@ -81,18 +77,25 @@ func LoadSprites(path string, w, h int) (*common.Spritesheet, error) {
 	return ss, nil
 }
 
-// preloadSprites reads sprites from files on disk.
-func preloadSprites() error {
-	var err error
-	gameSpritesChar, err = LoadSprites(CharacterSpritesheetPath,
-		charSpritesheetWidth, charSpritesheetHeight)
-	if err != nil {
-		return err
+// PreloadSprites preloads all known sprites and returns them in a SpriteSet.
+func PreloadSprites() (*SpriteSet, error) {
+	if gameSprites != nil {
+		log.Println("sprites already loaded, reusing")
+		return gameSprites, nil
 	}
-	gameSpritesDeco, err = LoadSprites(DecorationSpritesheetPath,
-		decoSpritesheetWidth, decoSpritesheetHeight)
+	ss := &SpriteSet{}
+
+	cs, err := LoadSprites(CharacterSpritesheetPath, 32, 32)
 	if err != nil {
-		return err
+		return &SpriteSet{}, err
 	}
-	return nil
+	ss.Characters = cs
+
+	ds, err := LoadSprites(DecorationSpritesheetPath, 40, 40)
+	if err != nil {
+		return &SpriteSet{}, err
+	}
+	ss.Decorations = ds
+
+	return ss, nil
 }
