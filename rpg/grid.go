@@ -74,7 +74,6 @@ type GridCell struct {
 	X, Y int
 
 	Character Character
-	Items     []*Item
 }
 
 // A GridRow contains an array of GridCells.
