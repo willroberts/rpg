@@ -17,7 +17,6 @@ package rpg
 
 import (
 	"fmt"
-	"image/color"
 
 	"engo.io/ecs"
 	"engo.io/engo"
@@ -30,8 +29,7 @@ const (
 	zHUD
 	zText
 
-	hudFormatter string  = "Level: %d\nXP: %d\nHP: %d/%d"
-	hudFontSize  float64 = 32
+	hudFormatter string = "Level: %d\nXP: %d\nHP: %d/%d"
 )
 
 // The HUD contains all on-screen text, controls, and buttons.
@@ -48,7 +46,7 @@ func (h *HUD) Update() {
 		case *common.RenderSystem:
 			s.Remove(h.BasicEntity)
 			h.RenderComponent.Drawable = common.Text{
-				Font: gameFontHUD,
+				Font: gameFonts.HUDFont,
 				Text: fmt.Sprintf(hudFormatter, gamePlayer.GetLevel(),
 					gamePlayer.GetExperience(), gamePlayer.GetHitPoints(),
 					gamePlayer.GetMaxHitPoints()),
@@ -58,27 +56,11 @@ func (h *HUD) Update() {
 	}
 }
 
-// initializeHUDFont prepares the font used in the HUD.
-func initializeHUDFont() error {
-	if gameFontHUD == nil {
-		gameFontHUD = &common.Font{
-			URL:  "fonts/hud.ttf",
-			BG:   color.Black,
-			FG:   color.White,
-			Size: hudFontSize,
-		}
-	}
-	if err := gameFontHUD.CreatePreloaded(); err != nil {
-		return err
-	}
-	return nil
-}
-
 // newHUD configures and returns a HUD system.
 func newHUD() (*HUD, error) {
 	h := &HUD{BasicEntity: ecs.NewBasic()}
 	h.RenderComponent.Drawable = common.Text{
-		Font: gameFontHUD,
+		Font: gameFonts.HUDFont,
 		Text: fmt.Sprintf(hudFormatter, gamePlayer.GetLevel(),
 			gamePlayer.GetExperience(), gamePlayer.GetHitPoints(),
 			gamePlayer.GetMaxHitPoints()),

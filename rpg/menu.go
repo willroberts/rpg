@@ -21,44 +21,19 @@ import (
 	"log"
 
 	"engo.io/ecs"
-	"engo.io/engo"
 	"engo.io/engo/common"
 )
 
-const (
-	menuFontSize  float64 = 32
-	titleFontSize float64 = 64
-)
-
 type MenuScene struct {
-	Width     int
-	Height    int
-	TitleFont *common.Font
-	MenuFont  *common.Font
+	Width  int
+	Height int
 }
 
 func (s *MenuScene) Preload() {
-	log.Println("preloading fonts")
-	if err := engo.Files.Load("fonts/title.ttf"); err != nil {
-		panic(err)
-	}
-	s.TitleFont = &common.Font{
-		URL:  "fonts/title.ttf",
-		FG:   color.White,
-		Size: titleFontSize,
-	}
-	if err := s.TitleFont.CreatePreloaded(); err != nil {
-		panic(err)
-	}
-	if err := engo.Files.Load("fonts/menu.ttf"); err != nil {
-		panic(err)
-	}
-	s.MenuFont = &common.Font{
-		URL:  "fonts/menu.ttf",
-		FG:   color.White,
-		Size: menuFontSize,
-	}
-	if err := s.MenuFont.CreatePreloaded(); err != nil {
+	log.Println("preloading menu fonts")
+	var err error
+	gameFonts, err = PreloadFonts()
+	if err != nil {
 		panic(err)
 	}
 }
@@ -71,8 +46,8 @@ func (s *MenuScene) Setup(w *ecs.World) {
 
 	// Create title label and "Portrait:" label.
 	// FIXME: Determine width automatically - via t.SpaceComponent.Width?
-	tl := NewLabel("Game Title", s.TitleFont, 200, 64)
-	pl := NewLabel("Portrait:", s.MenuFont, 32, 160)
+	tl := NewLabel("Game Title", gameFonts.TitleFont, 200, 64)
+	pl := NewLabel("Portrait:", gameFonts.MenuFont, 32, 160)
 
 	// draw a character image selector
 	csp := NewCharSelectPanel()

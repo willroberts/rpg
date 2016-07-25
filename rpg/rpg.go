@@ -28,8 +28,7 @@ import (
 var (
 	gameWorld *ecs.World
 
-	gameFontHUD     *common.Font
-	gameFontLog     *common.Font
+	gameFonts       *FontSet
 	gameSpritesChar *common.Spritesheet
 	gameSpritesDeco *common.Spritesheet
 

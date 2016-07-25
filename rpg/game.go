@@ -20,7 +20,6 @@ import (
 	"log"
 
 	"engo.io/ecs"
-	"engo.io/engo"
 	"engo.io/engo/common"
 )
 
@@ -39,11 +38,9 @@ func (scene *GameScene) Preload() {
 		panic(err)
 	}
 
-	log.Println("preloading fonts")
-	if err := engo.Files.Load("fonts/hud.ttf"); err != nil {
-		panic(err)
-	}
-	if err := engo.Files.Load("fonts/combatlog.ttf"); err != nil {
+	var err error
+	gameFonts, err = PreloadFonts()
+	if err != nil {
 		panic(err)
 	}
 }
@@ -112,8 +109,6 @@ func (scene *GameScene) Setup(w *ecs.World) {
 	})
 
 	log.Println("creating hud")
-	initializeHUDFont()
-	initializeLogFont()
 	gameHUD, err = newHUD()
 	if err != nil {
 		panic(err)

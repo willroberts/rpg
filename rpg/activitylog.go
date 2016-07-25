@@ -29,11 +29,10 @@ const (
 	logWindowWidth  float32 = 400
 	logWindowHeight float32 = 138
 
-	logMessageX        int     = 16
-	logMessageY        int     = 580
-	logMessageCount    int     = 5
-	logMessageSpacing  int     = 25
-	logMessageFontSize float64 = 24
+	logMessageX       int = 16
+	logMessageY       int = 580
+	logMessageCount   int = 5
+	logMessageSpacing int = 25
 )
 
 // ActivityLog stores a rolling set of five messages to be displayed on the screen.
@@ -78,7 +77,7 @@ type ActivityMessage struct {
 
 // Draw draws a log message on the screen
 func (m *ActivityMessage) Draw() {
-	m.RenderComponent.Drawable = common.Text{Font: gameFontLog, Text: m.Text}
+	m.RenderComponent.Drawable = common.Text{Font: gameFonts.LogFont, Text: m.Text}
 	for _, sys := range gameWorld.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
@@ -90,7 +89,7 @@ func (m *ActivityMessage) Draw() {
 // initializeActivityMessage creates one of the message rows in the ActivityLog.
 func initializeActivityMessage(msg string, offset int) *ActivityMessage {
 	m := &ActivityMessage{Text: msg}
-	m.RenderComponent.Drawable = common.Text{Font: gameFontLog, Text: m.Text}
+	m.RenderComponent.Drawable = common.Text{Font: gameFonts.LogFont, Text: m.Text}
 	m.RenderComponent.SetZIndex(zText)
 	m.SetShader(common.HUDShader)
 	m.SpaceComponent = common.SpaceComponent{Position: engo.Point{
@@ -99,22 +98,6 @@ func initializeActivityMessage(msg string, offset int) *ActivityMessage {
 	}}
 	m.Draw()
 	return m
-}
-
-// initializeLogFont prepares the font used in the activity log.
-func initializeLogFont() error {
-	if gameFontLog == nil {
-		gameFontLog = &common.Font{
-			URL:  "fonts/combatlog.ttf",
-			BG:   color.Black,
-			FG:   color.White,
-			Size: logMessageFontSize,
-		}
-	}
-	if err := gameFontLog.CreatePreloaded(); err != nil {
-		return err
-	}
-	return nil
 }
 
 // newActivityLog creates a rotating log window on the screen.
