@@ -64,31 +64,18 @@ func (s *MenuScene) Preload() {
 }
 
 func (s *MenuScene) Setup(w *ecs.World) {
-	common.SetBackground(color.Black)
+	common.SetBackground(color.RGBA{40, 44, 40, 255})
 	w.AddSystem(&common.RenderSystem{})
 
 	// draw some kind of non-black background
 
-	// draw the game title at the top
-	t := &Label{BasicEntity: ecs.NewBasic()}
-	t.RenderComponent.Drawable = common.Text{
-		Font: s.TitleFont,
-		Text: "Game Title",
-	}
-	t.SetShader(common.HUDShader)
-	// FIXME: Determine how wide the rendered text is (t.SpaceComponent.Width?)
-	t.SpaceComponent = common.SpaceComponent{Position: engo.Point{200, 64}}
-
-	// draw "Character Creation"
-	l := &Label{BasicEntity: ecs.NewBasic()}
-	l.RenderComponent.Drawable = common.Text{
-		Font: s.MenuFont,
-		Text: "Character Creation",
-	}
-	l.SetShader(common.HUDShader)
-	l.SpaceComponent = common.SpaceComponent{Position: engo.Point{64, 160}}
+	// Create title label and "Portrait:" label.
+	// FIXME: Determine width automatically - via t.SpaceComponent.Width?
+	tl := NewLabel("Game Title", s.TitleFont, 200, 64)
+	pl := NewLabel("Portrait:", s.MenuFont, 32, 160)
 
 	// draw a character image selector
+	csp := NewCharSelectPanel()
 
 	// draw a character stats selector
 
@@ -98,18 +85,13 @@ func (s *MenuScene) Setup(w *ecs.World) {
 	for _, sys := range w.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
-			s.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
-			s.Add(&l.BasicEntity, &l.RenderComponent, &l.SpaceComponent)
+			s.Add(&tl.BasicEntity, &tl.RenderComponent, &tl.SpaceComponent)
+			s.Add(&pl.BasicEntity, &pl.RenderComponent, &pl.SpaceComponent)
+			s.Add(&csp.BasicEntity, &csp.RenderComponent, &csp.SpaceComponent)
 		}
 	}
 }
 
 func (s *MenuScene) Type() string {
 	return "MenuScene"
-}
-
-type Label struct {
-	ecs.BasicEntity
-	common.RenderComponent
-	common.SpaceComponent
 }
