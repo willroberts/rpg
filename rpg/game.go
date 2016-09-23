@@ -67,6 +67,7 @@ func (scene *GameScene) Setup(w *ecs.World) {
 		panic(err)
 	}
 
+	/* FIXME: Enemies temporarily disabled while debugging tile issues.
 	log.Println("creating enemies")
 	if err = loadEnemyTypes(); err != nil {
 		panic(err)
@@ -80,6 +81,7 @@ func (scene *GameScene) Setup(w *ecs.World) {
 		newEnemy("Bear", spriteBear, 6, 17),
 		newEnemy("Demon", spriteDemon, 10, 22),
 	}
+	*/
 
 	log.Println("configuring systems")
 	for _, sys := range w.Systems() {
@@ -90,9 +92,11 @@ func (scene *GameScene) Setup(w *ecs.World) {
 				s.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
 			}
 			s.Add(&gamePlayer.BasicEntity, &gamePlayer.RenderComponent, &gamePlayer.SpaceComponent)
+			/* FIXME: Enemies temporarily disabled while working on tile issues.
 			for _, e := range enemies {
 				s.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
 			}
+			*/
 		case *CameraSystem:
 			log.Println("configuring camera system")
 			s.Add(&gamePlayer.BasicEntity, &gamePlayer.CameraComponent,
@@ -106,6 +110,7 @@ func (scene *GameScene) Setup(w *ecs.World) {
 		TrackingBounds: level.Bounds(),
 	})
 
+	/* FIXME: HUD temporarily disabled while working on tile issues.
 	log.Println("creating hud")
 	gameHUD, err = newHUD()
 	if err != nil {
@@ -115,6 +120,7 @@ func (scene *GameScene) Setup(w *ecs.World) {
 	gameLog.Update("Welcome to the game.")
 	gameLog.Update("There are three skeletons near you.")
 	gameLog.Update("Try moving into them to attack.")
+	*/
 
 	log.Println("binding controls")
 	bindControls()
