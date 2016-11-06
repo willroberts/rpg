@@ -20,6 +20,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io"
+	"log"
 )
 
 var (
@@ -30,12 +31,12 @@ var (
 func verifyTileCount() {
 	b := []byte(string(mapData))
 	if _, err := base64.StdEncoding.Decode(b, b); err != nil {
-		panic(err)
+		log.Fatalln("error:", err.Error())
 	}
 	r := bytes.NewReader(b)
 	z, err := zlib.NewReader(r)
 	if err != nil {
-		panic(err)
+		log.Fatalln("error:", err.Error())
 	}
 	defer z.Close()
 	markers := make([]uint32, 0)
@@ -46,7 +47,7 @@ func verifyTileCount() {
 			if err == io.EOF {
 				break
 			}
-			panic(err)
+			log.Fatalln("error:", err.Error())
 		}
 		markers = append(markers, next)
 	}

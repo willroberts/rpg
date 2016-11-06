@@ -12,24 +12,22 @@ import (
 // map, a static set of enemies, and only one room.
 type GameScene struct{}
 
-// Preload validates and loads assets. In can cause panics, since the game cannot
-// run without its assets.
+// Preload validates and loads assets.
 func (scene *GameScene) Preload() {
 	log.Println("preloading")
 	preloadMapAssets("maps/stone.tmx")
 	var err error
 	gameSprites, err = PreloadSprites()
 	if err != nil {
-		panic(err)
+		log.Fatalln("error:", err.Error())
 	}
 	gameFonts, err = PreloadFonts()
 	if err != nil {
-		panic(err)
+		log.Fatalln("error:", err.Error())
 	}
 }
 
-// Setup initializes all systems necessary for the game to function. It can
-// panic, since the game cannot run without these systems.
+// Setup initializes all systems necessary for the game to function.
 func (scene *GameScene) Setup(w *ecs.World) {
 	log.Println("creating scene")
 	gameWorld = w
@@ -40,7 +38,7 @@ func (scene *GameScene) Setup(w *ecs.World) {
 	log.Println("loading map")
 	level, tiles, err := loadMap("maps/stone.tmx")
 	if err != nil {
-		panic(err)
+		log.Fatalln("error:", err.Error())
 	}
 
 	log.Println("creating level grid")
@@ -49,12 +47,12 @@ func (scene *GameScene) Setup(w *ecs.World) {
 	log.Println("creating player")
 	gamePlayer = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
 	if err := loadExperienceTable(); err != nil {
-		panic(err)
+		log.Fatalln("error:", err.Error())
 	}
 
 	log.Println("creating enemies")
 	if err = loadEnemyTypes(); err != nil {
-		panic(err)
+		log.Fatalln("error:", err.Error())
 	}
 	enemies := []*Enemy{
 		newEnemy("Skeleton", spriteSkeleton, 2, 7),
@@ -94,7 +92,7 @@ func (scene *GameScene) Setup(w *ecs.World) {
 	log.Println("creating hud")
 	gameHUD, err = newHUD()
 	if err != nil {
-		panic(err)
+		log.Fatalln("error:", err.Error())
 	}
 	gameLog = newActivityLog()
 	gameLog.Update("Welcome to the game.")
