@@ -1,5 +1,5 @@
 hash: 6530d21b438aaf0622b5bf58d45ef2a0026bbfb355737419d9604426baa04073
-updated: 2016-09-23T00:53:15.812558736-07:00
+updated: 2016-11-06T00:40:10.69778286-07:00
 imports:
 - name: engo.io/ecs
   version: 95e9cb668349043e78cfe2bc6bb3aca12b0b6507
@@ -14,13 +14,13 @@ imports:
 - name: engo.io/gl
   version: dbd3b277fe443f235d09dd4dd2fa7cfff49505a4
 - name: github.com/engoengine/math
-  version: a1295569c7651531d2caf27f8180fc6b71042702
+  version: afa637dd62b55bcb27f65fe1325d81bd79b32574
 - name: github.com/go-gl/gl
-  version: cd1cf4a9b229045e8a41d5945fc597617e8bae4f
+  version: b303bcb3e83b7ef645a5104e1c2db7f8d9e8918a
   subpackages:
   - v2.1/gl
 - name: github.com/go-gl/glfw
-  version: 8c0e1945cd0d8980ba4834f65735ee03f99b2541
+  version: 6e7202f2d691ed1d79bcdaed6cce0061006ce565
   subpackages:
   - v3.1/glfw
 - name: github.com/go-gl/mathgl
@@ -33,11 +33,11 @@ imports:
   - raster
   - truetype
 - name: github.com/gopherjs/gopherjs
-  version: 7600e3d439bd24b1a637bb6b67e9936c7d8736b3
+  version: e34a5cd6a1bc7c4fde759f2d3039852fc68b5fcc
   subpackages:
   - js
 - name: golang.org/x/exp
-  version: 77977c4438150e916f740b6bc5b0b73811712cd7
+  version: d4689a43552e1860762018feebe0ccf6a290980e
   subpackages:
   - shiny/driver/gldriver
   - shiny/driver/internal/drawer
@@ -48,14 +48,14 @@ imports:
   - shiny/driver/internal/x11key
   - shiny/screen
 - name: golang.org/x/image
-  version: 50ce1ebf587f76c0b5c9471629c9cc373132a0a9
+  version: c78039e8ce1e427880f400175cb7cddd6cce7248
   subpackages:
   - font
   - math/f32
   - math/f64
   - math/fixed
 - name: golang.org/x/mobile
-  version: 8b28d19931a076562c21c1db79486127a7464e17
+  version: b8794a2669da6680501f9ebc6c555553dc46b1ee
   subpackages:
   - app
   - app/internal/callfn
@@ -74,7 +74,7 @@ imports:
   - gl
   - internal/mobileinit
 - name: golang.org/x/sys
-  version: 8f0908ab3b2457e2e15403d3697c9ef5cb4b57a9
+  version: c200b10b5d5e122be351b67af224adc6128af5bf
   subpackages:
   - windows
 - name: honnef.co/go/js/dom
