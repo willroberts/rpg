@@ -20,12 +20,14 @@ import (
 	"log"
 
 	"engo.io/engo"
-	"github.com/willroberts/rpg/rpg"
+	"github.com/willroberts/rpg/scenes"
 )
 
+// basic scene: 480x480
+// game scene: 720x720
 const (
-	width  int = 720
-	height int = 720
+	width  int = 480
+	height int = 480
 )
 
 // Main starts the game.
@@ -36,5 +38,5 @@ func main() {
 		Height: height,
 	}
 	log.Printf("starting game at video resolution %dx%d\n", width, height)
-	engo.Run(o, &rpg.GameScene{})
+	engo.Run(o, &scenes.BasicScene{})
 }

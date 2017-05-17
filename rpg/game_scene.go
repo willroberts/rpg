@@ -1,5 +1,6 @@
 package rpg
 
+/*
 import (
 	"image/color"
 	"log"
@@ -111,3 +112,4 @@ func (scene *GameScene) Setup(w *ecs.World) {
 func (scene *GameScene) Type() string {
 	return "GameScene"
 }
+*/

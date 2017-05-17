@@ -66,8 +66,8 @@ type GridRow struct {
 	Cells []*GridCell
 }
 
-// newGrid returns an empty, pre-initialized Grid of the given dimensions.
-func newGrid(x, y int) *Grid {
+// NewGrid returns an empty, pre-initialized Grid of the given dimensions.
+func NewGrid(x, y int) *Grid {
 	r := make([]*GridRow, y)
 	for i := 0; i < y; i++ {
 		c := make([]*GridCell, x)

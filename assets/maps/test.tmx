@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="12" height="24" tilewidth="40" tileheight="40" nextobjectid="1">
+ <tileset firstgid="1" name="floor-tiles-20x20" tilewidth="20" tileheight="20" tilecount="260" columns="20">
+  <image source="../spritesheets/floor-tiles-20x20.png" width="400" height="260"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="12" height="24">
+  <data encoding="base64" compression="zlib">
+   eJz7zsDA8H0Uj+JRPIoHAAMAjP0V8A==
+  </data>
+ </layer>
+</map>

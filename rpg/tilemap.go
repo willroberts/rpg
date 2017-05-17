@@ -1,6 +1,8 @@
 package rpg
 
 import (
+	"log"
+
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
@@ -18,9 +20,9 @@ type Tile struct {
 	common.SpaceComponent
 }
 
-// loadMap parses a Tiled map, returning a processed level and a set of Tiles to
+// LoadMap parses a Tiled map, returning a processed level and a set of Tiles to
 // be rendered.
-func loadMap(m string) (*common.Level, []*Tile, error) {
+func LoadMap(m string) (*common.Level, []*Tile, error) {
 	var tiles []*Tile
 	resource, err := engo.Files.Resource(m)
 	if err != nil {
@@ -28,7 +30,9 @@ func loadMap(m string) (*common.Level, []*Tile, error) {
 	}
 
 	l := resource.(common.TMXResource).Level
+	log.Println("len(layers):", len(l.TileLayers))
 	for _, tl := range l.TileLayers {
+		log.Println("len(tiles):", len(tl.Tiles))
 		for _, te := range tl.Tiles {
 			if te.Image != nil {
 				t := &Tile{BasicEntity: ecs.NewBasic()}
@@ -50,8 +54,8 @@ func loadMap(m string) (*common.Level, []*Tile, error) {
 	return l, tiles, nil
 }
 
-// preloadMapAssets loads a Tiled map file at the given path.
-func preloadMapAssets(m string) error {
+// PreloadMapAssets loads a Tiled map file at the given path.
+func PreloadMapAssets(m string) error {
 	if err := engo.Files.Load(m); err != nil {
 		return err
 	}
