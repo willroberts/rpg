@@ -25,6 +25,10 @@ Project started July 12, 2016.
 
 ## III. Polish Pass #1
 
+- [ ] Refactor to simplify type hierarchy
+- [ ] Resolve FIXME / TODO items
+- [ ] golint, go vet, errcheck
+- [ ] Improve docstrings and comments
 - [ ] First-Class HUD (distinct from play area)
 - [ ] Basic Enemy AI (vision range and approach behavior)
 - [ ] Walls
