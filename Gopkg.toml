@@ -24,7 +24,10 @@
 #   go-tests = true
 #   unused-packages = true
 
-
 [prune]
   go-tests = true
   unused-packages = true
+
+[[constraint]]
+  name = "engo.io/engo"
+	version = "v1.0"

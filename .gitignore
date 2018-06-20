@@ -1,5 +1,2 @@
-# we store glide.lock instead of dependencies
-vendor
-
 # vim
 *.swp
