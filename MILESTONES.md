@@ -20,13 +20,14 @@ Project started July 12, 2016.
 - [x] Player Death
 - [x] Basic HUD
 - [x] Combat Log
-- [ ] Player confined to non-HUD area
-
-## III. Role-Playing Elements
-
 - [x] Experience Points
 - [x] Leveling
-- [ ] Character Creation
+
+## III. Polish Pass #1
+
+- [ ] First-Class HUD (distinct from play area)
+- [ ] Basic Enemy AI (vision range and approach behavior)
+- [ ] Walls
 
 ## IV. Items
 
@@ -37,18 +38,18 @@ Project started July 12, 2016.
 
 ## V. Combat Depth
 
-- [ ] Defensive Spells
 - [ ] Offensive Spells
-- [ ] Enemy AI
+- [ ] Defensive Spells
 - [ ] Fog of War
 - [ ] Attributes (STR: ATK, DEX: ACC, INT: MP, END/VIT: HP)
 
 ## VI. World Depth
 
+- [ ] Character Creation
 - [ ] Starting Town
 - [ ] NPCs
 - [ ] Vendors
-- [ ] Score Tracking and Leaderboards
+- [ ] Score Tracking and High Scores
 
 ## VII. Randomized Content
 
@@ -56,21 +57,14 @@ Project started July 12, 2016.
 - [ ] Randomized Enemy Spawns
 - [ ] Randomized Levels, Rooms, Walls, Layouts, etc.
 
-## VIII. Polish
+## VIII. Polish Pass #2
 
-- [ ] Create a better HUD
-- [ ] Create a Start Menu
+- [ ] Main Menu
 - [ ] Minimal Animations ("Slash" animation for Melee combat, etc.)
 - [ ] Thin Fog layer over game window
 
 ## IX. Technical Quality
 
-- [ ] Address all TODO and FIXME
+- [ ] Address all TODO and FIXME notes
 - [ ] Proofread and edit documentation
-- [ ] Describe a file's purpose on the second comment line (after the filename)
-
-## X. Bonus Content
-
-- [ ] Recreate specific maps from Castle of the Winds
-- [ ] Music
-- [ ] Sound Effects
+- [ ] Improve docstrings and comments
