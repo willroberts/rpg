@@ -91,10 +91,10 @@ func (e *Enemy) SetX(x int) { e.X = x }
 // SetY updates the Enemy's Y coordinate.
 func (e *Enemy) SetY(y int) { e.Y = y }
 
-// loadEnemyTypes reads EnemyAttributes from JSON, and populates the global map
+// loadEnemyTypes reads EnemyAttributes from file, and populates the global map
 // gameEnemyTypes.
 func loadEnemyTypes() error {
-	b, err := ioutil.ReadFile("data/enemies.json")
+	b, err := ioutil.ReadFile("assets/data/enemies.json")
 	if err != nil {
 		return err
 	}

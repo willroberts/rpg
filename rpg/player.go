@@ -213,9 +213,9 @@ func movePlayer(e CameraEntity) {
 	e.SpaceComponent.Position.Y = posY
 }
 
-// loadExperienceTable reads the ExperienceTable from data/experience.json.
+// loadExperienceTable reads the ExperienceTable from file.
 func loadExperienceTable() error {
-	b, err := ioutil.ReadFile("data/experience.json")
+	b, err := ioutil.ReadFile("assets/data/experience.json")
 	if err != nil {
 		return err
 	}
