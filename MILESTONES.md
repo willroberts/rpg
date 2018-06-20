@@ -8,7 +8,7 @@ Project started July 12, 2016.
 - [x] 2D Tiled Map
 - [x] Camera Follows Player (Map larger than game window)
 - [x] Player confined to Map
-- [ ] Tiles display correctly and consistently
+- [x] Tiles display correctly and consistently
 
 ## II. Combat System (Reached July 17 2016 - Day 6)
 
@@ -27,7 +27,6 @@ Project started July 12, 2016.
 - [x] Experience Points
 - [x] Leveling
 - [ ] Character Creation
-- [ ] Character Attributes (STR: ATK, DEX: ACC, INT: MP, END/VIT: HP)
 
 ## IV. Items
 
@@ -42,6 +41,7 @@ Project started July 12, 2016.
 - [ ] Offensive Spells
 - [ ] Enemy AI
 - [ ] Fog of War
+- [ ] Attributes (STR: ATK, DEX: ACC, INT: MP, END/VIT: HP)
 
 ## VI. World Depth
 
