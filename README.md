@@ -42,6 +42,17 @@ Bugs:
 - [ ] The player can move under the HUD elements. Need to make the game
 	boundaries smaller than the game window.
 
+### Aside: Hiatus
+
+Between milestones 2 and 3, around July 2016, I stopped working on this project
+after failing to resolve the TMX map bug from the first milestone. I briefly
+resumed work in November 2016, but stopped before too long.
+
+Now, in June 2018, Engo has recently reached their v1.0 milestone, and I'm
+taking some time to update to this version and finish getting the core game
+loop down. Despite the checklists all over this page, I'll be taking a fast &
+loose approach to get things done more quickly.
+
 ### III. Role-Playing Elements
 
 - [x] Experience Points
