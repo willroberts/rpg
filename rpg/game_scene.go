@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"engo.io/ecs"
+	"engo.io/engo"
 	"engo.io/engo/common"
 )
 
@@ -28,7 +29,11 @@ func (scene *GameScene) Preload() {
 }
 
 // Setup initializes all systems necessary for the game to function.
-func (scene *GameScene) Setup(w *ecs.World) {
+func (scene *GameScene) Setup(u engo.Updater) {
+	// In EngoEngine/engo#513, ecs.World ws replaced with engo.Updater.
+	// This is how the authors updated their demos for compatibility.
+	w, _ := u.(*ecs.World)
+
 	log.Println("creating scene")
 	gameWorld = w
 	common.SetBackground(color.Black)
