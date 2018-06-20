@@ -32,8 +32,8 @@ const (
 	spriteStairsUpRight   int = 14
 	spriteStairsUpLeft2   int = 15 // darker?
 
-	CharacterSpritesheetPath  string = "spritesheets/characters-32x32.png"
-	DecorationSpritesheetPath string = "spritesheets/decoration-20x20-40x40.png"
+	characterSpritesheetPath  string = "spritesheets/characters-32x32.png"
+	decorationSpritesheetPath string = "spritesheets/decoration-20x20-40x40.png"
 )
 
 // A SpriteSet contains all sprites we use in the game.
@@ -59,13 +59,13 @@ func PreloadSprites() (*SpriteSet, error) {
 	}
 	ss := &SpriteSet{}
 
-	cs, err := LoadSprites(CharacterSpritesheetPath, 32, 32)
+	cs, err := LoadSprites(characterSpritesheetPath, 32, 32)
 	if err != nil {
 		return &SpriteSet{}, err
 	}
 	ss.Characters = cs
 
-	ds, err := LoadSprites(DecorationSpritesheetPath, 40, 40)
+	ds, err := LoadSprites(decorationSpritesheetPath, 40, 40)
 	if err != nil {
 		return &SpriteSet{}, err
 	}

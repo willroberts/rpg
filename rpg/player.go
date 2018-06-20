@@ -104,7 +104,7 @@ func (p *Player) ModifyExperience(amount int) {
 // LevelUp increases the Player's level, increases MaxHitPoints, and restores HP.
 func (p *Player) LevelUp() {
 	gameScene.Log.Update("Level up!")
-	p.Level += 1
+	p.Level++
 	p.Experience = 0
 	p.MaxHitPoints += 2
 	p.HitPoints = p.MaxHitPoints

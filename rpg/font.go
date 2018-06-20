@@ -10,13 +10,13 @@ import (
 
 const (
 	// Font used at the top of the screen during gameplay.
-	HUDFontPath string = "fonts/hud.ttf"
+	hudFontPath string = "fonts/hud.ttf"
 	// Font used in the ActivityLog window.
-	LogFontPath string = "fonts/combatlog.ttf"
+	logFontPath string = "fonts/combatlog.ttf"
 	// Font used in the Main Menu and Character Select.
-	MenuFontPath string = "fonts/menu.ttf"
+	menuFontPath string = "fonts/menu.ttf"
 	// Font used on the Title Screen.
-	TitleFontPath string = "fonts/title.ttf"
+	titleFontPath string = "fonts/title.ttf"
 )
 
 // A FontSet contains all named fonts we use in the game.
@@ -51,7 +51,7 @@ func PreloadFonts() (*FontSet, error) {
 	}
 	fs := &FontSet{}
 
-	hf, err := LoadFont(HUDFontPath, 32)
+	hf, err := LoadFont(hudFontPath, 32)
 	if err != nil {
 		return &FontSet{}, err
 	}
@@ -59,13 +59,13 @@ func PreloadFonts() (*FontSet, error) {
 	// FIXME: Reusing fonts here since they're identical.
 	fs.MenuFont = hf
 
-	lf, err := LoadFont(LogFontPath, 24)
+	lf, err := LoadFont(logFontPath, 24)
 	if err != nil {
 		return &FontSet{}, err
 	}
 	fs.LogFont = lf
 
-	tf, err := LoadFont(TitleFontPath, 64)
+	tf, err := LoadFont(titleFontPath, 64)
 	if err != nil {
 		return &FontSet{}, err
 	}

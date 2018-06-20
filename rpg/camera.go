@@ -25,13 +25,13 @@ type CameraSystem struct {
 	entities []CameraEntity
 }
 
-// Add() starts tracking an entity in the camera system.
+// Add starts tracking an entity in the camera system.
 func (c *CameraSystem) Add(b *ecs.BasicEntity, ctrl *CameraComponent,
 	s *common.SpaceComponent) {
 	c.entities = append(c.entities, CameraEntity{b, ctrl, s})
 }
 
-// Remove() stops tracking an entity in the camera system.
+// Remove stops tracking an entity in the camera system.
 func (c *CameraSystem) Remove(te ecs.BasicEntity) {
 	del := -1
 	for i, e := range c.entities {
@@ -45,7 +45,7 @@ func (c *CameraSystem) Remove(te ecs.BasicEntity) {
 	}
 }
 
-// Update() processes events for the camera system.
+// Update processes events for the camera system.
 func (c *CameraSystem) Update(dt float32) {
 	for _, e := range c.entities {
 		movePlayer(e)

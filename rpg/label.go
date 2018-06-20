@@ -13,7 +13,7 @@ type Label struct {
 	common.SpaceComponent
 }
 
-// Creates and returns a new Label.
+// NewLabel creates and returns a Label.
 func NewLabel(text string, font *common.Font, x, y float32) *Label {
 	l := &Label{BasicEntity: ecs.NewBasic()}
 	l.RenderComponent.Drawable = common.Text{Font: font, Text: text}
