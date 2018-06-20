@@ -3,6 +3,11 @@
 A 2D game written in Go, using the [engo](https://www.github.com/EngoEngine/engo)
 engine.
 
+## License
+
+Licensed under the GNU General Public License (v3). See `LICENSE`
+file.
+
 ## Design
 
 Inspired by
