@@ -34,7 +34,7 @@ Files: `character.go`, `player.go`, `enemy.go`
 player character or an NPC (including enemies). `Player` and `Enemy`
 satisfy the `Character` interface.
 
-## Systems
+## Systems using the ECS Paradigm
 
 ### Camera
 
@@ -49,14 +49,6 @@ Files: `combat.go`
 
 The combat system handles HP deductions, player and enemy death, and
 the granting of experience points.
-
-### Fonts
-
-Files: `fonts.go`
-
-The fonts system is a set of helpers rather than a full-fledged ECS
-system, but it handles the preloading of fonts which are returned in
-a `FontSet` type.
 
 ### Grid
 
@@ -73,12 +65,34 @@ The HUD system displays player level, player health, and player
 experience points. It updates once per frame, though it should
 update more punctually.
 
+### Activity Log
+
+Files: `log.go`
+
+The activity log system is a text log of game events and combat
+results displayed on screen during gameplay.
+
+### Tiled (TMX) Tilemaps
+
+Files: `tilemap.go`
+
+The tilemap system is responsible for preloading a Tiled map and
+creating ECS entities and components for all necessary objects.
+
+## Helper Systems
+
+### Fonts
+
+Files: `fonts.go`
+
+The fonts system is a set of helpers for preloading fonts which are returned in
+a `FontSet` type.
+
 ### Input
 
 Files: `input.go`
 
-Similar to fonts, the input code is not an ECS system. Instead, it
-is a helper for binding our key controls.
+This is a set of helpers for binding our key controls.
 
 ### Label
 
@@ -87,23 +101,8 @@ Files: `label.go`
 The Label system is unfinished, but it was intended to facilitate
 the creation of text labels for the main menu.
 
-### Activity Log
-
-Files: `log.go`
-
-The activity log system is a text log of game events and combat
-results displayed on screen during gameplay.
-
 ### Sprites
 
 Files: `sprite.go`
 
-The sprites code is not an ECS system but a set of helpers for the
-loading of sprite graphics.
-
-### Tiled (TMX) Tilemaps
-
-Files: `tilemap.go`
-
-The tilemap system is responsible for preloading a Tiled map and
-creating ECS entities and components for all necessary objects.
+The sprites code is a set of helpers for theloading of sprite graphics.
