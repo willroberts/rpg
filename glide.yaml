@@ -1,6 +1,0 @@
-package: github.com/willroberts/rpg
-import:
-- package: engo.io/ecs
-- package: engo.io/engo
-  subpackages:
-  - common
