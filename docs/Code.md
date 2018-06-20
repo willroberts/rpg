@@ -14,10 +14,10 @@ the `engo.Scene` interface.
 `GameScene`'s `Preload()` function loads static assets needed by the
 game.
 
-`GameScene`'s `Setup()` function initializes its subsystems, createsthe scene (map, grid, etc.) and adds the player and enemies to the
+`GameScene`'s `Setup()` function initializes its subsystems, creates
+the scene (map, grid, etc.) and adds the player and enemies to the
 scene. It also configures the camera, the HUD, the log, and the
-input bindings. This function is currently too large, and breaking
-it into testable pieces would be preferable.
+input bindings.
 
 Once Engo has run the scene, the game engine advances on player
 input. The `Player` type call's the `MoveCharacter` method in the

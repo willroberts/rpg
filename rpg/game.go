@@ -48,6 +48,7 @@ func (scene *GameScene) Preload() {
 }
 
 // Setup initializes all systems necessary for the game to function.
+// TODO: This function is too large -- break it up.
 func (scene *GameScene) Setup(u engo.Updater) {
 	// In EngoEngine/engo#513, ecs.World ws replaced with engo.Updater.
 	// This is how the authors updated their demos for compatibility.

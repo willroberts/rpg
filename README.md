@@ -11,13 +11,12 @@ file.
 ## Design
 
 Inspired by
-[Castle of the Winds](https://en.wikipedia.org/wiki/Castle_of_the_Winds): an
-orthogonal tile-based RPG in which the game advances when the player moves. There
-are no animations or sound effects.
+[Castle of the Winds](https://en.wikipedia.org/wiki/Castle_of_the_Winds), a
+classic roguelike RPG for Windows 3.1.
 
 ## Documentation
 
-Technical spec notes can be found in the `docs` directory. For code
+Technical spec notes can be found in the `docs` directory. For API
 documentation, use `go doc`.
 
 ## Development Log
