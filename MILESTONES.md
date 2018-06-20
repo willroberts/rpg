@@ -40,8 +40,10 @@ Project started July 12, 2016.
 
 - [ ] Offensive Spells
 - [ ] Defensive Spells
+- [ ] Enemy AI: Healing Spells
 - [ ] Fog of War
 - [ ] Attributes (STR: ATK, DEX: ACC, INT: MP, END/VIT: HP)
+- [ ] Enemy AI: Flee based on STR
 
 ## VI. World Depth
 
