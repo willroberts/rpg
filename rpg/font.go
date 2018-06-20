@@ -45,9 +45,9 @@ func LoadFont(path string, size float64) (*common.Font, error) {
 
 // PreloadFonts preloads all known fonts and returns them in a FontSet.
 func PreloadFonts() (*FontSet, error) {
-	if gameFonts != nil {
+	if gameScene.Fonts != nil {
 		log.Println("fonts already loaded, reusing")
-		return gameFonts, nil
+		return gameScene.Fonts, nil
 	}
 	fs := &FontSet{}
 

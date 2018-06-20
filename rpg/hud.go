@@ -26,15 +26,15 @@ type HUD struct {
 
 // Update redraws the HUD to use current values.
 func (h *HUD) Update() {
-	for _, sys := range gameWorld.Systems() {
+	for _, sys := range gameScene.World.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Remove(h.BasicEntity)
 			h.RenderComponent.Drawable = common.Text{
-				Font: gameFonts.HUDFont,
-				Text: fmt.Sprintf(hudFormatter, gamePlayer.GetLevel(),
-					gamePlayer.GetExperience(), gamePlayer.GetHitPoints(),
-					gamePlayer.GetMaxHitPoints()),
+				Font: gameScene.Fonts.HUDFont,
+				Text: fmt.Sprintf(hudFormatter, gameScene.Player.GetLevel(),
+					gameScene.Player.GetExperience(), gameScene.Player.GetHitPoints(),
+					gameScene.Player.GetMaxHitPoints()),
 			}
 			s.Add(&h.BasicEntity, &h.RenderComponent, &h.SpaceComponent)
 		}
@@ -45,15 +45,15 @@ func (h *HUD) Update() {
 func newHUD() (*HUD, error) {
 	h := &HUD{BasicEntity: ecs.NewBasic()}
 	h.RenderComponent.Drawable = common.Text{
-		Font: gameFonts.HUDFont,
-		Text: fmt.Sprintf(hudFormatter, gamePlayer.GetLevel(),
-			gamePlayer.GetExperience(), gamePlayer.GetHitPoints(),
-			gamePlayer.GetMaxHitPoints()),
+		Font: gameScene.Fonts.HUDFont,
+		Text: fmt.Sprintf(hudFormatter, gameScene.Player.GetLevel(),
+			gameScene.Player.GetExperience(), gameScene.Player.GetHitPoints(),
+			gameScene.Player.GetMaxHitPoints()),
 	}
 	h.RenderComponent.SetZIndex(zHUD)
 	h.SetShader(common.HUDShader)
 	h.SpaceComponent = common.SpaceComponent{Position: engo.Point{0, 0}}
-	for _, sys := range gameWorld.Systems() {
+	for _, sys := range gameScene.World.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Add(&h.BasicEntity, &h.RenderComponent, &h.SpaceComponent)

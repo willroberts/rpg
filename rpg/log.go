@@ -62,8 +62,8 @@ type ActivityMessage struct {
 
 // Draw draws a log message on the screen
 func (m *ActivityMessage) Draw() {
-	m.RenderComponent.Drawable = common.Text{Font: gameFonts.LogFont, Text: m.Text}
-	for _, sys := range gameWorld.Systems() {
+	m.RenderComponent.Drawable = common.Text{Font: gameScene.Fonts.LogFont, Text: m.Text}
+	for _, sys := range gameScene.World.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Add(&m.BasicEntity, &m.RenderComponent, &m.SpaceComponent)
@@ -74,7 +74,7 @@ func (m *ActivityMessage) Draw() {
 // initializeActivityMessage creates one of the message rows in the ActivityLog.
 func initializeActivityMessage(msg string, offset int) *ActivityMessage {
 	m := &ActivityMessage{Text: msg}
-	m.RenderComponent.Drawable = common.Text{Font: gameFonts.LogFont, Text: m.Text}
+	m.RenderComponent.Drawable = common.Text{Font: gameScene.Fonts.LogFont, Text: m.Text}
 	m.RenderComponent.SetZIndex(zText)
 	m.SetShader(common.HUDShader)
 	m.SpaceComponent = common.SpaceComponent{Position: engo.Point{
@@ -107,7 +107,7 @@ func newActivityLog() *ActivityLog {
 		Width:    w.Width,
 		Height:   w.Height,
 	}
-	for _, sys := range gameWorld.Systems() {
+	for _, sys := range gameScene.World.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Add(&w.BasicEntity, &w.RenderComponent, &w.SpaceComponent)

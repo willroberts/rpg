@@ -4,17 +4,18 @@ import "fmt"
 
 // Given pointers to two entities, resolve combat between them. Applies damage
 // simultaneously and then updates the HUD before destroying any Characters.
-func initiateCombat(c1, c2 Character) {
+// FIXME: Combat should always assume c1=player. c2 is always enemy.
+func handleCombat(c1, c2 Character) {
 	// Apply damage values simultaneously.
 	c1.ModifyHitPoints(-c2.GetDamage())
 	c2.ModifyHitPoints(-c1.GetDamage())
 
 	// Write damage dealt to the activity log and update the HUD.
-	gameLog.Update(fmt.Sprintf("%s hits %s for %d damage!", c1.GetName(),
+	gameScene.Log.Update(fmt.Sprintf("%s hits %s for %d damage!", c1.GetName(),
 		c2.GetName(), c1.GetDamage()))
-	gameLog.Update(fmt.Sprintf("%s hits %s for %d damage!", c2.GetName(),
+	gameScene.Log.Update(fmt.Sprintf("%s hits %s for %d damage!", c2.GetName(),
 		c1.GetName(), c2.GetDamage()))
-	gameHUD.Update()
+	gameScene.HUD.Update()
 
 	// Destroy any entities with no HP remaining, and determine if the Player died.
 	var playerDestroyed bool
@@ -23,7 +24,7 @@ func initiateCombat(c1, c2 Character) {
 
 	if c1.GetHitPoints() == 0 {
 		c1.Destroy()
-		if c1.GetName() == gamePlayer.Name {
+		if c1.GetName() == gameScene.Player.Name {
 			playerDestroyed = true
 		} else {
 			enemyDestroyed = true
@@ -32,7 +33,7 @@ func initiateCombat(c1, c2 Character) {
 	}
 	if c2.GetHitPoints() == 0 {
 		c2.Destroy()
-		if c2.GetName() == gamePlayer.Name {
+		if c2.GetName() == gameScene.Player.Name {
 			playerDestroyed = true
 		} else {
 			enemyDestroyed = true
@@ -42,8 +43,14 @@ func initiateCombat(c1, c2 Character) {
 
 	// If the Player was not destroyed, grant Experience Points and update the HUD.
 	if enemyDestroyed && !playerDestroyed {
-		gameLog.Update(fmt.Sprintf("You gained %d experience points.", xpBonus))
-		gamePlayer.ModifyExperience(xpBonus)
-		gameHUD.Update()
+		// FIXME: Add enemy.GetName()
+		gameScene.Log.Update("Enemy was destroyed!")
+		gameScene.Log.Update(fmt.Sprintf("You gained %d experience points.", xpBonus))
+		gameScene.Player.ModifyExperience(xpBonus)
+		gameScene.HUD.Update()
+	}
+
+	if playerDestroyed {
+		gameScene.Log.Update("You died!")
 	}
 }

@@ -53,9 +53,9 @@ func LoadSprites(path string, w, h int) (*common.Spritesheet, error) {
 
 // PreloadSprites preloads all known sprites and returns them in a SpriteSet.
 func PreloadSprites() (*SpriteSet, error) {
-	if gameSprites != nil {
+	if gameScene.Sprites != nil {
 		log.Println("sprites already loaded, reusing")
-		return gameSprites, nil
+		return gameScene.Sprites, nil
 	}
 	ss := &SpriteSet{}
 

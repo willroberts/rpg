@@ -34,15 +34,14 @@ type Player struct {
 // Removes the Player from the CameraSystem and the RenderSystem, and then re-add
 // the Player to the RenderSystem as a gravestone.
 func (p *Player) Destroy() {
-	gameLog.Update("You died!")
-	for _, sys := range gameWorld.Systems() {
+	for _, sys := range gameScene.World.Systems() {
 		switch s := sys.(type) {
 		case *CameraSystem:
 			s.Remove(p.BasicEntity)
 		case *common.RenderSystem:
 			s.Remove(p.BasicEntity)
 			p.RenderComponent = common.RenderComponent{
-				Drawable: gameSprites.Decorations.Cell(spriteGravestone),
+				Drawable: gameScene.Sprites.Decorations.Cell(spriteGravestone),
 				Scale:    engo.Point{charScale, charScale},
 			}
 			p.RenderComponent.SetZIndex(zCharacter)
@@ -97,14 +96,14 @@ func (p *Player) ModifyHitPoints(amount int) {
 func (p *Player) ModifyExperience(amount int) {
 	p.Experience += amount
 	nextLevel := strconv.Itoa(p.Level + 1)
-	if p.Experience >= gameExperienceTable[nextLevel] {
+	if p.Experience >= gameScene.ExperienceTable[nextLevel] {
 		p.LevelUp()
 	}
 }
 
 // LevelUp increases the Player's level, increases MaxHitPoints, and restores HP.
 func (p *Player) LevelUp() {
-	gameLog.Update("Level up!")
+	gameScene.Log.Update("Level up!")
 	p.Level += 1
 	p.Experience = 0
 	p.MaxHitPoints += 2
@@ -140,7 +139,7 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 		Experience:   0,
 	}
 	p.RenderComponent = common.RenderComponent{
-		Drawable: gameSprites.Characters.Cell(spriteIndex),
+		Drawable: gameScene.Sprites.Characters.Cell(spriteIndex),
 		Scale:    engo.Point{charScale, charScale},
 	}
 	p.RenderComponent.SetZIndex(zCharacter)
@@ -152,7 +151,7 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 		Width:  charSizeX,
 		Height: charSizeY,
 	}
-	gameGrid.AddCharacter(p, x, y)
+	gameScene.Grid.AddCharacter(p, x, y)
 	return p
 }
 
@@ -178,33 +177,29 @@ func movePlayer(e CameraEntity) {
 	}
 	switch d {
 	case "left":
-		if gamePlayer.GetX() == gameGrid.MinX {
-			//gameLog.Update(failedMovementMsg)
+		if gameScene.Player.GetX() == gameScene.Grid.MinX {
 			return
 		}
-		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX()-1, gamePlayer.GetY())
+		gameScene.Grid.MoveCharacter(gameScene.Player, gameScene.Player.GetX()-1, gameScene.Player.GetY())
 	case "right":
-		if gamePlayer.GetX() == gameGrid.MaxX {
-			//gameLog.Update(failedMovementMsg)
+		if gameScene.Player.GetX() == gameScene.Grid.MaxX {
 			return
 		}
-		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX()+1, gamePlayer.GetY())
+		gameScene.Grid.MoveCharacter(gameScene.Player, gameScene.Player.GetX()+1, gameScene.Player.GetY())
 	case "up":
-		if gamePlayer.GetY() == gameGrid.MinY {
-			//gameLog.Update(failedMovementMsg)
+		if gameScene.Player.GetY() == gameScene.Grid.MinY {
 			return
 		}
-		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX(), gamePlayer.GetY()-1)
+		gameScene.Grid.MoveCharacter(gameScene.Player, gameScene.Player.GetX(), gameScene.Player.GetY()-1)
 	case "down":
-		if gamePlayer.GetY() == gameGrid.MaxY {
-			//gameLog.Update(failedMovementMsg)
+		if gameScene.Player.GetY() == gameScene.Grid.MaxY {
 			return
 		}
-		gameGrid.MoveCharacter(gamePlayer, gamePlayer.GetX(), gamePlayer.GetY()+1)
+		gameScene.Grid.MoveCharacter(gameScene.Player, gameScene.Player.GetX(), gameScene.Player.GetY()+1)
 	}
-	posX := float32(gamePlayer.GetX()) * charSizeX
-	posY := float32(gamePlayer.GetY()) * charSizeY
-	if gamePlayer.GetHitPoints() > 0 {
+	posX := float32(gameScene.Player.GetX()) * charSizeX
+	posY := float32(gameScene.Player.GetY()) * charSizeY
+	if gameScene.Player.GetHitPoints() > 0 {
 		// The gravestone is a differently-sized asset which doesn't need an offset.
 		posX += charOffsetX
 		posY += charOffsetY
@@ -219,7 +214,7 @@ func loadExperienceTable() error {
 	if err != nil {
 		return err
 	}
-	if err = json.Unmarshal(b, &gameExperienceTable); err != nil {
+	if err = json.Unmarshal(b, &gameScene.ExperienceTable); err != nil {
 		return err
 	}
 	return nil

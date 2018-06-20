@@ -9,20 +9,39 @@ import (
 	"engo.io/engo/common"
 )
 
+// gameScene is a pointer to the GameScene type in the global
+// namespace. This is currently stored this way so subsystems can
+// access shared resources like the combat log.
+var gameScene *GameScene
+
 // GameScene is our first and only scene at the moment. It includes the first
 // map, a static set of enemies, and only one room.
-type GameScene struct{}
+type GameScene struct {
+	World           *ecs.World
+	Fonts           *FontSet
+	Sprites         *SpriteSet
+	Grid            *Grid
+	HUD             *HUD
+	Log             *ActivityLog
+	Player          *Player
+	EnemyTypes      map[string]EnemyAttributes
+	ExperienceTable map[string]int
+}
 
 // Preload validates and loads assets.
 func (scene *GameScene) Preload() {
 	log.Println("preloading")
+
+	// Store a pointer to our GameScene in the global namespace.
+	gameScene = scene
+
 	preloadMapAssets("maps/stone.tmx")
 	var err error
-	gameSprites, err = PreloadSprites()
+	scene.Sprites, err = PreloadSprites()
 	if err != nil {
 		log.Fatalln("error:", err.Error())
 	}
-	gameFonts, err = PreloadFonts()
+	scene.Fonts, err = PreloadFonts()
 	if err != nil {
 		log.Fatalln("error:", err.Error())
 	}
@@ -35,7 +54,7 @@ func (scene *GameScene) Setup(u engo.Updater) {
 	w, _ := u.(*ecs.World)
 
 	log.Println("creating scene")
-	gameWorld = w
+	scene.World = w
 	common.SetBackground(color.Black)
 	w.AddSystem(&common.RenderSystem{})
 	w.AddSystem(&CameraSystem{})
@@ -47,10 +66,10 @@ func (scene *GameScene) Setup(u engo.Updater) {
 	}
 
 	log.Println("creating level grid")
-	gameGrid = newGrid(level.Width(), level.Height())
+	scene.Grid = newGrid(level.Width(), level.Height())
 
 	log.Println("creating player")
-	gamePlayer = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
+	gameScene.Player = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
 	if err := loadExperienceTable(); err != nil {
 		log.Fatalln("error:", err.Error())
 	}
@@ -77,32 +96,32 @@ func (scene *GameScene) Setup(u engo.Updater) {
 			for _, t := range tiles {
 				s.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
 			}
-			s.Add(&gamePlayer.BasicEntity, &gamePlayer.RenderComponent, &gamePlayer.SpaceComponent)
+			s.Add(&gameScene.Player.BasicEntity, &gameScene.Player.RenderComponent, &gameScene.Player.SpaceComponent)
 			for _, e := range enemies {
 				s.Add(&e.BasicEntity, &e.RenderComponent, &e.SpaceComponent)
 			}
 		case *CameraSystem:
 			log.Println("configuring camera system")
-			s.Add(&gamePlayer.BasicEntity, &gamePlayer.CameraComponent,
-				&gamePlayer.SpaceComponent)
+			s.Add(&gameScene.Player.BasicEntity, &gameScene.Player.CameraComponent,
+				&gameScene.Player.SpaceComponent)
 		}
 	}
 
 	log.Println("configuring camera")
 	w.AddSystem(&common.EntityScroller{
-		SpaceComponent: &gamePlayer.SpaceComponent,
+		SpaceComponent: &gameScene.Player.SpaceComponent,
 		TrackingBounds: level.Bounds(),
 	})
 
 	log.Println("creating hud")
-	gameHUD, err = newHUD()
+	gameScene.HUD, err = newHUD()
 	if err != nil {
 		log.Fatalln("error:", err.Error())
 	}
-	gameLog = newActivityLog()
-	gameLog.Update("Welcome to the game.")
-	gameLog.Update("There are three skeletons near you.")
-	gameLog.Update("Try moving into them to attack.")
+	scene.Log = newActivityLog()
+	scene.Log.Update("Welcome to the game.")
+	scene.Log.Update("There are three skeletons near you.")
+	scene.Log.Update("Try moving into them to attack.")
 
 	log.Println("binding controls")
 	bindControls()

@@ -36,7 +36,7 @@ func (g *Grid) MoveCharacter(c Character, toX, toY int) {
 	dst := g.GetCell(toX, toY)
 	if dst.Character != nil {
 		if dst.Character.GetHostility() == "hostile" {
-			initiateCombat(c, dst.Character)
+			handleCombat(c, dst.Character)
 		}
 		return
 	}

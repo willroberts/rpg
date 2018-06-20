@@ -2,7 +2,6 @@ package rpg
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 
 	"engo.io/ecs"
@@ -36,9 +35,8 @@ type Enemy struct {
 
 // Destroy removes an enemy from the Grid and from the RenderSystem.
 func (e *Enemy) Destroy() {
-	gameLog.Update(fmt.Sprintf("%s was destroyed!", e.GetName()))
-	gameGrid.RemoveCharacter(e.GetX(), e.GetY())
-	for _, sys := range gameWorld.Systems() {
+	gameScene.Grid.RemoveCharacter(e.GetX(), e.GetY())
+	for _, sys := range gameScene.World.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			s.Remove(e.BasicEntity)
@@ -92,13 +90,13 @@ func (e *Enemy) SetX(x int) { e.X = x }
 func (e *Enemy) SetY(y int) { e.Y = y }
 
 // loadEnemyTypes reads EnemyAttributes from file, and populates the global map
-// gameEnemyTypes.
+// gameScene.EnemyTypes.
 func loadEnemyTypes() error {
 	b, err := ioutil.ReadFile("assets/data/enemies.json")
 	if err != nil {
 		return err
 	}
-	if err = json.Unmarshal(b, &gameEnemyTypes); err != nil {
+	if err = json.Unmarshal(b, &gameScene.EnemyTypes); err != nil {
 		return err
 	}
 	return nil
@@ -110,13 +108,13 @@ func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 		BasicEntity:       ecs.NewBasic(),
 		Name:              name,
 		Hostility:         "hostile",
-		HitPoints:         gameEnemyTypes[name].HitPoints,
-		Damage:            gameEnemyTypes[name].Damage,
-		ExperienceGranted: gameEnemyTypes[name].ExperienceGranted,
+		HitPoints:         gameScene.EnemyTypes[name].HitPoints,
+		Damage:            gameScene.EnemyTypes[name].Damage,
+		ExperienceGranted: gameScene.EnemyTypes[name].ExperienceGranted,
 		X:                 x,
 		Y:                 y,
 	}
-	enemyTexture := gameSprites.Characters.Cell(spriteIndex)
+	enemyTexture := gameScene.Sprites.Characters.Cell(spriteIndex)
 	e.RenderComponent = common.RenderComponent{
 		Drawable: enemyTexture,
 		Scale:    engo.Point{2, 2},
@@ -130,6 +128,6 @@ func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 		Width:  charSizeX,
 		Height: charSizeY,
 	}
-	gameGrid.AddCharacter(e, x, y)
+	gameScene.Grid.AddCharacter(e, x, y)
 	return e
 }
