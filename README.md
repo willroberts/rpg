@@ -20,6 +20,10 @@ are no animations or sound effects.
 Technical spec notes can be found in the `docs` directory. For code
 documentation, use `go doc`.
 
+## Development Log
+
+For chronological development notes, see `DEVLOG.md`.
+
 ## Credits
 
 Art Assets: Jesse Freeman, Tile Crusader
