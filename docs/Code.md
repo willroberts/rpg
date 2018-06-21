@@ -6,6 +6,35 @@ A `main.go` file does the following:
 - Create an instance of rpg.GameScene
 - Call engo.Run on the game scene
 
+## Type Hierarchy
+
+- GameScene
+  - World
+	  - Systems
+	    - CameraSystem
+			  - CameraEntity: Calls movePlayer()
+				  - SpaceComponent.Position.{X,Y}: Modified by Player
+  - FontSet
+	- SpriteSet
+	- Grid
+	- HUD
+	- ActivityLog
+	- Player
+	  - ExperienceTable
+	  - CameraComponent
+	- Enemies
+
+### Issues
+
+The hierarchy is generally pretty clean, but there are some improvements to be
+made:
+
+1. The camera moves the player by calling its move function, and the player
+   moves the camera by setting its position. This is circular, and should be
+	 changed so that the input keys move the player without the camera being
+	 involved, and the camera's position is determined on demand based on the
+	 player's coordinates.
+
 ## Game Scene
 
 The `GameScene` type is the entry point for our game. It satisfies
