@@ -10,6 +10,7 @@ func bindControls() {
 	engo.Input.RegisterButton("moveright", engo.KeyArrowRight)
 }
 
+// HandleInput processes input events and kicks off corresponding game logic.
 func (g *GameScene) HandleInput() {
 	var d string
 	if engo.Input.Button("moveleft").JustPressed() {
