@@ -17,15 +17,14 @@ var gameScene *GameScene
 // GameScene is our first and only scene at the moment. It includes the first
 // map, a static set of enemies, and only one room.
 type GameScene struct {
-	World           *ecs.World
-	Fonts           *FontSet
-	Sprites         *SpriteSet
-	Grid            *Grid
-	HUD             *HUD
-	Log             *ActivityLog
-	Player          *Player
-	EnemyTypes      map[string]EnemyAttributes
-	ExperienceTable map[string]int
+	World      *ecs.World
+	Fonts      *FontSet
+	Sprites    *SpriteSet
+	Grid       *Grid
+	HUD        *HUD
+	Log        *ActivityLog
+	Player     *Player
+	EnemyTypes map[string]EnemyAttributes
 }
 
 // Preload validates and loads assets.
@@ -71,9 +70,6 @@ func (scene *GameScene) Setup(u engo.Updater) {
 
 	log.Println("creating player")
 	gameScene.Player = newPlayer("Edmund", spriteWhiteZombie, 1, 1)
-	if err := loadExperienceTable(); err != nil {
-		log.Fatalln("error:", err.Error())
-	}
 
 	log.Println("creating enemies")
 	if err = loadEnemyTypes(); err != nil {

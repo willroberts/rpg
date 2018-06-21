@@ -1,10 +1,6 @@
 package rpg
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"strconv"
-
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
@@ -19,12 +15,13 @@ type Player struct {
 	common.SpaceComponent
 	CameraComponent
 
-	Name         string
-	Hostility    string
-	HitPoints    int
-	MaxHitPoints int
-	Level        int
-	Experience   int
+	Name            string
+	Hostility       string
+	HitPoints       int
+	MaxHitPoints    int
+	Level           int
+	Experience      int
+	ExperienceTable map[int]int
 
 	X, Y int
 }
@@ -95,8 +92,7 @@ func (p *Player) ModifyHitPoints(amount int) {
 // ModifyExperience adds a number to the Player's experience points.
 func (p *Player) ModifyExperience(amount int) {
 	p.Experience += amount
-	nextLevel := strconv.Itoa(p.Level + 1)
-	if p.Experience >= gameScene.ExperienceTable[nextLevel] {
+	if p.Experience >= p.ExperienceTable[p.Level+1] {
 		p.LevelUp()
 	}
 }
@@ -129,14 +125,15 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 			SchemeHoriz: "horizontal",
 			SchemeVert:  "vertical",
 		},
-		X:            x,
-		Y:            y,
-		Name:         name,
-		Hostility:    "neutral",
-		HitPoints:    20,
-		MaxHitPoints: 20,
-		Level:        1,
-		Experience:   0,
+		X:               x,
+		Y:               y,
+		Name:            name,
+		Hostility:       "neutral",
+		HitPoints:       20,
+		MaxHitPoints:    20,
+		Level:           1,
+		Experience:      0,
+		ExperienceTable: defaultPlayerExperienceTable,
 	}
 	p.RenderComponent = common.RenderComponent{
 		Drawable: gameScene.Sprites.Characters.Cell(spriteIndex),
@@ -206,16 +203,4 @@ func movePlayer(e CameraEntity) {
 	}
 	e.SpaceComponent.Position.X = posX
 	e.SpaceComponent.Position.Y = posY
-}
-
-// loadExperienceTable reads the ExperienceTable from file.
-func loadExperienceTable() error {
-	b, err := ioutil.ReadFile("assets/data/experience.json")
-	if err != nil {
-		return err
-	}
-	if err = json.Unmarshal(b, &gameScene.ExperienceTable); err != nil {
-		return err
-	}
-	return nil
 }
