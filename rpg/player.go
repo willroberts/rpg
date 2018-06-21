@@ -62,9 +62,7 @@ func (p *Player) GetLevel() int { return p.Level }
 // GetExperience returns the current XP for the Player.
 func (p *Player) GetExperience() int { return p.Experience }
 
-// GetHostility returns the demeanor of an enemy or NPC. It's included here just
-// to statisfy the Character interface.
-// FIXME: See if we can remove this from the Character interface.
+// GetHostility returns the demeanor of an enemy or NPC.
 func (p *Player) GetHostility() string { return p.Hostility }
 
 // GetName returns the name of the Player.
@@ -106,9 +104,7 @@ func (p *Player) LevelUp() {
 	p.HitPoints = p.MaxHitPoints
 }
 
-// SetHostility changes the Player's demeanor. It's included here just to satisfy
-// the Character interface.
-// FIXME: See if we can remove this from the Character interface.
+// SetHostility changes the Player's demeanor.
 func (p *Player) SetHostility(h string) { p.Hostility = h }
 
 // SetX updates the Player's X coordinate.
@@ -128,7 +124,7 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 		X:               x,
 		Y:               y,
 		Name:            name,
-		Hostility:       "neutral",
+		Hostility:       "player",
 		HitPoints:       20,
 		MaxHitPoints:    20,
 		Level:           1,
