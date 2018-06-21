@@ -86,7 +86,6 @@ func initializeActivityMessage(msg string, offset int) *ActivityMessage {
 }
 
 // newActivityLog creates a rotating log window on the screen.
-// FIXME: Player can still walk under the activity log.
 func newActivityLog() *ActivityLog {
 	// Draw background rectangle.
 	w := &ActivityLogWindow{
