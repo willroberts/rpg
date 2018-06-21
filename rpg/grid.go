@@ -18,10 +18,10 @@ type Grid struct {
 // should not happen during gameplay.
 func (g *Grid) AddCharacter(c Character, atX, atY int) error {
 	dst := g.GetCell(atX, atY)
-	if dst.Character != nil {
+	if dst.Occupant != nil {
 		return errors.New("cannot add character to occupied grid cell")
 	}
-	dst.Character = c
+	dst.Occupant = c
 	return nil
 }
 
@@ -34,15 +34,15 @@ func (g *Grid) GetCell(x, y int) *GridCell {
 // already there. If a hostile entity is there, combat is started.
 func (g *Grid) MoveCharacter(c Character, toX, toY int) {
 	dst := g.GetCell(toX, toY)
-	if dst.Character != nil {
-		if dst.Character.GetHostility() == "hostile" {
-			handleCombat(c, dst.Character)
+	if dst.Occupant != nil {
+		if dst.Occupant.GetHostility() == "hostile" {
+			handleCombat(c, dst.Occupant)
 		}
 		return
 	}
 	src := g.GetCell(c.GetX(), c.GetY())
-	src.Character = nil
-	dst.Character = c
+	src.Occupant = nil
+	dst.Occupant = c
 	c.SetX(toX)
 	c.SetY(toY)
 }
@@ -50,7 +50,7 @@ func (g *Grid) MoveCharacter(c Character, toX, toY int) {
 // RemoveCharacter clears the Character entity from the cell at the given X and Y
 // coordinates.
 func (g *Grid) RemoveCharacter(fromX, fromY int) {
-	g.GetCell(fromX, fromY).Character = nil
+	g.GetCell(fromX, fromY).Occupant = nil
 }
 
 // A GridCell has X and Y coordinates, can contain one Character entity, and can
@@ -58,7 +58,7 @@ func (g *Grid) RemoveCharacter(fromX, fromY int) {
 type GridCell struct {
 	X, Y int
 
-	Character Character
+	Occupant Character
 }
 
 // A GridRow contains an array of GridCells.
