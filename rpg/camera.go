@@ -20,34 +20,33 @@ type CameraEntity struct {
 	*common.SpaceComponent
 }
 
-// CameraSystem keeps track of all cameralable entities.
+// CameraSystem keeps track of all camera entities.
 type CameraSystem struct {
-	entities []CameraEntity
+	Entities []CameraEntity
 }
 
 // Add starts tracking an entity in the camera system.
 func (c *CameraSystem) Add(b *ecs.BasicEntity, ctrl *CameraComponent,
 	s *common.SpaceComponent) {
-	c.entities = append(c.entities, CameraEntity{b, ctrl, s})
+	c.Entities = append(c.Entities, CameraEntity{b, ctrl, s})
 }
 
 // Remove stops tracking an entity in the camera system.
 func (c *CameraSystem) Remove(te ecs.BasicEntity) {
 	del := -1
-	for i, e := range c.entities {
+	for i, e := range c.Entities {
 		if e.BasicEntity.ID() == te.ID() {
 			del = i
 			break
 		}
 	}
 	if del >= 0 {
-		c.entities = append(c.entities[:del], c.entities[del+1:]...)
+		c.Entities = append(c.Entities[:del], c.Entities[del+1:]...)
 	}
 }
 
 // Update processes events for the camera system.
 func (c *CameraSystem) Update(dt float32) {
-	for _, e := range c.entities {
-		movePlayer(e)
-	}
+	// FIXME: Move HandleInput to a new InputSystem.
+	gameScene.HandleInput()
 }
