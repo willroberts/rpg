@@ -13,8 +13,6 @@ const (
 	hudFontPath string = "fonts/hud.ttf"
 	// Font used in the ActivityLog window.
 	logFontPath string = "fonts/combatlog.ttf"
-	// Font used in the Main Menu and Character Select.
-	menuFontPath string = "fonts/menu.ttf"
 	// Font used on the Title Screen.
 	titleFontPath string = "fonts/title.ttf"
 )
@@ -23,7 +21,6 @@ const (
 type FontSet struct {
 	HUDFont   *common.Font
 	LogFont   *common.Font
-	MenuFont  *common.Font
 	TitleFont *common.Font
 }
 
@@ -56,8 +53,6 @@ func PreloadFonts() (*FontSet, error) {
 		return &FontSet{}, err
 	}
 	fs.HUDFont = hf
-	// FIXME: Reusing fonts here since they're identical.
-	fs.MenuFont = hf
 
 	lf, err := LoadFont(logFontPath, 24)
 	if err != nil {
