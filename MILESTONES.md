@@ -25,7 +25,6 @@ Project started July 12, 2016.
 
 ## III. Polish Pass #1
 
-- [ ] Refactor to simplify type hierarchy
 - [ ] Resolve FIXME / TODO items
 - [ ] golint, go vet, errcheck
 - [ ] Improve docstrings and comments
@@ -65,6 +64,7 @@ Project started July 12, 2016.
 
 ## VIII. Polish Pass #2
 
+- [ ] Refactor to simplify type hierarchy (camera-player-camera cycle)
 - [ ] Main Menu
 - [ ] Minimal Animations ("Slash" animation for Melee combat, etc.)
 - [ ] Thin Fog layer over game window
