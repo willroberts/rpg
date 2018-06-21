@@ -42,8 +42,7 @@ func (g *GameScene) HandleCombat(enemy Character) {
 
 	// If the Player was not destroyed, grant Experience Points and update the HUD.
 	if enemyDestroyed && !playerDestroyed {
-		// FIXME: Add enemy.GetName()
-		gameScene.Log.Update("Enemy was destroyed!")
+		gameScene.Log.Update(fmt.Sprintf("Enemy %s was destroyed!", enemy.GetName()))
 		gameScene.Log.Update(fmt.Sprintf("You gained %d experience points.", xpBonus))
 		gameScene.Player.ModifyExperience(xpBonus)
 		gameScene.HUD.Update()
