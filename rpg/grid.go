@@ -14,9 +14,9 @@ type Grid struct {
 	MaxY int
 }
 
-// AddCharacter adds a character to the grid. Raises an error on failure, as this
+// AddOccupant adds a character to the grid. Raises an error on failure, as this
 // should not happen during gameplay.
-func (g *Grid) AddCharacter(c Character, atX, atY int) error {
+func (g *Grid) AddOccupant(c Character, atX, atY int) error {
 	dst := g.GetCell(atX, atY)
 	if dst.Occupant != nil {
 		return errors.New("cannot add character to occupied grid cell")
@@ -32,11 +32,12 @@ func (g *Grid) GetCell(x, y int) *GridCell {
 
 // MoveCharacter moves an existing character to a new location if nothing is
 // already there. If a hostile entity is there, combat is started.
+// FIXME: This only works for Player movements. Blocker for enemy AI.
 func (g *Grid) MoveCharacter(c Character, toX, toY int) {
 	dst := g.GetCell(toX, toY)
 	if dst.Occupant != nil {
 		if dst.Occupant.GetHostility() == "hostile" {
-			handleCombat(c, dst.Occupant)
+			gameScene.HandleCombat(dst.Occupant)
 		}
 		return
 	}

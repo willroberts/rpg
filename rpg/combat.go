@@ -2,42 +2,41 @@ package rpg
 
 import "fmt"
 
-// Given pointers to two entities, resolve combat between them. Applies damage
+// HandleCombat resolves combat between the Player and an Enemy. Applies damage
 // simultaneously and then updates the HUD before destroying any Characters.
-// FIXME: Combat should always assume c1=player. c2 is always enemy.
-func handleCombat(c1, c2 Character) {
+func (g *GameScene) HandleCombat(enemy Character) {
 	// Apply damage values simultaneously.
-	c1.ModifyHitPoints(-c2.GetDamage())
-	c2.ModifyHitPoints(-c1.GetDamage())
+	g.Player.ModifyHitPoints(-enemy.GetDamage())
+	enemy.ModifyHitPoints(-g.Player.GetDamage())
 
 	// Write damage dealt to the activity log and update the HUD.
-	gameScene.Log.Update(fmt.Sprintf("%s hits %s for %d damage!", c1.GetName(),
-		c2.GetName(), c1.GetDamage()))
-	gameScene.Log.Update(fmt.Sprintf("%s hits %s for %d damage!", c2.GetName(),
-		c1.GetName(), c2.GetDamage()))
+	gameScene.Log.Update(fmt.Sprintf("%s hits %s for %d damage!", g.Player.GetName(),
+		enemy.GetName(), g.Player.GetDamage()))
+	gameScene.Log.Update(fmt.Sprintf("%s hits %s for %d damage!", enemy.GetName(),
+		g.Player.GetName(), enemy.GetDamage()))
 	gameScene.HUD.Update()
 
-	// Destroy any entities with no HP remaining, and determine if the Player died.
+	// Destroy any entities with no HP.
 	var playerDestroyed bool
 	var enemyDestroyed bool
 	var xpBonus int
 
-	if c1.GetHitPoints() == 0 {
-		c1.Destroy()
-		if c1.GetName() == gameScene.Player.Name {
+	if g.Player.GetHitPoints() == 0 {
+		g.Player.Destroy()
+		if g.Player.GetName() == gameScene.Player.Name {
 			playerDestroyed = true
 		} else {
 			enemyDestroyed = true
-			xpBonus = c1.GetXPBonus()
+			xpBonus = g.Player.GetXPBonus()
 		}
 	}
-	if c2.GetHitPoints() == 0 {
-		c2.Destroy()
-		if c2.GetName() == gameScene.Player.Name {
+	if enemy.GetHitPoints() == 0 {
+		enemy.Destroy()
+		if enemy.GetName() == gameScene.Player.Name {
 			playerDestroyed = true
 		} else {
 			enemyDestroyed = true
-			xpBonus = c2.GetXPBonus()
+			xpBonus = enemy.GetXPBonus()
 		}
 	}
 

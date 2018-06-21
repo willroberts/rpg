@@ -128,6 +128,6 @@ func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 		Width:  charSizeX,
 		Height: charSizeY,
 	}
-	gameScene.Grid.AddCharacter(e, x, y)
+	gameScene.Grid.AddOccupant(e, x, y)
 	return e
 }

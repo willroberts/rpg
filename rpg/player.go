@@ -148,7 +148,7 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 		Width:  charSizeX,
 		Height: charSizeY,
 	}
-	gameScene.Grid.AddCharacter(p, x, y)
+	gameScene.Grid.AddOccupant(p, x, y)
 	return p
 }
 
