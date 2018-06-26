@@ -26,4 +26,5 @@ For chronological development notes, see `DEVLOG.md`.
 ## Credits
 
 Art Assets: Jesse Freeman, Tile Crusader
+
 http://jessefreeman.com/articles/free-game-art-tile-crusader
