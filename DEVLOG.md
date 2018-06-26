@@ -1,6 +1,8 @@
 # June 26 2018
 
-Continuing work on Milestone 3.
+Continuing work on Milestone 3. Working on satisfying `errcheck`, which doesn't
+like `AddOccuptant()` or `preloadMapAssets` usage. Then the actual work begins
+on HUD, AI, and Walls.
 
 # June 20 2018
 
