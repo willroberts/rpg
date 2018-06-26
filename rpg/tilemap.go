@@ -34,7 +34,7 @@ func loadMap(m string) (*common.Level, []*Tile, error) {
 				t := &Tile{BasicEntity: ecs.NewBasic()}
 				t.RenderComponent = common.RenderComponent{
 					Drawable: te,
-					Scale:    engo.Point{tileScale, tileScale},
+					Scale:    engo.Point{X: tileScale, Y: tileScale},
 				}
 				t.RenderComponent.SetZIndex(zWorld)
 				t.SpaceComponent = common.SpaceComponent{

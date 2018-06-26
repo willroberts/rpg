@@ -117,13 +117,13 @@ func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 	enemyTexture := gameScene.Sprites.Characters.Cell(spriteIndex)
 	e.RenderComponent = common.RenderComponent{
 		Drawable: enemyTexture,
-		Scale:    engo.Point{2, 2},
+		Scale:    engo.Point{X: 2, Y: 2},
 	}
 	e.RenderComponent.SetZIndex(zCharacter)
 	e.SpaceComponent = common.SpaceComponent{
 		Position: engo.Point{
-			(charSizeX * float32(x)) + charOffsetX,
-			(charSizeY * float32(y)) + charOffsetY,
+			X: (charSizeX * float32(x)) + charOffsetX,
+			Y: (charSizeY * float32(y)) + charOffsetY,
 		},
 		Width:  charSizeX,
 		Height: charSizeY,

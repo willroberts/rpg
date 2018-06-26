@@ -78,8 +78,8 @@ func initializeActivityMessage(msg string, offset int) *ActivityMessage {
 	m.RenderComponent.SetZIndex(zText)
 	m.SetShader(common.HUDShader)
 	m.SpaceComponent = common.SpaceComponent{Position: engo.Point{
-		float32(logMessageX),
-		float32(logMessageY + offset),
+		X: float32(logMessageX),
+		Y: float32(logMessageY + offset),
 	}}
 	m.Draw()
 	return m
@@ -102,7 +102,7 @@ func newActivityLog() *ActivityLog {
 	w.RenderComponent.SetZIndex(zHUD)
 	w.SetShader(common.HUDShader)
 	w.SpaceComponent = common.SpaceComponent{
-		Position: engo.Point{w.PosX, w.PosY},
+		Position: engo.Point{X: w.PosX, Y: w.PosY},
 		Width:    w.Width,
 		Height:   w.Height,
 	}

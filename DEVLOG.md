@@ -1,3 +1,7 @@
+# June 26 2018
+
+Continuing work on Milestone 3.
+
 # June 20 2018
 
 Engo has recently hit v1.0, and I'm returning to this project after

@@ -52,7 +52,7 @@ func newHUD() (*HUD, error) {
 	}
 	h.RenderComponent.SetZIndex(zHUD)
 	h.SetShader(common.HUDShader)
-	h.SpaceComponent = common.SpaceComponent{Position: engo.Point{0, 0}}
+	h.SpaceComponent = common.SpaceComponent{Position: engo.Point{X: 0, Y: 0}}
 	for _, sys := range gameScene.World.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
