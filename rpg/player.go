@@ -1,6 +1,8 @@
 package rpg
 
 import (
+	"log"
+
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
@@ -144,6 +146,8 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 		Width:  charSizeX,
 		Height: charSizeY,
 	}
-	gameScene.Grid.AddOccupant(p, x, y)
+	if err := gameScene.Grid.AddOccupant(p, x, y); err != nil {
+		log.Println("failed to add occupant to grid:", err)
+	}
 	return p
 }

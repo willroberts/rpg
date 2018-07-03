@@ -3,6 +3,7 @@ package rpg
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 
 	"engo.io/ecs"
 	"engo.io/engo"
@@ -128,6 +129,8 @@ func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 		Width:  charSizeX,
 		Height: charSizeY,
 	}
-	gameScene.Grid.AddOccupant(e, x, y)
+	if err := gameScene.Grid.AddOccupant(e, x, y); err != nil {
+		log.Println("failed to add occupant to grid:", err)
+	}
 	return e
 }

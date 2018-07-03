@@ -25,12 +25,11 @@ Project started July 12, 2016.
 
 ## III. Polish Pass #1
 
-- [ ] golint, go vet, errcheck
+- [x] golint, go vet, errcheck
 - [ ] Improve docstrings and comments
 - [ ] Walls
 - [ ] Basic Enemy AI (vision range and approach behavior)
 - [ ] First-Class HUD (distinct from play area)
-- [ ] Resolve FIXME items
 
 ## IV. Items
 
@@ -71,6 +70,6 @@ Project started July 12, 2016.
 
 ## IX. Technical Quality
 
-- [ ] Address all TODO and FIXME notes
+- [ ] Address all FIXME notes
 - [ ] Proofread and edit documentation
 - [ ] Improve docstrings and comments

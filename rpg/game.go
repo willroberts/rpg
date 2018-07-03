@@ -34,15 +34,19 @@ func (scene *GameScene) Preload() {
 	// Store a pointer to our GameScene in the global namespace.
 	gameScene = scene
 
-	preloadMapAssets("maps/stone.tmx")
-	var err error
+	err := preloadMapAssets("maps/stone.tmx")
+	if err != nil {
+		log.Fatalln("failed to preload map assets:", err)
+	}
+
 	scene.Sprites, err = PreloadSprites()
 	if err != nil {
-		log.Fatalln("error:", err.Error())
+		log.Fatalln("failed to preload sprites:", err.Error())
 	}
+
 	scene.Fonts, err = PreloadFonts()
 	if err != nil {
-		log.Fatalln("error:", err.Error())
+		log.Fatalln("failed to preload fonts:", err.Error())
 	}
 }
 

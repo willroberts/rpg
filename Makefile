@@ -8,5 +8,4 @@ lint:
 	golint rpg/...
 	go vet github.com/willroberts/rpg
 	go vet github.com/willroberts/rpg/rpg
-	errcheck github.com/wlllroberts/rpg
 	errcheck github.com/willroberts/rpg/rpg
