@@ -26,7 +26,7 @@ type Enemy struct {
 	common.SpaceComponent
 
 	Name              string
-	Hostility         string
+	Hostile           bool
 	HitPoints         int
 	Damage            int
 	ExperienceGranted int
@@ -51,10 +51,8 @@ func (e *Enemy) GetDamage() int { return e.Damage }
 // GetHitPoints returns the current HP for this Enemy.
 func (e *Enemy) GetHitPoints() int { return e.HitPoints }
 
-// GetHostility returns the demeanor of the enemy for use by the combat system.
-// Running into a hostile Character triggers combat, while running into a neutral
-// Character does not.
-func (e *Enemy) GetHostility() string { return e.Hostility }
+// IsHostile returns the enemy's hostility state.
+func (e *Enemy) IsHostile() bool { return e.Hostile }
 
 // GetName returns the name of this Enemy type, which is used by newEnemy to
 // retrieve its EnemyAttributes.
@@ -79,10 +77,8 @@ func (e *Enemy) ModifyHitPoints(amount int) {
 	}
 }
 
-// SetHostility changes an Enemy's demeanor. This can be used to implement "calm"
-// spells against typically hostile enemies, or to create hostility in a
-// typically neutral non-player Character.
-func (e *Enemy) SetHostility(h string) { e.Hostility = h }
+// SetHostility modifies whether or not the enemy is hostile.
+func (e *Enemy) SetHostility(h bool) { e.Hostile = h }
 
 // SetX updates the Enemy's X coordinate.
 func (e *Enemy) SetX(x int) { e.X = x }
@@ -108,7 +104,7 @@ func newEnemy(name string, spriteIndex, x, y int) *Enemy {
 	e := &Enemy{
 		BasicEntity:       ecs.NewBasic(),
 		Name:              name,
-		Hostility:         "hostile",
+		Hostile:           true,
 		HitPoints:         gameScene.EnemyTypes[name].HitPoints,
 		Damage:            gameScene.EnemyTypes[name].Damage,
 		ExperienceGranted: gameScene.EnemyTypes[name].ExperienceGranted,

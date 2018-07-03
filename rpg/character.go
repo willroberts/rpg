@@ -21,8 +21,8 @@ type Character interface {
 	SetY(int)
 
 	GetName() string
-	GetHostility() string
-	SetHostility(string)
+	IsHostile() bool
+	SetHostility(bool)
 
 	GetHitPoints() int
 	ModifyHitPoints(int)

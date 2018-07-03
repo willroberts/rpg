@@ -30,18 +30,36 @@ func (g *Grid) GetCell(x, y int) *GridCell {
 	return g.Rows[y].Cells[x]
 }
 
+// CanMove returns false if the target space is already occupied or cannot be
+// traversed.
+func (g *Grid) CanMove(toX, toY int) bool {
+	dst := g.GetCell(toX, toY)
+	if dst.Occupant != nil {
+		return false
+	}
+	if dst.IsWall() {
+		return false
+	}
+	return true
+}
+
 // MoveCharacter moves an existing character to a new location if nothing is
 // already there. If a hostile entity is there, combat is started.
 // FIXME: This only works for Player movements. Blocker for enemy AI.
 func (g *Grid) MoveCharacter(c Character, toX, toY int) {
+	src := g.GetCell(c.GetX(), c.GetY())
 	dst := g.GetCell(toX, toY)
-	if dst.Occupant != nil {
-		if dst.Occupant.GetHostility() == "hostile" {
-			gameScene.HandleCombat(dst.Occupant)
-		}
+
+	// Detect hostility and initiate combat if appropriate.
+	if dst.Occupant != nil && dst.Occupant.IsHostile() {
+		gameScene.HandleCombat(dst.Occupant)
+	}
+
+	if !g.CanMove(toX, toY) {
 		return
 	}
-	src := g.GetCell(c.GetX(), c.GetY())
+
+	// Complete the actual move.
 	src.Occupant = nil
 	dst.Occupant = c
 	c.SetX(toX)
@@ -58,8 +76,14 @@ func (g *Grid) RemoveCharacter(fromX, fromY int) {
 // contain multiple Items.
 type GridCell struct {
 	X, Y int
+	Wall bool
 
 	Occupant Character
+}
+
+// IsWall returns true if this cell is nontraversable.
+func (g *GridCell) IsWall() bool {
+	return g.Wall
 }
 
 // A GridRow contains an array of GridCells.
@@ -73,7 +97,7 @@ func newGrid(x, y int) *Grid {
 	for i := 0; i < y; i++ {
 		c := make([]*GridCell, x)
 		for j := 0; j < x; j++ {
-			c[j] = &GridCell{X: j, Y: i}
+			c[j] = &GridCell{X: j, Y: i, Wall: false}
 		}
 		r[i] = &GridRow{Cells: c}
 	}

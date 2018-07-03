@@ -18,7 +18,6 @@ type Player struct {
 	CameraComponent
 
 	Name            string
-	Hostility       string
 	HitPoints       int
 	MaxHitPoints    int
 	Level           int
@@ -64,8 +63,8 @@ func (p *Player) GetLevel() int { return p.Level }
 // GetExperience returns the current XP for the Player.
 func (p *Player) GetExperience() int { return p.Experience }
 
-// GetHostility returns the demeanor of an enemy or NPC.
-func (p *Player) GetHostility() string { return p.Hostility }
+// IsHostile always returns false for the Player.
+func (p *Player) IsHostile() bool { return false }
 
 // GetName returns the name of the Player.
 func (p *Player) GetName() string { return p.Name }
@@ -106,8 +105,8 @@ func (p *Player) LevelUp() {
 	p.HitPoints = p.MaxHitPoints
 }
 
-// SetHostility changes the Player's demeanor.
-func (p *Player) SetHostility(h string) { p.Hostility = h }
+// SetHostility has no effect on the Player.
+func (p *Player) SetHostility(h bool) {}
 
 // SetX updates the Player's X coordinate.
 func (p *Player) SetX(x int) { p.X = x }
@@ -126,7 +125,6 @@ func newPlayer(name string, spriteIndex, x, y int) *Player {
 		X:               x,
 		Y:               y,
 		Name:            name,
-		Hostility:       "player",
 		HitPoints:       20,
 		MaxHitPoints:    20,
 		Level:           1,

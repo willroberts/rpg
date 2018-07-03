@@ -26,7 +26,6 @@ Project started July 12, 2016.
 ## III. Polish Pass #1
 
 - [x] golint, go vet, errcheck
-- [ ] Improve docstrings and comments
 - [ ] Walls
 - [ ] Basic Enemy AI (vision range and approach behavior)
 - [ ] First-Class HUD (distinct from play area)
