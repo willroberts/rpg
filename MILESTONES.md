@@ -23,9 +23,9 @@ Project started July 12, 2016.
 - [x] Experience Points
 - [x] Leveling
 
-## III. Polish Pass #1
+## III. Feature Pass
 
-- [x] golint, go vet, errcheck
+- [ ] Random Levels
 - [ ] Walls
 - [ ] Basic Enemy AI (vision range and approach behavior)
 - [ ] First-Class HUD (distinct from play area)
@@ -60,7 +60,7 @@ Project started July 12, 2016.
 - [ ] Randomized Enemy Spawns
 - [ ] Randomized Levels, Rooms, Walls, Layouts, etc.
 
-## VIII. Polish Pass #2
+## VIII. Polish Pass
 
 - [ ] Refactor to simplify type hierarchy (camera-player-camera cycle)
 - [ ] Main Menu
