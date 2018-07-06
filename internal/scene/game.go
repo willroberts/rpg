@@ -4,6 +4,7 @@ import (
 	"image/color"
 
 	"github.com/willroberts/rpg/internal/camera"
+	"github.com/willroberts/rpg/internal/char"
 	"github.com/willroberts/rpg/internal/grid"
 	"github.com/willroberts/rpg/internal/sprite"
 	"github.com/willroberts/rpg/internal/tilemap"
@@ -21,10 +22,13 @@ const (
 )
 
 type GameScene struct {
-	Logger *zap.Logger
-	World  *ecs.World
-	Map    *tilemap.Map
-	Grid   grid.Grid
+	Logger      *zap.Logger
+	World       *ecs.World
+	Map         *tilemap.Map
+	Grid        grid.Grid
+	CharSprites *common.Spritesheet
+	DecoSprites *common.Spritesheet
+	Player      char.Character
 }
 
 func (scene *GameScene) Preload() {
@@ -77,6 +81,28 @@ func (scene *GameScene) Setup(u engo.Updater) {
 
 	// Grid
 	scene.Grid = grid.NewGrid(m.Level.Width(), m.Level.Height())
+
+	// Sprites
+	cs, err := sprite.LoadSpritesheet(CharSpriteFile, 32, 32)
+	if err != nil {
+		scene.Logger.Error("failed to load character sprites",
+			zap.String("err", err.Error()),
+		)
+		return
+	}
+	scene.CharSprites = cs
+
+	ds, err := sprite.LoadSpritesheet(DecoSpriteFile, 40, 40)
+	if err != nil {
+		scene.Logger.Error("failed to load decoration sprites",
+			zap.String("err", err.Error()),
+		)
+		return
+	}
+	scene.DecoSprites = ds
+
+	// Player
+	scene.Player = char.NewPlayer("Edmund", 1, 1, cs.Cell(spriteWhiteZombie))
 
 	// Camera
 	w.AddSystem(&camera.CameraSystem{})

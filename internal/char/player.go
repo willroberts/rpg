@@ -44,7 +44,7 @@ func (p *player) Destroy() {
 	//}
 }
 
-func NewPlayer(name string, x int, y int, spriteID int) Character {
+func NewPlayer(name string, x int, y int, sprite common.Drawable) Character {
 	p := &player{
 		BasicEntity: ecs.NewBasic(),
 
@@ -56,8 +56,7 @@ func NewPlayer(name string, x int, y int, spriteID int) Character {
 	}
 
 	p.RenderComponent = common.RenderComponent{
-		// Requires spritesheet.
-		//Drawable: scene.Sprites.Characters.Cell(spriteID),
+		Drawable: sprite,
 		Scale: engo.Point{
 			X: DefaultCharacterScale,
 			Y: DefaultCharacterScale,
