@@ -3,6 +3,8 @@ package scene
 import (
 	"image/color"
 
+	"github.com/willroberts/rpg/internal/grid"
+
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
@@ -10,8 +12,9 @@ import (
 )
 
 type GameScene struct {
-	World  *ecs.World
 	Logger *zap.Logger
+	World  *ecs.World
+	Grid   grid.Grid
 }
 
 func (scene *GameScene) Preload() {
@@ -27,6 +30,9 @@ func (scene *GameScene) Setup(u engo.Updater) {
 		scene.Logger.Error("world is not engo.Updater")
 	}
 	scene.World = w
+
+	// Replace these values with level.Width()/.Height().
+	scene.Grid = grid.NewGrid(10, 10)
 
 	common.SetBackground(color.Black)
 	w.AddSystem(&common.RenderSystem{})

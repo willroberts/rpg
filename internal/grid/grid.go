@@ -1,4 +1,4 @@
-package rpg
+package grid
 
 type Grid interface {
 }
