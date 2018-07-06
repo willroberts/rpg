@@ -15,25 +15,29 @@ type GameScene struct {
 }
 
 func (scene *GameScene) Preload() {
+	scene.Logger.Info("starting preload")
+	scene.Logger.Info("preload complete")
 }
 
 func (scene *GameScene) Setup(u engo.Updater) {
+	scene.Logger.Info("starting setup")
+
 	w, ok := u.(*ecs.World)
 	if !ok {
-		// Write to engine log.
+		scene.Logger.Error("world is not engo.Updater")
 	}
 	scene.World = w
 
 	common.SetBackground(color.Black)
 	w.AddSystem(&common.RenderSystem{})
 
-	for _, sys := range w.Systems() {
-		switch s := sys.(type) {
-		case *common.RenderSystem:
-			// Draw things on screen here.
-			_ = s
-		}
-	}
+	//for _, sys := range w.Systems() {
+	//	switch s := sys.(type) {
+	//	case *common.RenderSystem:
+	//	}
+	//}
+
+	scene.Logger.Info("setup complete")
 }
 
 func (scene *GameScene) Type() string {
