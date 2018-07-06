@@ -34,6 +34,22 @@ func (p *player) SetHitPoints(hp int)      { p.hitPoints = hp }
 func (p *player) GetDamage() int           { return p.damage }
 func (p *player) GetExperiencePoints() int { return p.experience }
 
+func (p *player) GetEntity() *ecs.BasicEntity {
+	return &p.BasicEntity
+}
+
+func (p *player) GetRenderComponent() *common.RenderComponent {
+	return &p.RenderComponent
+}
+
+func (p *player) GetSpaceComponent() *common.SpaceComponent {
+	return &p.SpaceComponent
+}
+
+func (p *player) GetCameraComponent() *camera.CameraComponent {
+	return &p.CameraComponent
+}
+
 func (p *player) Destroy() {
 	// Remove the Player from the CameraSystem.
 	//for _, sys := range scene.World.Systems() {

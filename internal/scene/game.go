@@ -120,10 +120,14 @@ func (scene *GameScene) Setup(u engo.Updater) {
 				s.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
 			}
 			// Add the Player to the RenderSystem.
-			//s.Add(player.BasicEntity, player.CameraComponent, player.SpaceComponent)
+			s.Add(scene.Player.GetEntity(),
+				scene.Player.GetRenderComponent(),
+				scene.Player.GetSpaceComponent())
 		case *camera.CameraSystem:
 			// Add the Player to the CameraSystem.
-			//s.Add(player.BasicEntity, player.CameraComponent, player.SpaceComponent)
+			s.Add(scene.Player.GetEntity(),
+				scene.Player.GetSpaceComponent(),
+				scene.Player.GetCameraComponent())
 		}
 	}
 

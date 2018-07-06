@@ -1,5 +1,11 @@
 package char
 
+import (
+	"engo.io/ecs"
+	"engo.io/engo/common"
+	"github.com/willroberts/rpg/internal/camera"
+)
+
 const (
 	DefaultCharacterScale  float32 = 2.0 // 32px -> 64px
 	DefaultCharacterSize   float32 = 80.0
@@ -12,6 +18,11 @@ const (
 
 type Character interface {
 	GetName() string
+
+	GetEntity() *ecs.BasicEntity
+	GetRenderComponent() *common.RenderComponent
+	GetSpaceComponent() *common.SpaceComponent
+	GetCameraComponent() *camera.CameraComponent
 
 	GetX() int
 	SetX(int)
