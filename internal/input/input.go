@@ -5,27 +5,17 @@ import (
 	"engo.io/engo"
 	"github.com/willroberts/rpg/internal/char"
 	"github.com/willroberts/rpg/internal/grid"
-	"go.uber.org/zap"
 )
 
 type InputSystem struct {
 	Player char.Character
 	Grid   grid.Grid
-	Logger *zap.Logger
 }
 
 func (i *InputSystem) Remove(e ecs.BasicEntity) {}
 
 func (i *InputSystem) Update(dt float32) {
 	delta := ProcessInput()
-
-	// Debug logging.
-	if delta.X != 0 || delta.Y != 0 {
-		i.Logger.Info("move delta",
-			zap.Int("x", delta.X),
-			zap.Int("y", delta.Y),
-		)
-	}
 
 	// Move the player in the Grid.
 	toX := i.Player.GetX() + delta.X
@@ -34,6 +24,13 @@ func (i *InputSystem) Update(dt float32) {
 		return
 	}
 	i.Grid.MoveChar(i.Player, toX, toY)
+
+	// Update the Player's SpaceComponent.
+	// TODO: Bypass the CharOffsetX and CharOffsetY values for the tombstone sprite.
+	newX := float32(i.Player.GetX())*char.DefaultCharacterSize + char.DefaultCharacterOffsetX
+	newY := float32(i.Player.GetY())*char.DefaultCharacterSize + char.DefaultCharacterOffsetY
+	i.Player.GetSpaceComponent().Position.X = newX
+	i.Player.GetSpaceComponent().Position.Y = newY
 }
 
 type MoveDelta struct {
@@ -56,9 +53,9 @@ func ProcessInput() MoveDelta {
 	} else if engo.Input.Button("moveright").JustPressed() {
 		return MoveDelta{X: 1, Y: 0}
 	} else if engo.Input.Button("moveup").JustPressed() {
-		return MoveDelta{X: 0, Y: 1}
-	} else if engo.Input.Button("movedown").JustPressed() {
 		return MoveDelta{X: 0, Y: -1}
+	} else if engo.Input.Button("movedown").JustPressed() {
+		return MoveDelta{X: 0, Y: 1}
 	} else {
 		// No key was pressed, or a key was pressed which has no binding.
 		return MoveDelta{X: 0, Y: 0}
