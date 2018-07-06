@@ -5,6 +5,7 @@ import (
 
 	"github.com/willroberts/rpg/internal/camera"
 	"github.com/willroberts/rpg/internal/grid"
+	"github.com/willroberts/rpg/internal/sprite"
 	"github.com/willroberts/rpg/internal/tilemap"
 
 	"engo.io/ecs"
@@ -14,7 +15,9 @@ import (
 )
 
 const (
-	MapFile string = "maps/stone.tmx"
+	MapFile        string = "maps/stone.tmx"
+	CharSpriteFile string = "spritesheets/characters-32x32.png"
+	DecoSpriteFile string = "spritesheets/decoration-20x20-40x40.png"
 )
 
 type GameScene struct {
@@ -30,6 +33,20 @@ func (scene *GameScene) Preload() {
 	// Map
 	if err := tilemap.PreloadMap(MapFile); err != nil {
 		scene.Logger.Error("failed to preload map",
+			zap.String("err", err.Error()),
+		)
+		return
+	}
+
+	// Sprites
+	if err := sprite.PreloadSpritesheet(CharSpriteFile); err != nil {
+		scene.Logger.Error("failed to preload character sprites",
+			zap.String("err", err.Error()),
+		)
+		return
+	}
+	if err := sprite.PreloadSpritesheet(DecoSpriteFile); err != nil {
+		scene.Logger.Error("failed to preload decoration sprites",
 			zap.String("err", err.Error()),
 		)
 		return
