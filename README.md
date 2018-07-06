@@ -8,6 +8,12 @@ engine.
 Licensed under the GNU General Public License (v3). See `LICENSE`
 file.
 
+## Running the Game
+
+```
+$ go run cmd/main/main.go
+```
+
 ## Design
 
 Inspired by
