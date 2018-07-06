@@ -3,6 +3,7 @@ package scene
 import (
 	"image/color"
 
+	"github.com/willroberts/rpg/internal/camera"
 	"github.com/willroberts/rpg/internal/grid"
 	"github.com/willroberts/rpg/internal/tilemap"
 
@@ -60,15 +61,26 @@ func (scene *GameScene) Setup(u engo.Updater) {
 	// Grid
 	scene.Grid = grid.NewGrid(m.Level.Width(), m.Level.Height())
 
+	// Camera
+	w.AddSystem(&camera.CameraSystem{})
+
 	// RenderSystem
 	common.SetBackground(color.Black)
 	w.AddSystem(&common.RenderSystem{})
+
+	// Process all systems
 	for _, sys := range w.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
+			// Add the level tiles to the RenderSystem.
 			for _, t := range m.TileSet {
 				s.Add(&t.BasicEntity, &t.RenderComponent, &t.SpaceComponent)
 			}
+			// Add the Player to the RenderSystem.
+			//s.Add(player.BasicEntity, player.CameraComponent, player.SpaceComponent)
+		case *camera.CameraSystem:
+			// Add the Player to the CameraSystem.
+			//s.Add(player.BasicEntity, player.CameraComponent, player.SpaceComponent)
 		}
 	}
 

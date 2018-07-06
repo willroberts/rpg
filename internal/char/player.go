@@ -4,12 +4,14 @@ import (
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
+	"github.com/willroberts/rpg/internal/camera"
 )
 
 type player struct {
 	ecs.BasicEntity
 	common.RenderComponent
 	common.SpaceComponent
+	camera.CameraComponent
 
 	name       string
 	x          int
@@ -31,7 +33,16 @@ func (p *player) GetHitPoints() int        { return p.hitPoints }
 func (p *player) SetHitPoints(hp int)      { p.hitPoints = hp }
 func (p *player) GetDamage() int           { return p.damage }
 func (p *player) GetExperiencePoints() int { return p.experience }
-func (p *player) Destroy()                 {}
+
+func (p *player) Destroy() {
+	// Remove the Player from the CameraSystem.
+	//for _, sys := range scene.World.Systems() {
+	//  switch s := sys.(type) {
+	//  case *camera.CameraSystem:
+	//    s.Remove(p.BasicEntity)
+	//  }
+	//}
+}
 
 func NewPlayer(name string, x int, y int, spriteID int) Character {
 	p := &player{
@@ -61,6 +72,11 @@ func NewPlayer(name string, x int, y int, spriteID int) Character {
 		},
 		Width:  DefaultCharacterSize,
 		Height: DefaultCharacterSize,
+	}
+
+	p.CameraComponent = camera.CameraComponent{
+		SchemeHoriz: "horizontal",
+		SchemeVert:  "vertical",
 	}
 
 	return p

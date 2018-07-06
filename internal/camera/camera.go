@@ -20,11 +20,11 @@ type CameraSystem struct {
 	Entities []CameraEntity
 }
 
-func (c *CameraSystem) Add(e *ecs.BasicEntity, c *CameraComponent, s *common.SpaceComponent) {
-	c.Entities = append(c.Entities, CameraEntity{e, c, s})
+func (c *CameraSystem) Add(e *ecs.BasicEntity, sc *common.SpaceComponent, cc *CameraComponent) {
+	c.Entities = append(c.Entities, CameraEntity{e, sc, cc})
 }
 
-func (c *CameraSystem) Remove(e *ecs.BasicEntity) {
+func (c *CameraSystem) Remove(e ecs.BasicEntity) {
 	del := -1
 	for i, ent := range c.Entities {
 		if ent.BasicEntity.ID() == e.ID() {
