@@ -6,6 +6,7 @@ import (
 	"github.com/willroberts/rpg/internal/camera"
 	"github.com/willroberts/rpg/internal/char"
 	"github.com/willroberts/rpg/internal/grid"
+	"github.com/willroberts/rpg/internal/input"
 	"github.com/willroberts/rpg/internal/sprite"
 	"github.com/willroberts/rpg/internal/tilemap"
 
@@ -112,6 +113,13 @@ func (scene *GameScene) Setup(u engo.Updater) {
 	// RenderSystem
 	common.SetBackground(color.Black)
 	scene.World.AddSystem(&common.RenderSystem{})
+
+	// Input
+	scene.World.AddSystem(&input.InputSystem{
+		Player: scene.Player,
+		Logger: scene.Logger,
+	})
+	input.BindControls()
 
 	// Process all systems
 	for _, sys := range scene.World.Systems() {
