@@ -1,6 +1,7 @@
 package grid
 
 type Grid interface {
+	GetCell(int, int) Cell
 }
 
 type grid struct {
@@ -14,7 +15,7 @@ func (g *grid) GetCell(x, y int) Cell {
 }
 
 func NewGrid(w, h int) Grid {
-	g := grid{width: w, height: h}
+	g := &grid{width: w, height: h}
 
 	cells := make([][]Cell, h)
 	for y := 0; y < h; y++ {

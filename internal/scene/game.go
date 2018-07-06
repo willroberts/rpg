@@ -80,7 +80,8 @@ func (scene *GameScene) Setup(u engo.Updater) {
 	scene.Map = m
 
 	// Grid
-	scene.Grid = grid.NewGrid(m.Level.Width(), m.Level.Height())
+	scene.Grid = grid.NewGrid(scene.Map.Level.Width(),
+		scene.Map.Level.Height())
 
 	// Sprites
 	cs, err := sprite.LoadSpritesheet(CharSpriteFile, 32, 32)
@@ -102,17 +103,18 @@ func (scene *GameScene) Setup(u engo.Updater) {
 	scene.DecoSprites = ds
 
 	// Player
-	scene.Player = char.NewPlayer("Edmund", 1, 1, cs.Cell(spriteWhiteZombie))
+	scene.Player = char.NewPlayer("Edmund", 1, 1, scene.CharSprites.Cell(spriteWhiteZombie))
+	scene.Grid.GetCell(1, 1).SetOccupant(scene.Player)
 
 	// Camera
-	w.AddSystem(&camera.CameraSystem{})
+	scene.World.AddSystem(&camera.CameraSystem{})
 
 	// RenderSystem
 	common.SetBackground(color.Black)
-	w.AddSystem(&common.RenderSystem{})
+	scene.World.AddSystem(&common.RenderSystem{})
 
 	// Process all systems
-	for _, sys := range w.Systems() {
+	for _, sys := range scene.World.Systems() {
 		switch s := sys.(type) {
 		case *common.RenderSystem:
 			// Add the level tiles to the RenderSystem.

@@ -34,8 +34,6 @@
 # Functional Changes
 
 * Character interface has changed, necessitating some updates
-* NewPlayer no longer calls Grid.AddOccupant
-  * Do this from scene/game.go
 * CameraComponent no longer destroyed in Player.Destroy()
   * When porting the combat logic, do this from scene/game.go
 * MoveCamera() is no longer called in input.go
