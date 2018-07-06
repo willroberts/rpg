@@ -29,12 +29,12 @@ func (p *player) GetHostility() bool       { return p.hostility }
 func (p *player) SetHostility(h bool)      { p.hostility = h }
 func (p *player) GetHitPoints() int        { return p.hitPoints }
 func (p *player) SetHitPoints(hp int)      { p.hitPoints = hp }
-func (p *player) GetDamage() int           { return p.Damage }
+func (p *player) GetDamage() int           { return p.damage }
 func (p *player) GetExperiencePoints() int { return p.experience }
 func (p *player) Destroy()                 {}
 
 func NewPlayer(name string, x int, y int, spriteID int) Character {
-	p := player{
+	p := &player{
 		BasicEntity: ecs.NewBasic(),
 
 		name:       name,
