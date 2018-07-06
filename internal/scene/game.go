@@ -4,7 +4,7 @@ import (
 	"image/color"
 
 	"github.com/willroberts/rpg/internal/grid"
-	"github.com/willroberts/rpg/internal/tmx"
+	"github.com/willroberts/rpg/internal/tilemap"
 
 	"engo.io/ecs"
 	"engo.io/engo"
@@ -19,7 +19,7 @@ const (
 type GameScene struct {
 	Logger *zap.Logger
 	World  *ecs.World
-	Map    *tmx.Map
+	Map    *tilemap.Map
 	Grid   grid.Grid
 }
 
@@ -27,7 +27,7 @@ func (scene *GameScene) Preload() {
 	scene.Logger.Info("starting preload")
 
 	// Map
-	if err := tmx.PreloadMap(MapFile); err != nil {
+	if err := tilemap.PreloadMap(MapFile); err != nil {
 		scene.Logger.Error("failed to preload map",
 			zap.String("err", err.Error()),
 		)
@@ -48,7 +48,7 @@ func (scene *GameScene) Setup(u engo.Updater) {
 	scene.World = w
 
 	// Map
-	m, err := tmx.LoadMap(MapFile)
+	m, err := tilemap.LoadMap(MapFile)
 	if err != nil {
 		scene.Logger.Error("failed to load map",
 			zap.String("err", err.Error()),

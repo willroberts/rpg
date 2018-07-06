@@ -1,4 +1,4 @@
-package tmx
+package tilemap
 
 import (
 	"engo.io/ecs"
