@@ -1,19 +1,44 @@
-# Things cut out of the package move, to be redone elsewhere:
+# Package Migration Checklist
 
-## Player
+## Types
 
-* failedMovementMsg "You can't go that way!" belongs in whatever prints messages
-* MaxHitPoints, ExperienceTable, LevelUp(), Destroy() not implemented
-* Grid.AddOccupant() not called in NewPlayer(), should be called from scene
-* CameraComponent is no longer destroyed from Player.Destroy()
-* Reverse access to Scene is removed. Need to replace Drawable.
+* Enemy, EnemyAttributes
+* FontSet
+* HUD
+* Label
+* ActivityLog, ActivityLogWindow, ActivityLogMessage
 
-## Sprites
+## Functions
 
-## Input
+* HandleCombat (combat.go)
+* Character Interface methods (enemy.go, player.go)
+* LoadEnemyTypes, NewEnemy (enemy.go)
+* LoadFont, PreloadFont (font.go)
+* NewHUD, UpdateHUD (hud.go)
+* BindControls, HandleInput (input.go)
+* NewLabel (label.go)
+* NewActivityLog, InitializeMessage, DrawMessage, UpdateLog (log.go)
 
-* MoveCamera() no longer called in input.go
+## Variables
 
-## Camera
+* Experience table (experience.go)
 
-* scene.HandleInput() no longer called in CameraSystem.Update()
+## Constants
+
+* Font TTF filenames (font.go)
+* HUD format string (hud.go)
+* HUD and Text Z-indices (hud.go)
+* Log Window dimensions (log.go)
+* Failed movement message (player.go)
+
+# Functional Changes
+
+* Character interface has changed, necessitating some updates
+* NewPlayer no longer calls Grid.AddOccupant
+  * Do this from scene/game.go
+* CameraComponent no longer destroyed in Player.Destroy()
+  * When porting the combat logic, do this from scene/game.go
+* MoveCamera() is no longer called in input.go
+  * Do this from scene/game.go
+* HandleInput() is no longer called in camera.Update()
+  * Do this from scene/game.go
