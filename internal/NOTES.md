@@ -33,6 +33,10 @@
 
 # Functional Changes
 
+* The InputSystem previously handled out-of-bounds checking for the grid.
+  * Now we return an intent with X and Y values instead
+	* The Scene and Grid should take this responsibility (func CanMove() bool)
+	* Once movement is processed, we also update the SpaceComponent of the Camera entity
 * Character interface has changed, necessitating some updates
 * CameraComponent no longer destroyed in Player.Destroy()
   * When porting the combat logic, do this from scene/game.go

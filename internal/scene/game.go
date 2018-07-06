@@ -117,6 +117,7 @@ func (scene *GameScene) Setup(u engo.Updater) {
 	// Input
 	scene.World.AddSystem(&input.InputSystem{
 		Player: scene.Player,
+		Grid:   scene.Grid,
 		Logger: scene.Logger,
 	})
 	input.BindControls()

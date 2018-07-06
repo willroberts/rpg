@@ -1,8 +1,11 @@
 package grid
 
+import "github.com/willroberts/rpg/internal/char"
+
 type Grid interface {
 	GetCell(int, int) Cell
 	CanMoveTo(int, int) bool
+	MoveChar(char.Character, int, int)
 }
 
 type grid struct {
@@ -24,11 +27,28 @@ func (g *grid) CanMoveTo(x, y int) bool {
 		return false
 	}
 
-	if !g.GetCell(x, y).IsTraversable() {
+	target := g.GetCell(x, y)
+
+	if !target.IsTraversable() {
+		return false
+	}
+
+	if target.GetOccupant() != nil {
+		// TODO: Implement combat detection here with GetHostility().
 		return false
 	}
 
 	return true
+}
+
+func (g *grid) MoveChar(c char.Character, toX int, toY int) {
+	// Update the grid contents.
+	g.GetCell(c.GetX(), c.GetY()).SetOccupant(nil)
+	g.GetCell(toX, toY).SetOccupant(c)
+
+	// Update the character position.
+	c.SetX(toX)
+	c.SetY(toY)
 }
 
 func NewGrid(w, h int) Grid {
