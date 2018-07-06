@@ -1,4 +1,4 @@
-package character
+package char
 
 type Character interface {
 	GetName() string
