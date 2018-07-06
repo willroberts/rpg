@@ -9,8 +9,8 @@
 //
 // When decoded and decompressed, this data turns into a vector of 1s which
 // represent tiles. No structure data is encoded, so the game engine must read
-// from the layer metadata to determine structure. All we can verify at this stage
-// is that the number of tiles is correctly determined.
+// from the layer metadata to determine structure. All we can verify at this
+// stage is that the number of tiles is correctly determined.
 package main
 
 import (
