@@ -67,6 +67,7 @@ func (scene *GameScene) Setup(u engo.Updater) {
 	w, ok := u.(*ecs.World)
 	if !ok {
 		scene.Logger.Error("world is not engo.Updater")
+		return
 	}
 	scene.World = w
 
@@ -85,23 +86,8 @@ func (scene *GameScene) Setup(u engo.Updater) {
 		scene.Map.Level.Height())
 
 	// Sprites
-	cs, err := sprite.LoadSpritesheet(CharSpriteFile, 32, 32)
-	if err != nil {
-		scene.Logger.Error("failed to load character sprites",
-			zap.String("err", err.Error()),
-		)
-		return
-	}
-	scene.CharSprites = cs
-
-	ds, err := sprite.LoadSpritesheet(DecoSpriteFile, 40, 40)
-	if err != nil {
-		scene.Logger.Error("failed to load decoration sprites",
-			zap.String("err", err.Error()),
-		)
-		return
-	}
-	scene.DecoSprites = ds
+	scene.CharSprites = sprite.LoadSpritesheet(CharSpriteFile, 32, 32)
+	scene.DecoSprites = sprite.LoadSpritesheet(DecoSpriteFile, 40, 40)
 
 	// Player
 	scene.Player = char.NewPlayer("Edmund", 1, 1, scene.CharSprites.Cell(spriteWhiteZombie))
