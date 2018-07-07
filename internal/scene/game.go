@@ -109,6 +109,10 @@ func (scene *GameScene) Setup(u engo.Updater) {
 
 	// Camera
 	scene.World.AddSystem(&camera.CameraSystem{})
+	scene.World.AddSystem(&common.EntityScroller{
+		SpaceComponent: scene.Player.GetSpaceComponent(),
+		TrackingBounds: scene.Map.Level.Bounds(),
+	})
 
 	// RenderSystem
 	common.SetBackground(color.Black)
