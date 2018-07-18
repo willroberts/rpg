@@ -63,15 +63,17 @@ func (e *enemy) Destroy() {
 	//}
 }
 
-func NewEnemy(name string, x int, y int, sprite common.Drawable) Character {
+func NewEnemy(name string, x int, y int, attrs *EnemyAttributes, sprite common.Drawable) Character {
 	e := &enemy{
 		BasicEntity: ecs.NewBasic(),
 
 		name:       name,
+		hostility:  true,
 		x:          x,
 		y:          y,
-		hitPoints:  20,
-		experience: 0,
+		hitPoints:  attrs.HitPoints,
+		damage:     attrs.Damage,
+		experience: attrs.ExperienceGranted,
 	}
 
 	e.RenderComponent = common.RenderComponent{
