@@ -4,12 +4,10 @@
 
 * HUD
 * Activity Log
-* Enemies
 * Combat
 
 ## Types
 
-* Enemy, EnemyAttributes
 * FontSet
 * HUD
 * Label
@@ -18,7 +16,6 @@
 ## Functions
 
 * HandleCombat (combat.go)
-* LoadEnemyTypes, NewEnemy (enemy.go)
 * LoadFont, PreloadFont (font.go)
 * NewHUD, UpdateHUD (hud.go)
 * NewLabel (label.go)
@@ -38,7 +35,7 @@
 
 # Functional Changes
 
-* Consider not using Destroy() at all
+* Consider not using Destroy() at all (Character interface)
 * Call Grid.Cell.RemoveOccupant() before calling Destroy()
 * CameraComponent no longer destroyed in Player.Destroy()
   * When porting the combat logic, do this from scene/game.go
