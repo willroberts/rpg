@@ -38,5 +38,7 @@
 
 # Functional Changes
 
+* Consider not using Destroy() at all
+* Call Grid.Cell.RemoveOccupant() before calling Destroy()
 * CameraComponent no longer destroyed in Player.Destroy()
   * When porting the combat logic, do this from scene/game.go

@@ -20,16 +20,18 @@ const (
 	MapFile        string = "maps/stone.tmx"
 	CharSpriteFile string = "spritesheets/characters-32x32.png"
 	DecoSpriteFile string = "spritesheets/decoration-20x20-40x40.png"
+	EnemyDataFile  string = "assets/data/enemies.json"
 )
 
 type GameScene struct {
-	Logger      *zap.Logger
-	World       *ecs.World
-	Map         *tilemap.Map
-	Grid        grid.Grid
-	CharSprites *common.Spritesheet
-	DecoSprites *common.Spritesheet
-	Player      char.Character
+	Logger          *zap.Logger
+	World           *ecs.World
+	Map             *tilemap.Map
+	Grid            grid.Grid
+	CharSprites     *common.Spritesheet
+	DecoSprites     *common.Spritesheet
+	Player          char.Character
+	EnemyAttributes map[string]*char.EnemyAttributes
 }
 
 func (scene *GameScene) Preload() {
@@ -92,6 +94,16 @@ func (scene *GameScene) Setup(u engo.Updater) {
 	// Player
 	scene.Player = char.NewPlayer("Edmund", 1, 1, scene.CharSprites.Cell(spriteWhiteZombie))
 	scene.Grid.GetCell(1, 1).SetOccupant(scene.Player)
+
+	// Enemies
+	e, err := char.LoadEnemies(EnemyDataFile)
+	if err != nil {
+		scene.Logger.Error("failed to load enemy data",
+			zap.String("err", err.Error()),
+		)
+		return
+	}
+	scene.EnemyAttributes = e
 
 	// Camera
 	scene.World.AddSystem(&camera.CameraSystem{})
