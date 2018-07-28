@@ -7,6 +7,14 @@ import (
 	"github.com/willroberts/rpg/internal/camera"
 )
 
+var PlayerExperienceTable = map[int]int{
+	1: 0,
+	2: 10,
+	3: 20,
+	4: 40,
+	5: 80,
+}
+
 type player struct {
 	ecs.BasicEntity
 	common.RenderComponent
