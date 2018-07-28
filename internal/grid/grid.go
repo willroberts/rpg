@@ -35,6 +35,8 @@ func (g *grid) CanMoveTo(x, y int) bool {
 
 	if target.GetOccupant() != nil {
 		// TODO: Implement combat detection here with GetHostility().
+		enemy := target.GetOccupant().(char.Character)
+		g.HandleCombat(enemy)
 		return false
 	}
 
