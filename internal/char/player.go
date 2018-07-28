@@ -21,27 +21,38 @@ type player struct {
 	common.SpaceComponent
 	camera.CameraComponent
 
-	name       string
-	x          int
-	y          int
-	hostility  bool
-	hitPoints  int
-	damage     int
-	experience int
+	name         string
+	x            int
+	y            int
+	hostility    bool
+	hitPoints    int
+	maxHitPoints int
+	damage       int
+	level        int
+	experience   int
 }
 
-func (p *player) GetName() string             { return p.name }
-func (p *player) GetX() int                   { return p.x }
-func (p *player) SetX(x int)                  { p.x = x }
-func (p *player) GetY() int                   { return p.y }
-func (p *player) SetY(y int)                  { p.y = y }
-func (p *player) GetHostility() bool          { return p.hostility }
-func (p *player) SetHostility(h bool)         { p.hostility = h }
-func (p *player) GetHitPoints() int           { return p.hitPoints }
-func (p *player) SetHitPoints(hp int)         { p.hitPoints = hp }
-func (p *player) GetDamage() int              { return p.damage }
-func (p *player) GetExperiencePoints() int    { return p.experience }
-func (p *player) AddExperiencePoints(exp int) { p.experience += exp }
+func (p *player) GetName() string          { return p.name }
+func (p *player) GetX() int                { return p.x }
+func (p *player) SetX(x int)               { p.x = x }
+func (p *player) GetY() int                { return p.y }
+func (p *player) SetY(y int)               { p.y = y }
+func (p *player) GetHostility() bool       { return p.hostility }
+func (p *player) SetHostility(h bool)      { p.hostility = h }
+func (p *player) GetHitPoints() int        { return p.hitPoints }
+func (p *player) SetHitPoints(hp int)      { p.hitPoints = hp }
+func (p *player) GetDamage() int           { return p.damage }
+func (p *player) GetExperiencePoints() int { return p.experience }
+
+func (p *player) AddExperiencePoints(exp int) {
+	p.experience += exp
+	if p.experience >= PlayerExperienceTable[p.level+1] {
+		p.level++
+		p.experience = 0 // FIXME: switch to retained experience model
+		p.maxHitPoints += 5
+		p.hitPoints = p.maxHitPoints
+	}
+}
 
 func (p *player) GetEntity() *ecs.BasicEntity {
 	return &p.BasicEntity
@@ -73,11 +84,12 @@ func NewPlayer(name string, x int, y int, sprite common.Drawable) Character {
 	p := &player{
 		BasicEntity: ecs.NewBasic(),
 
-		name:       name,
-		x:          x,
-		y:          y,
-		hitPoints:  20,
-		experience: 0,
+		name:         name,
+		x:            x,
+		y:            y,
+		hitPoints:    20,
+		maxHitPoints: 20,
+		experience:   0,
 	}
 
 	p.RenderComponent = common.RenderComponent{
