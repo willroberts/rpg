@@ -38,13 +38,6 @@ type MoveDelta struct {
 	Y int
 }
 
-func BindControls() {
-	engo.Input.RegisterButton("moveup", engo.KeyArrowUp)
-	engo.Input.RegisterButton("movedown", engo.KeyArrowDown)
-	engo.Input.RegisterButton("moveleft", engo.KeyArrowLeft)
-	engo.Input.RegisterButton("moveright", engo.KeyArrowRight)
-}
-
 func ProcessInput() MoveDelta {
 	// FIXME: This is too specific to movement. If we add non-movement keyinds,
 	// then MoveDelta will not be an appropriate return type here.
@@ -60,4 +53,11 @@ func ProcessInput() MoveDelta {
 		// No key was pressed, or a key was pressed which has no binding.
 		return MoveDelta{X: 0, Y: 0}
 	}
+}
+
+func BindControls() {
+	engo.Input.RegisterButton("moveup", engo.KeyArrowUp)
+	engo.Input.RegisterButton("movedown", engo.KeyArrowDown)
+	engo.Input.RegisterButton("moveleft", engo.KeyArrowLeft)
+	engo.Input.RegisterButton("moveright", engo.KeyArrowRight)
 }
