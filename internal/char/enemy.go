@@ -25,17 +25,18 @@ type enemy struct {
 	experience int
 }
 
-func (e *enemy) GetName() string          { return e.name }
-func (e *enemy) GetX() int                { return e.x }
-func (e *enemy) SetX(x int)               { e.x = x }
-func (e *enemy) GetY() int                { return e.y }
-func (e *enemy) SetY(y int)               { e.y = y }
-func (e *enemy) GetHostility() bool       { return e.hostility }
-func (e *enemy) SetHostility(h bool)      { e.hostility = h }
-func (e *enemy) GetHitPoints() int        { return e.hitPoints }
-func (e *enemy) SetHitPoints(hp int)      { e.hitPoints = hp }
-func (e *enemy) GetDamage() int           { return e.damage }
-func (e *enemy) GetExperiencePoints() int { return e.experience }
+func (e *enemy) GetName() string             { return e.name }
+func (e *enemy) GetX() int                   { return e.x }
+func (e *enemy) SetX(x int)                  { e.x = x }
+func (e *enemy) GetY() int                   { return e.y }
+func (e *enemy) SetY(y int)                  { e.y = y }
+func (e *enemy) GetHostility() bool          { return e.hostility }
+func (e *enemy) SetHostility(h bool)         { e.hostility = h }
+func (e *enemy) GetHitPoints() int           { return e.hitPoints }
+func (e *enemy) SetHitPoints(hp int)         { e.hitPoints = hp }
+func (e *enemy) GetDamage() int              { return e.damage }
+func (e *enemy) GetExperiencePoints() int    { return e.experience }
+func (e *enemy) AddExperiencePoints(exp int) { e.experience += exp }
 
 func (e *enemy) GetEntity() *ecs.BasicEntity {
 	return &e.BasicEntity
