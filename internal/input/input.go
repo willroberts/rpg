@@ -20,7 +20,7 @@ func (i *InputSystem) Update(dt float32) {
 	// Move the player in the Grid.
 	toX := i.Player.GetX() + delta.X
 	toY := i.Player.GetY() + delta.Y
-	if !i.Grid.CanMoveTo(toX, toY) {
+	if !i.Grid.CanMoveTo(i.Player, toX, toY) {
 		return
 	}
 	i.Grid.MoveChar(i.Player, toX, toY)

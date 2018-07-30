@@ -1,10 +1,12 @@
 package grid
 
-import "github.com/willroberts/rpg/internal/char"
+import (
+	"github.com/willroberts/rpg/internal/char"
+)
 
 type Grid interface {
 	GetCell(int, int) Cell
-	CanMoveTo(int, int) bool
+	CanMoveTo(char.Character, int, int) bool
 	MoveChar(char.Character, int, int)
 }
 
@@ -18,7 +20,7 @@ func (g *grid) GetCell(x, y int) Cell {
 	return g.cells[y][x]
 }
 
-func (g *grid) CanMoveTo(x, y int) bool {
+func (g *grid) CanMoveTo(player char.Character, x, y int) bool {
 	if x >= g.width || x < 0 {
 		return false
 	}
@@ -27,16 +29,16 @@ func (g *grid) CanMoveTo(x, y int) bool {
 		return false
 	}
 
-	target := g.GetCell(x, y)
+	dst := g.GetCell(x, y)
 
-	if !target.IsTraversable() {
+	if !dst.IsTraversable() {
 		return false
 	}
 
-	if target.GetOccupant() != nil {
+	if dst.GetOccupant() != nil {
 		// TODO: Implement combat detection here with GetHostility().
-		enemy := target.GetOccupant().(char.Character)
-		g.HandleCombat(enemy)
+		enemy := dst.GetOccupant().(char.Character)
+		g.HandleCombat(player, enemy)
 		return false
 	}
 

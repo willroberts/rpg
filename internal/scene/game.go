@@ -129,7 +129,8 @@ func (scene *GameScene) Setup(u engo.Updater) {
 	scene.DecoSprites = sprite.LoadSpritesheet(DecoSpriteFile, 40, 40)
 
 	// Player
-	scene.Player = char.NewPlayer("Edmund", 1, 1, scene.CharSprites.Cell(spriteWhiteZombie))
+	scene.Player = char.NewPlayer("Edmund", 1, 1,
+		scene.CharSprites.Cell(spriteWhiteZombie))
 	scene.Grid.GetCell(1, 1).SetOccupant(scene.Player)
 
 	// Enemy Attributes
@@ -226,4 +227,8 @@ func (scene *GameScene) InitLogger() error {
 	defer logger.Sync()
 	scene.Logger = logger
 	return nil
+}
+
+func (scene *GameScene) GameOver() {
+	scene.Logger.Info("game over")
 }

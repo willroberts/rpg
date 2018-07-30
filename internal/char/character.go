@@ -37,6 +37,7 @@ type Character interface {
 	SetHitPoints(int)
 
 	GetDamage() int
+	DealDamage(int)
 
 	GetExperiencePoints() int
 	AddExperiencePoints(int)

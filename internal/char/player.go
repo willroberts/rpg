@@ -32,16 +32,26 @@ type player struct {
 	experience   int
 }
 
-func (p *player) GetName() string          { return p.name }
-func (p *player) GetX() int                { return p.x }
-func (p *player) SetX(x int)               { p.x = x }
-func (p *player) GetY() int                { return p.y }
-func (p *player) SetY(y int)               { p.y = y }
-func (p *player) GetHostility() bool       { return p.hostility }
-func (p *player) SetHostility(h bool)      { p.hostility = h }
-func (p *player) GetHitPoints() int        { return p.hitPoints }
-func (p *player) SetHitPoints(hp int)      { p.hitPoints = hp }
-func (p *player) GetDamage() int           { return p.damage }
+func (p *player) GetName() string     { return p.name }
+func (p *player) GetX() int           { return p.x }
+func (p *player) SetX(x int)          { p.x = x }
+func (p *player) GetY() int           { return p.y }
+func (p *player) SetY(y int)          { p.y = y }
+func (p *player) GetHostility() bool  { return p.hostility }
+func (p *player) SetHostility(h bool) { p.hostility = h }
+func (p *player) GetHitPoints() int   { return p.hitPoints }
+func (p *player) SetHitPoints(hp int) { p.hitPoints = hp }
+func (p *player) GetDamage() int      { return p.damage }
+
+func (p *player) DealDamage(d int) {
+	hp := p.GetHitPoints()
+	hp -= d
+	if hp < 0 {
+		hp = 0
+	}
+	p.SetHitPoints(hp)
+}
+
 func (p *player) GetExperiencePoints() int { return p.experience }
 
 func (p *player) AddExperiencePoints(exp int) {
