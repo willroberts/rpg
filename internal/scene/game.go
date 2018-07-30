@@ -10,6 +10,7 @@ import (
 	"github.com/willroberts/rpg/internal/grid"
 	"github.com/willroberts/rpg/internal/input"
 	"github.com/willroberts/rpg/internal/sprite"
+	"github.com/willroberts/rpg/internal/text"
 	"github.com/willroberts/rpg/internal/tilemap"
 
 	"engo.io/ecs"
@@ -53,6 +54,9 @@ const (
 	CharSpriteFile string = "spritesheets/characters-32x32.png"
 	DecoSpriteFile string = "spritesheets/decoration-20x20-40x40.png"
 	EnemyDataFile  string = "assets/data/enemies.json"
+	TitleFontFile  string = "fonts/title.ttf"
+	HUDFontFile    string = "fonts/hud.ttf"
+	LogFontFile    string = "fonts/combatlog.ttf"
 )
 
 const (
@@ -66,6 +70,7 @@ type GameScene struct {
 	Grid            grid.Grid
 	CharSprites     *common.Spritesheet
 	DecoSprites     *common.Spritesheet
+	Fonts           text.FontSet
 	Player          char.Character
 	Enemies         []char.Character
 	EnemyAttributes map[string]*char.EnemyAttributes
@@ -95,6 +100,34 @@ func (scene *GameScene) Preload() {
 		)
 		return
 	}
+
+	// Fonts
+	tf, err := text.PreloadFont(TitleFontFile, 64)
+	if err != nil {
+		scene.Logger.Error("failed to preload title font",
+			zap.String("err", err.Error()),
+		)
+		return
+	}
+	scene.Fonts.TitleFont = tf
+
+	hf, err := text.PreloadFont(HUDFontFile, 32)
+	if err != nil {
+		scene.Logger.Error("failed to preload HUD font",
+			zap.String("err", err.Error()),
+		)
+		return
+	}
+	scene.Fonts.HUDFont = hf
+
+	lf, err := text.PreloadFont(LogFontFile, 24)
+	if err != nil {
+		scene.Logger.Error("failed to preload log font",
+			zap.String("err", err.Error()),
+		)
+		return
+	}
+	scene.Fonts.LogFont = lf
 
 	scene.Logger.Info("preload complete")
 }
