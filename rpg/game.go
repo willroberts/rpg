@@ -9,17 +9,8 @@ import (
 var gameScene *GameScene
 
 type GameScene struct {
-	Fonts *FontSet
-	HUD   *HUD
-	Log   *ActivityLog
-}
-
-func (scene *GameScene) Preload() {
-	gameScene = scene
-	scene.Fonts, err = PreloadFonts()
-	if err != nil {
-		log.Fatalln("failed to preload fonts:", err.Error())
-	}
+	HUD *HUD
+	Log *ActivityLog
 }
 
 func (scene *GameScene) Setup(u engo.Updater) {
