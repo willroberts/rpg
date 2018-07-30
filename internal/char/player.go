@@ -30,6 +30,8 @@ type player struct {
 	damage       int
 	level        int
 	experience   int
+
+	deathSprite common.Drawable
 }
 
 func (p *player) GetName() string     { return p.name }
@@ -81,16 +83,28 @@ func (p *player) GetCameraComponent() *camera.CameraComponent {
 }
 
 func (p *player) Destroy() {
-	// Remove the Player from the CameraSystem.
-	//for _, sys := range scene.World.Systems() {
-	//  switch s := sys.(type) {
-	//  case *camera.CameraSystem:
-	//    s.Remove(p.BasicEntity)
-	//  }
-	//}
+	// Remove the Player from the CameraSystem, and change the sprite to a
+	// gravestone in the RenderSystem.
+	/*for _, sys := range scene.World.Systems() {
+		switch s := sys.(type) {
+		case *camera.CameraSystem:
+			s.Remove(p.BasicEntity)
+		case *common.RenderSystem:
+			s.Remove(p.BasicEntity)
+			p.RenderComponent = common.RenderComponent{
+				Drawable: p.deathSprite,
+				Scale: engo.Point{
+					X: DefaultCharacterScale,
+					Y: DefaultCharacterScale,
+				},
+			}
+			p.RenderComponent.SetZIndex(DefaultCharacterZIndex)
+			s.Add(&p.BasicEntity, &p.RenderComponent, &p.SpaceComponent)
+		}
+	}*/
 }
 
-func NewPlayer(name string, x int, y int, sprite common.Drawable) Character {
+func NewPlayer(name string, x int, y int, sprite, deathSprite common.Drawable) Character {
 	p := &player{
 		BasicEntity: ecs.NewBasic(),
 
@@ -100,6 +114,8 @@ func NewPlayer(name string, x int, y int, sprite common.Drawable) Character {
 		hitPoints:    20,
 		maxHitPoints: 20,
 		experience:   0,
+
+		deathSprite: deathSprite,
 	}
 
 	p.RenderComponent = common.RenderComponent{

@@ -163,7 +163,8 @@ func (scene *GameScene) Setup(u engo.Updater) {
 
 	// Player
 	scene.Player = char.NewPlayer("Edmund", 1, 1,
-		scene.CharSprites.Cell(spriteWhiteZombie))
+		scene.CharSprites.Cell(spriteWhiteZombie),
+		scene.CharSprites.Cell(spriteGravestone))
 	scene.Grid.GetCell(1, 1).SetOccupant(scene.Player)
 
 	// Enemy Attributes
