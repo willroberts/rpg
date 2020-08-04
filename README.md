@@ -3,6 +3,8 @@
 A 2D game written in Go, using the [Engo](https://www.github.com/EngoEngine/engo)
 engine.
 
+Note: Windows may not allow the TTF fonts to be loaded. Tested on Linux.
+
 ## License
 
 Licensed under the GNU General Public License (v3). See `LICENSE`
@@ -18,10 +20,6 @@ classic roguelike RPG for Windows 3.1.
 
 Technical spec notes can be found in the `docs` directory. For API
 documentation, use `go doc`.
-
-## Development Log
-
-For chronological development notes, see `DEVLOG.md`.
 
 ## Credits
 
