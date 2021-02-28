@@ -1,8 +1,8 @@
 package rpg
 
 import (
-	"engo.io/ecs"
-	"engo.io/engo/common"
+	"github.com/EngoEngine/ecs"
+	"github.com/EngoEngine/engo/common"
 )
 
 // CameraComponent is attached to a CameraEntity when being added to the

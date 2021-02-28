@@ -5,9 +5,9 @@ import (
 	"io/ioutil"
 	"log"
 
-	"engo.io/ecs"
-	"engo.io/engo"
-	"engo.io/engo/common"
+	"github.com/EngoEngine/ecs"
+	"github.com/EngoEngine/engo"
+	"github.com/EngoEngine/engo/common"
 )
 
 // EnemyAttributes stores the game data which are imported from external sources,

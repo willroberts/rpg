@@ -19,7 +19,7 @@ package main
 import (
 	"log"
 
-	"engo.io/engo"
+	"github.com/EngoEngine/engo"
 	"github.com/willroberts/rpg/rpg"
 )
 

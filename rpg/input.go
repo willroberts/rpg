@@ -1,6 +1,6 @@
 package rpg
 
-import "engo.io/engo"
+import "github.com/EngoEngine/engo"
 
 // bindControls assigns the arrow keys to Player movement.
 func bindControls() {
