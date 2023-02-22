@@ -3,8 +3,6 @@
 A 2D game written in Go, using the [Engo](https://www.github.com/EngoEngine/engo)
 engine.
 
-Note: Windows may not allow the TTF fonts to be loaded. Tested on Linux.
-
 ## License
 
 Licensed under the GNU General Public License (v3). See `LICENSE`
@@ -23,6 +21,4 @@ documentation, use `go doc`.
 
 ## Credits
 
-Art Assets: Jesse Freeman, Tile Crusader
-
-http://jessefreeman.com/articles/free-game-art-tile-crusader
+Art Assets: Jesse Freeman, [Tile Crusader](https://web.archive.org/web/20161122175612/http://jessefreeman.com/articles/free-game-art-tile-crusader)
