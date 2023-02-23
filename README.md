@@ -3,6 +3,8 @@
 A 2D game written in Go, using the [Engo](https://www.github.com/EngoEngine/engo)
 engine.
 
+<img src="assets/screenshot.png" height=400 alt="Gameplay screenshot" />
+
 ## License
 
 Licensed under the GNU General Public License (v3). See `LICENSE`
